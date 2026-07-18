@@ -1,24 +1,20 @@
 const navigation = [
-  ["About", "/#about"],
-  ["Three Pillars", "/#pillars"],
-  ["Pipeline", "/#pipeline"],
-  ["Technology", "/#technology"],
-  ["Stories", "/#stories"],
+  ["Our Pillars", "/#pillars"],
+  ["Impact", "/#impact"],
+  ["Videos", "/#stories"],
   ["Partners", "/#partners"],
+  ["Solutions", "/innovation-foundry"],
+  ["About", "/#about"],
 ];
 
 export function SiteHeader() {
   return (
     <>
       <a className="skip-link" href="#main-content">Skip to content</a>
-      <div className="topline">
-        <p>Innovation <i /> Education <i /> Community impact</p>
-        <a href="mailto:info@hbiventures.com">info@hbiventures.com <span>↗</span></a>
-      </div>
       <header className="site-header">
         <a className="brand" href="/" aria-label="HBI Ventures home">
-          <span className="brand-symbol" aria-hidden="true" />
-          <span className="brand-type"><b>HBI</b> VENTURES</span>
+          <span className="brand-mark" aria-hidden="true">HBI</span>
+          <span className="brand-type">Ventures</span>
         </a>
         <nav className="desktop-nav" aria-label="Main navigation">
           {navigation.map(([label, href]) => <a href={href} key={href}>{label}</a>)}
@@ -30,7 +26,7 @@ export function SiteHeader() {
             <a href="/contact">Connect with HBI <span aria-hidden="true">↗</span></a>
           </nav>
         </details>
-        <a className="nav-cta" href="/contact">Connect <span>↗</span></a>
+        <a className="nav-cta" href="/contact">Connect With Us</a>
       </header>
     </>
   );

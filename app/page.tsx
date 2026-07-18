@@ -3,27 +3,27 @@ import { SiteFooter, SiteHeader } from "./components/SiteHeader";
 const pillars = [
   {
     number: "01",
-    label: "Learn",
+    icon: "🎓",
     title: "HBI STEAM Academy",
-    copy: "Future-ready talent development through hands-on, project-based learning tied to real industry and community challenges.",
-    points: ["Project-based learning", "Industry-aligned skills", "Mentorship & pathways"],
-    color: "cyan",
+    copy: "Preparing middle and high school students for college, careers, and entrepreneurship through hands-on challenges in AI, data science, cybersecurity, IoT, connected systems, product development, digital media, and business.",
+    action: "Sponsor a Cohort",
+    href: "/steam-academy",
   },
   {
     number: "02",
-    label: "Build",
+    icon: "⚙️",
     title: "HBI Innovation Foundry",
-    copy: "Applied product development and commercialization across AI, IoT, cybersecurity, data, and connected systems.",
-    points: ["Prototype development", "Market validation", "Innovation hubs"],
-    color: "blue",
+    copy: "Helping organizations transform ideas into practical solutions through AI-enabled products, connected devices, data-driven decision tools, virtual assistants, rapid prototyping, and emerging-technology strategy.",
+    action: "Explore Solutions",
+    href: "/innovation-foundry",
   },
   {
     number: "03",
-    label: "Include",
+    icon: "🤝",
     title: "HBI Foundation",
-    copy: "Equitable access, scholarships, mentorship, and community engagement that broaden participation in innovation.",
-    points: ["Scholarships & access", "Community programs", "Sustained impact"],
-    color: "orange",
+    copy: "Expanding access to high-quality education and innovation opportunities through charitable giving, corporate partnerships, scholarships, community programs, and mission-aligned investment.",
+    action: "Support the Mission",
+    href: "/foundation",
   },
 ];
 
@@ -42,36 +42,50 @@ export default function Home() {
       <SiteHeader />
 
       <div id="main-content">
-        <section className="hero" id="top">
-          <div className="hero-copy">
-            <p className="eyebrow"><span>●</span> Innovation and impact organization</p>
-            <h1>Building tomorrow’s<br />technologies.<br /><em>Developing its leaders.</em></h1>
-            <p className="hero-intro">HBI Ventures creates a continuous pipeline from talent development to applied innovation, workforce opportunity, and measurable community outcomes.</p>
-            <div className="hero-actions">
-              <a className="button button-light" href="#pillars">Explore the ecosystem <span>↓</span></a>
-              <a className="button button-ghost" href="mailto:info@hbiventures.com?subject=Partnership%20inquiry">Partner with HBI <span>↗</span></a>
+        <section className="reference-hero" id="top">
+          <div className="reference-hero-inner">
+            <div className="reference-hero-copy">
+              <p className="reference-kicker">AI-first innovation · Emerging technology · Community impact</p>
+              <h1>Turning emerging<br />technology into<br />real-world<br />opportunity.</h1>
+              <p className="reference-intro">HBI Ventures applies an AI-first, human-centered mindset to connect education, industry, and community through artificial intelligence, data science, connected mobility, Internet of Things, smart-city innovation, and technology-enabled product development.</p>
+              <div className="reference-tags"><span>Artificial Intelligence</span><span>Smart Cities</span><span>Connected Car</span><span>IoT</span><span>Data Science</span></div>
+              <div className="reference-actions">
+                <a className="reference-primary" href="#pillars">Explore Our Work</a>
+                <a className="reference-secondary" href="/contact">Partner With HBI</a>
+              </div>
+              <div className="reference-stats">
+                <div><strong>320+</strong><span>Students Served</span></div>
+                <div><strong>80+</strong><span>Student Prototypes</span></div>
+                <div><strong>Since 2016</strong><span>Creating Impact</span></div>
+              </div>
+            </div>
+            <div className="reference-orbit" aria-label="HBI technology ecosystem">
+              <div className="orbit-ring orbit-ring-one" />
+              <div className="orbit-ring orbit-ring-two" />
+              <div className="orbit-core">HBI</div>
+              <div className="orbit-card orbit-ai"><b>AI</b><strong>Intelligent Systems</strong></div>
+              <div className="orbit-card orbit-iot"><b>IoT</b><strong>Connected Technology</strong></div>
+              <div className="orbit-card orbit-data"><b>DATA</b><strong>Insight &amp; Innovation</strong></div>
+              <i className="orbit-dot dot-one" /><i className="orbit-dot dot-two" /><i className="orbit-dot dot-three" />
             </div>
           </div>
+        </section>
 
-          <div className="ecosystem" aria-label="HBI technology and talent ecosystem">
-            <div className="eco-ring ring-a" />
-            <div className="eco-ring ring-b" />
-            <div className="eco-core">
-              <small>THE HBI ENGINE</small>
-              <strong>Technology<br /><i>×</i> Talent</strong>
-              <span>Impact at scale</span>
-            </div>
-            <div className="eco-node node-one"><b>AI</b><span>Intelligence</span></div>
-            <div className="eco-node node-two"><b>IoT</b><span>Smart systems</span></div>
-            <div className="eco-node node-three"><b>CY</b><span>Cyber trust</span></div>
-            <div className="eco-node node-four"><b>UX</b><span>Product design</span></div>
+        <section className="reference-pillars" id="pillars">
+          <div className="reference-section-heading">
+            <p className="reference-kicker">Our three pillars</p>
+            <h2>One vision. Three engines for<br />impact.</h2>
+            <p>Each pillar advances a distinct part of the HBI mission while working together to create stronger pathways from learning to opportunity.</p>
           </div>
-
-          <div className="hero-stats">
-            <div><strong>320+</strong><span>Students served</span></div>
-            <div><strong>80+</strong><span>Student prototypes</span></div>
-            <div><strong>2016</strong><span>Year launched</span></div>
-            <div><strong>3</strong><span>Integrated pillars</span></div>
+          <div className="reference-pillar-grid">
+            {pillars.map((pillar) => (
+              <article className={pillar.number === "02" ? "reference-pillar-card featured" : "reference-pillar-card"} key={pillar.number}>
+                <div className="reference-pillar-top"><span>{pillar.icon}</span><b>{pillar.number}</b></div>
+                <h3>{pillar.title}</h3>
+                <p>{pillar.copy}</p>
+                <a href={pillar.href}>{pillar.action} <span>→</span></a>
+              </article>
+            ))}
           </div>
         </section>
 
@@ -83,24 +97,6 @@ export default function Home() {
               <p>We connect education, product development, commercialization, workforce pathways, equitable access, and community outcomes.</p>
               <p>Each HBI pillar has a distinct job. Together, they create an ecosystem where people learn, ideas become products, and progress reaches the communities it should serve.</p>
             </div>
-          </div>
-        </section>
-
-        <section className="pillars-section" id="pillars">
-          <div className="section-heading light-heading">
-            <div><p className="eyebrow"><span>●</span> The HBI ecosystem</p><h2>Three pillars.<br />One pipeline.</h2></div>
-            <p>From first exposure to scaled innovation, HBI creates the conditions for talent and technology to grow together.</p>
-          </div>
-          <div className="pillar-grid">
-            {pillars.map((pillar) => (
-              <article className={`pillar-card ${pillar.color}`} key={pillar.number}>
-                <div className="pillar-top"><span>{pillar.number}</span><b>{pillar.label}</b></div>
-                <h3>{pillar.title}</h3>
-                <p>{pillar.copy}</p>
-                <ul>{pillar.points.map((point) => <li key={point}>{point}</li>)}</ul>
-                <a href={pillar.number === "01" ? "/steam-academy" : pillar.number === "02" ? "/innovation-foundry" : "/foundation"}>Explore this pillar <span>↗</span></a>
-              </article>
-            ))}
           </div>
         </section>
 
@@ -137,7 +133,7 @@ export default function Home() {
 
         <section className="featured-section">
           <div className="featured-image">
-            <img src="/acrb-ai-project.png" alt="HBI STEAM Academy students presenting an AI solution" />
+            <img src="/student-presentation.jpg" alt="HBI students presenting their work in a professional classroom" />
             <span>HBI STEAM ACADEMY · APPLIED AI</span>
           </div>
           <div className="featured-copy">

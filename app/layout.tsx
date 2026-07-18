@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Chatbot } from "./components/Chatbot";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://hbi-ventures.io"),
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>{children}<Chatbot /></body>
     </html>
   );
 }
