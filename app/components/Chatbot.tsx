@@ -10,7 +10,7 @@ const visitorPaths = [
   { id: "educator", label: "School or educator", detail: "Cohorts, curriculum, and collaboration", message: "Welcome! I’ll highlight cohort opportunities, project-based learning, and ways schools can work with HBI.", links: [["View STEAM programs", "/steam-academy"], ["Discuss a partnership", "/contact"]] },
   { id: "partner", label: "Business or partner", detail: "Innovation, talent, and sponsorship", message: "I’ll focus your experience on innovation services, talent development, sponsorship, and strategic partnerships.", links: [["Explore the Foundry", "/innovation-foundry"], ["Meet HBI partners", "/partners"]] },
   { id: "supporter", label: "Donor or supporter", detail: "Access, scholarships, and impact", message: "Thank you. I’ll guide you toward the HBI Foundation, community impact, and ways to expand access and opportunity.", links: [["Visit the Foundation", "/foundation"], ["Connect with HBI", "/contact"]] },
-  { id: "technology", label: "Technology explorer", detail: "AI, IoT, products, and portfolio", message: "Let’s explore HBI’s work across AI, IoT, data science, connected systems, and product innovation.", links: [["View the portfolio", "/portfolio"], ["Explore technology", "/#technology"]] },
+  { id: "technology", label: "Technology explorer", detail: "AI, IoT, products, and portfolio", message: "Let’s explore HBI’s work across AI, IoT, data science, connected systems, and product innovation.", links: [["View the portfolio", "/portfolio"], ["Explore technology", "/innovation-foundry"]] },
 ];
 
 function answerFor(question: string) {
@@ -53,6 +53,11 @@ export function Chatbot() {
     setOpen(false);
   }
 
+  function closeAssistant() {
+    if (!profile) window.localStorage.setItem("hbi-assistant-seen", "true");
+    setOpen(false);
+  }
+
   function changePath() {
     setProfile(null);
     setMessages([{ role: "assistant", text: "What would you like to accomplish today?" }]);
@@ -77,15 +82,15 @@ export function Chatbot() {
   return (
     <div className={onboarding ? "chatbot-shell onboarding" : "chatbot-shell"}>
       {open && (
-        <section className="chatbot-panel" aria-label="HBI demo assistant">
-          <header><div><strong>Ask HBI</strong><span>{onboarding ? "AI-first digital concierge" : "AI-first demo assistant"}</span></div><button type="button" onClick={() => setOpen(false)} aria-label="Close chat">×</button></header>
+        <section className="chatbot-panel" role={onboarding ? "dialog" : "region"} aria-modal={onboarding ? "false" : undefined} aria-labelledby="hbi-assistant-title">
+          <header><div><strong id="hbi-assistant-title">Ask HBI</strong><span>{onboarding ? "AI-guided welcome" : "AI-first demo assistant"}</span></div><button type="button" onClick={closeAssistant} aria-label="Close chat">×</button></header>
           {onboarding ? (
             <div className="chatbot-onboarding">
               <p className="chatbot-welcome-kicker">Welcome to HBI Ventures</p>
               <h2>What brings you here today?</h2>
-              <p>Choose a path and I’ll create an AI-first journey to the most relevant programs, stories, solutions, and ways to connect.</p>
+              <p>Choose a path for tailored recommendations, or continue directly into the complete HBI experience.</p>
               <div>{visitorPaths.map((path) => <button type="button" onClick={() => choosePath(path.id)} key={path.id}><strong>{path.label}</strong><span>{path.detail}</span><b>→</b></button>)}</div>
-              <button className="chatbot-skip" type="button" onClick={skipWelcome}>Skip and explore the full website</button>
+              <button className="chatbot-skip" type="button" onClick={skipWelcome}>Explore the full website <span>→</span></button>
             </div>
           ) : (
             <>

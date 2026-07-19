@@ -89,6 +89,17 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="mobile-explore" aria-labelledby="mobile-explore-title">
+          <p className="reference-kicker">Continue your journey</p>
+          <h2 id="mobile-explore-title">Go directly to what matters to you.</h2>
+          <p>Explore HBI’s model, technology capabilities, and portfolio without working through every detail on the home page.</p>
+          <div>
+            <a href="/about"><strong>How HBI works</strong><span>Mission, model, and impact →</span></a>
+            <a href="/innovation-foundry"><strong>Technology solutions</strong><span>AI, IoT, data, and product strategy →</span></a>
+            <a href="/portfolio"><strong>Innovation portfolio</strong><span>Projects, prototypes, and applied work →</span></a>
+          </div>
+        </section>
+
         <section className="about-section" id="about">
           <div className="section-kicker"><span>01</span><p>One connected organization</p></div>
           <div className="about-main">
