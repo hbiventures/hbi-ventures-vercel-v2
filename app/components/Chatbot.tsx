@@ -20,7 +20,7 @@ function answerFor(question: string) {
   if (value.includes("technology") || value.includes("ai") || value.includes("iot")) return "HBI focuses on AI, data science, connected devices, cybersecurity, smart systems, connected mobility, product innovation, UX, and creative technology.";
   if (value.includes("foundation") || value.includes("donat")) return "The HBI Foundation expands access through scholarships, community programs, charitable giving, corporate partnerships, and mission-aligned investment.";
   if (value.includes("video") || value.includes("metric") || value.includes("soccer")) return "The Videos section features Metric Mate and Soccer IQ Institute. Scroll to Partners in Action to watch both embedded videos.";
-  if (value.includes("contact") || value.includes("email")) return "You can reach HBI Ventures at info@hbiventures.com or use the Connect With Us page.";
+  if (value.includes("contact") || value.includes("email")) return "You can reach HBIVentures at info@hbiventures.com or use the Connect With Us page.";
   return "I’m the HBI demo assistant. Ask me about programs, partnerships, technology, the Foundation, videos, or contact information.";
 }
 
@@ -86,7 +86,7 @@ export function Chatbot() {
           <header><div><strong id="hbi-assistant-title">Ask HBI</strong><span>{onboarding ? "AI-guided welcome" : "AI-first demo assistant"}</span></div><button type="button" onClick={closeAssistant} aria-label="Close chat">×</button></header>
           {onboarding ? (
             <div className="chatbot-onboarding">
-              <p className="chatbot-welcome-kicker">Welcome to HBI Ventures</p>
+              <p className="chatbot-welcome-kicker">Welcome to HBIVentures</p>
               <h2>What brings you here today?</h2>
               <p>Choose a path for tailored recommendations, or continue directly into the complete HBI experience.</p>
               <div>{visitorPaths.map((path) => <button type="button" onClick={() => choosePath(path.id)} key={path.id}><strong>{path.label}</strong><span>{path.detail}</span><b>→</b></button>)}</div>

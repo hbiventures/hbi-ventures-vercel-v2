@@ -3,8 +3,8 @@ import { SiteFooter, SiteHeader } from "../components/SiteHeader";
 import { ContactForm } from "./ContactForm";
 
 export const metadata: Metadata = {
-  title: "Connect With HBI Ventures",
-  description: "Contact HBI Ventures about partnerships, programs, technology pilots, sponsorships, research, volunteering, and community initiatives.",
+  title: "Connect With HBIVentures",
+  description: "Contact HBIVentures about partnerships, programs, technology pilots, sponsorships, research, volunteering, and community initiatives.",
 };
 
 export default function ContactPage() {

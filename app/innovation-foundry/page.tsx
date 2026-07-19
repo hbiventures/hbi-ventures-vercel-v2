@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SiteFooter, SiteHeader } from "../components/SiteHeader";
 
 export const metadata: Metadata = {
-  title: "HBI Innovation Foundry | HBI Ventures",
+  title: "HBI Innovation Foundry | HBIVentures",
   description: "HBI’s applied product-development and commercialization engine for AI, IoT, cybersecurity, smart cities, and connected mobility.",
 };
 

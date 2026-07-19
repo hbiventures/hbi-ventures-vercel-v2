@@ -1,6 +1,6 @@
-# HBI Ventures Website
+# HBIVentures Website
 
-Production-ready multi-page website for HBI Ventures, built with Next.js and configured for Vercel.
+Production-ready multi-page website for HBIVentures, built with Next.js and configured for Vercel.
 
 ## Publish with GitHub and Vercel
 

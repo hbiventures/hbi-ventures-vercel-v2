@@ -7,7 +7,7 @@ export function ContactForm() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const name = `${data.get("first_name")} ${data.get("last_name")}`.trim();
-    const subject = `HBI Ventures inquiry: ${data.get("interest")}`;
+    const subject = `HBIVentures inquiry: ${data.get("interest")}`;
     const body = [
       `Name: ${name}`,
       `Email: ${data.get("email")}`,

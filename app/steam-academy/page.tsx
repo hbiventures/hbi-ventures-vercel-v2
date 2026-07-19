@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SiteFooter, SiteHeader } from "../components/SiteHeader";
 
-export const metadata: Metadata = { title: "HBI STEAM Academy | HBI Ventures", description: "Hands-on, project-based learning aligned to authentic industry, workforce, and community challenges." };
+export const metadata: Metadata = { title: "HBI STEAM Academy | HBIVentures", description: "Hands-on, project-based learning aligned to authentic industry, workforce, and community challenges." };
 
 const pathways = [
   ["AI", "AI & Data", "Generative AI, analytics, machine learning concepts, visualization, and responsible data use."],

@@ -47,7 +47,7 @@ export default function Home() {
             <div className="reference-hero-copy">
               <p className="reference-kicker">AI-first innovation · Emerging technology · Community impact</p>
               <h1>Turning emerging<br />technology into<br />real-world<br />opportunity.</h1>
-              <p className="reference-intro">HBI Ventures applies an AI-first, human-centered mindset to connect education, industry, and community through artificial intelligence, data science, connected mobility, Internet of Things, smart-city innovation, and technology-enabled product development.</p>
+              <p className="reference-intro">HBIVentures applies an AI-first, human-centered mindset to connect education, industry, and community through artificial intelligence, data science, connected mobility, Internet of Things, smart-city innovation, and technology-enabled product development.</p>
               <div className="reference-tags"><span>Artificial Intelligence</span><span>Smart Cities</span><span>Connected Car</span><span>IoT</span><span>Data Science</span></div>
               <div className="reference-actions">
                 <a className="reference-primary" href="#pillars">Explore Our Work</a>

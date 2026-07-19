@@ -12,9 +12,8 @@ export function SiteHeader() {
     <>
       <a className="skip-link" href="#main-content">Skip to content</a>
       <header className="site-header">
-        <a className="brand" href="/" aria-label="HBI Ventures home">
-          <span className="brand-mark" aria-hidden="true">HBI</span>
-          <span className="brand-type">Ventures</span>
+        <a className="brand" href="/" aria-label="HBIVentures home">
+          <span className="brand-wordmark"><b>HBI</b>Ventures</span>
         </a>
         <nav className="desktop-nav" aria-label="Main navigation">
           {navigation.map(([label, href]) => <a href={href} key={href}>{label}</a>)}
@@ -35,9 +34,9 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer>
-      <div className="footer-brand"><span className="brand-symbol inverse" /><span className="brand-type"><b>HBI</b> VENTURES</span></div>
+      <div className="footer-brand"><span className="brand-symbol inverse" /><span className="brand-type"><b>HBI</b>Ventures</span></div>
       <p>Innovation · Education · Community impact</p>
-      <div><a href="mailto:info@hbiventures.com">info@hbiventures.com</a><span>© {new Date().getFullYear()} HBI Ventures, LLC</span></div>
+      <div><a href="mailto:info@hbiventures.com">info@hbiventures.com</a><span>© {new Date().getFullYear()} HBIVentures, LLC</span></div>
     </footer>
   );
 }
