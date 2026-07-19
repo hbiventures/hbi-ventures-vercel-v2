@@ -1,4 +1,5 @@
 import { SiteFooter, SiteHeader } from "./components/SiteHeader";
+import { StudentCarousel } from "./components/StudentCarousel";
 
 const pillars = [
   {
@@ -143,15 +144,12 @@ export default function Home() {
         </section>
 
         <section className="featured-section">
-          <div className="featured-image">
-            <img src="/student-presentation.jpg" alt="HBI students presenting their work in a professional classroom" />
-            <span>HBI STEAM ACADEMY · APPLIED AI</span>
-          </div>
+          <StudentCarousel />
           <div className="featured-copy">
             <p className="eyebrow"><span>●</span> Innovation in action</p>
             <h2>Students using AI to solve civic and community challenges.</h2>
-            <p>HBI teams research user needs, shape technology concepts, build prototypes, and present solutions to professionals and community stakeholders.</p>
-            <div className="feature-tags"><span>Research</span><span>AI-first mindset</span><span>Prototyping</span><span>Storytelling</span></div>
+            <p>Through guided learning modules, industry mentors, team collaboration, and hands-on product development, HBI teams turn real needs into concepts, prototypes, and confident presentations.</p>
+            <div className="feature-tags"><span>Mentors</span><span>Learning modules</span><span>Team collaboration</span><span>Product development</span></div>
             <a className="arrow-link" href="mailto:info@hbiventures.com?subject=HBI%20innovation%20portfolio">Explore the innovation portfolio <span>↗</span></a>
           </div>
         </section>
