@@ -124,6 +124,10 @@ const slides = [
   },
 ];
 
+const carouselSlides = [0, 7, 9, 1, 10, 2, 11, 3, 12, 4, 13, 5, 14, 6, 15, 8, 16].map(
+  (index) => slides[index],
+);
+
 export function StudentCarousel() {
   const [active, setActive] = useState(0);
   const [userPaused, setUserPaused] = useState(false);
@@ -134,18 +138,18 @@ export function StudentCarousel() {
     if (isPaused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const rotation = window.setInterval(() => {
-      setActive((current) => (current + 1) % slides.length);
-    }, 6000);
+      setActive((current) => (current + 1) % carouselSlides.length);
+    }, 5000);
 
     return () => window.clearInterval(rotation);
   }, [active, isPaused]);
 
   function showPrevious() {
-    setActive((current) => (current - 1 + slides.length) % slides.length);
+    setActive((current) => (current - 1 + carouselSlides.length) % carouselSlides.length);
   }
 
   function showNext() {
-    setActive((current) => (current + 1) % slides.length);
+    setActive((current) => (current + 1) % carouselSlides.length);
   }
 
   return (
@@ -154,15 +158,13 @@ export function StudentCarousel() {
       role="region"
       aria-roledescription="carousel"
       aria-label="HBIVentures student innovation highlights"
-      onMouseEnter={() => setInteractionPaused(true)}
-      onMouseLeave={() => setInteractionPaused(false)}
       onFocusCapture={() => setInteractionPaused(true)}
       onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setInteractionPaused(false);
       }}
     >
       <div className="student-carousel-stage">
-        {slides.map((slide, index) => (
+        {carouselSlides.map((slide, index) => (
           <figure className={index === active ? "active" : ""} aria-hidden={index !== active} key={slide.src}>
             <img
               src={slide.src}
@@ -178,7 +180,7 @@ export function StudentCarousel() {
       <div className="student-carousel-controls">
         <button type="button" onClick={showPrevious} aria-label="Previous student highlight">←</button>
         <div aria-label="Choose a student highlight">
-          {slides.map((slide, index) => (
+          {carouselSlides.map((slide, index) => (
             <button
               type="button"
               className={index === active ? "active" : ""}
@@ -202,7 +204,7 @@ export function StudentCarousel() {
       </div>
 
       <span className="student-carousel-count" aria-live="polite">
-        {String(active + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
+        {String(active + 1).padStart(2, "0")} / {String(carouselSlides.length).padStart(2, "0")}
       </span>
     </div>
   );
