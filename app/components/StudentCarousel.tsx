@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const slides = [
   {
@@ -56,6 +56,19 @@ const slides = [
 
 export function StudentCarousel() {
   const [active, setActive] = useState(0);
+  const [userPaused, setUserPaused] = useState(false);
+  const [interactionPaused, setInteractionPaused] = useState(false);
+  const isPaused = userPaused || interactionPaused;
+
+  useEffect(() => {
+    if (isPaused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const rotation = window.setInterval(() => {
+      setActive((current) => (current + 1) % slides.length);
+    }, 6000);
+
+    return () => window.clearInterval(rotation);
+  }, [active, isPaused]);
 
   function showPrevious() {
     setActive((current) => (current - 1 + slides.length) % slides.length);
@@ -71,6 +84,12 @@ export function StudentCarousel() {
       role="region"
       aria-roledescription="carousel"
       aria-label="HBIVentures student innovation highlights"
+      onMouseEnter={() => setInteractionPaused(true)}
+      onMouseLeave={() => setInteractionPaused(false)}
+      onFocusCapture={() => setInteractionPaused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setInteractionPaused(false);
+      }}
     >
       <div className="student-carousel-stage">
         {slides.map((slide, index) => (
@@ -101,6 +120,15 @@ export function StudentCarousel() {
           ))}
         </div>
         <button type="button" onClick={showNext} aria-label="Next student highlight">→</button>
+        <button
+          type="button"
+          className="student-carousel-toggle"
+          onClick={() => setUserPaused((paused) => !paused)}
+          aria-label={userPaused ? "Resume automatic slide rotation" : "Pause automatic slide rotation"}
+          aria-pressed={userPaused}
+        >
+          {userPaused ? "▶" : "Ⅱ"}
+        </button>
       </div>
 
       <span className="student-carousel-count" aria-live="polite">0{active + 1} / 0{slides.length}</span>
