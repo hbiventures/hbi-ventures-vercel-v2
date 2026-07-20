@@ -52,6 +52,76 @@ const slides = [
     caption: "Community leaders guiding the next generation",
     position: "center",
   },
+  {
+    src: "/carousel-3m-cohort.jpg",
+    alt: "Dallas Austin with HBIVentures students and program leaders at Georgia State University",
+    label: "Community partnership",
+    caption: "Dallas Austin representing the Dallas Austin Foundation with the student cohort",
+    position: "center",
+  },
+  {
+    src: "/carousel-entrepreneurship-module.jpg",
+    alt: "Guest instructors presenting a financial learning module to students",
+    label: "Learning modules",
+    caption: "Connecting entrepreneurship, financial thinking, and product strategy",
+    position: "center",
+  },
+  {
+    src: "/carousel-3m-visiting-wizards-sign.jpg",
+    alt: "A 3M Visiting Wizards program sign",
+    label: "3M Visiting Wizards",
+    caption: "Engineers from 3M Corporation bringing science and innovation into the classroom",
+    position: "center",
+  },
+  {
+    src: "/carousel-3m-engineer-workshop.jpg",
+    alt: "A 3M engineer leading students through a hands-on workshop",
+    label: "Industry mentorship",
+    caption: "A 3M Corporation engineer guiding hands-on discovery",
+    position: "center",
+  },
+  {
+    src: "/carousel-3m-mentorship.jpg",
+    alt: "3M engineers and a student facilitator leading a Visiting Wizards activity",
+    label: "3M Visiting Wizards",
+    caption: "3M engineers helping students explore science through active learning",
+    position: "center",
+  },
+  {
+    src: "/carousel-3m-engineers.jpg",
+    alt: "Two 3M engineers with a student holding the 3M Visiting Wizards sign",
+    label: "Engineering role models",
+    caption: "3M Corporation engineers inspiring the next generation of innovators",
+    position: "center",
+  },
+  {
+    src: "/carousel-career-module.jpg",
+    alt: "A professional leading a career and technology learning session with students",
+    label: "Career pathways",
+    caption: "Professionals connecting classroom learning to real-world opportunity",
+    position: "center",
+  },
+  {
+    src: "/carousel-smart-city-collaboration.jpg",
+    alt: "Students collaborating around a smart-city systems activity",
+    label: "Team collaboration",
+    caption: "Students exploring connected systems and smart-city challenges together",
+    position: "center",
+  },
+  {
+    src: "/carousel-product-pitch.jpg",
+    alt: "A student team presenting the executive summary for a product application",
+    label: "Product development",
+    caption: "Teams defining the problem, solution, and value of their product concept",
+    position: "center",
+  },
+  {
+    src: "/carousel-product-roadmap.jpg",
+    alt: "A student team presenting a five-year product roadmap",
+    label: "Product roadmap",
+    caption: "Students presenting a long-term plan for growth and impact",
+    position: "center",
+  },
 ];
 
 export function StudentCarousel() {
@@ -131,7 +201,9 @@ export function StudentCarousel() {
         </button>
       </div>
 
-      <span className="student-carousel-count" aria-live="polite">0{active + 1} / 0{slides.length}</span>
+      <span className="student-carousel-count" aria-live="polite">
+        {String(active + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
+      </span>
     </div>
   );
 }
