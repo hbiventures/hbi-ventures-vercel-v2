@@ -26,7 +26,15 @@ The included `vercel.json` and package scripts already contain the correct build
 
 ## Contact form
 
-The contact form prepares a complete email to `info@hbiventures.com` in the visitor’s email application. It does not require PHP, a database, or additional Vercel configuration.
+The contact form posts to the Vercel Route Handler at `/api/contact`, which validates the request and sends a transactional email through Resend.
+
+Configure these values under **Vercel → Project Settings → Environment Variables**:
+
+- `RESEND_API_KEY`
+- `CONTACT_FROM_EMAIL` — a sender on a domain verified in Resend, such as `website@send.hbiventures.com`
+- `CONTACT_TO_EMAIL` — defaults to `info@hbiventures.com`
+
+Apply the values to Production and Preview, then redeploy. Never commit API keys or `.env` files.
 
 ## Local preview
 
