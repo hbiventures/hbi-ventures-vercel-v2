@@ -13,31 +13,24 @@ const visitorPaths = [
   { id: "technology", label: "Technology explorer", detail: "AI, IoT, products, and portfolio", message: "Let’s explore HBI’s work across AI, IoT, data science, connected systems, and product innovation.", links: [["View the portfolio", "/portfolio"], ["Explore technology", "/innovation-foundry"]] },
 ];
 
-function answerFor(question: string) {
-  const value = question.toLowerCase();
-  if (value.includes("steam") || value.includes("student") || value.includes("program")) return "HBI STEAM Academy is the nonprofit arm of HBIVentures. It prepares students through hands-on challenges in AI, data science, cybersecurity, IoT, product development, digital media, and business.";
-  if (value.includes("partner") || value.includes("sponsor")) return "HBI works with education, technology, sports, healthcare, media, and community organizations. Use the Connect With Us button to begin a partnership conversation.";
-  if (value.includes("foundry") || value.includes("mvp") || value.includes("service") || value.includes("agent") || value.includes("architecture") || value.includes("web app")) return "HBI Innovation Foundry offers web application development, solutions architecture, product development, and AI agent development. MVP projects are delivered through focused three-month development sprints.";
-  if (value.includes("technology") || value.includes("ai") || value.includes("iot")) return "HBI focuses on AI, data science, connected devices, cybersecurity, smart systems, connected mobility, product innovation, UX, and creative technology.";
-  if (value.includes("foundation") || value.includes("donat")) return "The HBI Foundation expands access through scholarships, community programs, charitable giving, corporate partnerships, and mission-aligned investment.";
-  if (value.includes("video") || value.includes("metric") || value.includes("soccer")) return "The Videos section features Metric Mate and Soccer IQ Institute. Scroll to Partners in Action to watch both embedded videos.";
-  if (value.includes("contact") || value.includes("email")) return "You can reach HBIVentures at info@hbiventures.com or use the Connect With Us page.";
-  return "I’m the HBI demo assistant. Ask me about programs, partnerships, technology, the Foundation, videos, or contact information.";
-}
-
 export function Chatbot() {
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState<string | null>(null);
   const [input, setInput] = useState("");
+  const [pending, setPending] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", text: "Hi! I’m the HBI demo assistant. What would you like to accomplish today?" },
+    { role: "assistant", text: "Hi! I’m HBI’s virtual assistant. What would you like to accomplish today?" },
   ]);
   const selectedPath = visitorPaths.find((path) => path.id === profile);
 
   useEffect(() => {
-    const savedPath = window.localStorage.getItem("hbi-visitor-path");
-    if (savedPath) setProfile(savedPath);
-    if (!window.localStorage.getItem("hbi-assistant-seen")) setOpen(true);
+    const timer = window.setTimeout(() => {
+      const savedPath = window.localStorage.getItem("hbi-visitor-path");
+      if (savedPath) setProfile(savedPath);
+      if (!window.localStorage.getItem("hbi-assistant-seen")) setOpen(true);
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   function choosePath(id: string) {
@@ -66,16 +59,54 @@ export function Chatbot() {
     setOpen(true);
   }
 
-  function ask(question: string) {
+  async function ask(question: string) {
     const cleaned = question.trim();
-    if (!cleaned) return;
-    setMessages((current) => [...current, { role: "user", text: cleaned }, { role: "assistant", text: answerFor(cleaned) }]);
+    if (!cleaned || pending) return;
+
+    const conversation = [...messages, { role: "user" as const, text: cleaned }];
+    setMessages(conversation);
     setInput("");
+    setPending(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: conversation }),
+      });
+      const payload = (await response.json()) as {
+        answer?: string;
+        error?: string;
+      };
+
+      if (!response.ok || !payload.answer) {
+        throw new Error(payload.error || "The assistant could not answer.");
+      }
+
+      setMessages((current) => [
+        ...current,
+        { role: "assistant", text: payload.answer as string },
+      ]);
+    } catch (error) {
+      const text =
+        error instanceof Error
+          ? error.message
+          : "The assistant is temporarily unavailable.";
+      setMessages((current) => [
+        ...current,
+        {
+          role: "assistant",
+          text: `${text} You can also email info@hbiventures.com.`,
+        },
+      ]);
+    } finally {
+      setPending(false);
+    }
   }
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    ask(input);
+    void ask(input);
   }
 
   const onboarding = open && !profile;
@@ -84,7 +115,7 @@ export function Chatbot() {
     <div className={onboarding ? "chatbot-shell onboarding" : "chatbot-shell"}>
       {open && (
         <section className="chatbot-panel" role={onboarding ? "dialog" : "region"} aria-modal={onboarding ? "false" : undefined} aria-labelledby="hbi-assistant-title">
-          <header><div><strong id="hbi-assistant-title">Ask HBI</strong><span>{onboarding ? "AI-guided welcome" : "AI-first demo assistant"}</span></div><button type="button" onClick={closeAssistant} aria-label="Close chat">×</button></header>
+          <header><div><strong id="hbi-assistant-title">Ask HBI</strong><span>{onboarding ? "AI-guided welcome" : "HBI virtual assistant"}</span></div><button type="button" onClick={closeAssistant} aria-label="Close chat">×</button></header>
           {onboarding ? (
             <div className="chatbot-onboarding">
               <p className="chatbot-welcome-kicker">Welcome to HBIVentures</p>
@@ -95,11 +126,11 @@ export function Chatbot() {
             </div>
           ) : (
             <>
-              <div className="chatbot-messages" aria-live="polite">{messages.map((message, index) => <p className={message.role} key={`${message.role}-${index}`}>{message.text}</p>)}</div>
+              <div className="chatbot-messages" aria-live="polite">{messages.map((message, index) => <p className={message.role} key={`${message.role}-${index}`}>{message.text}</p>)}{pending && <p className="assistant chatbot-thinking">HBI is thinking…</p>}</div>
               {selectedPath && <div className="chatbot-path-links"><span>Recommended for you</span>{selectedPath.links.map(([label, href]) => <a href={href} key={href}>{label} <b>→</b></a>)}</div>}
-              <div className="chatbot-suggestions">{suggestions.map((item) => <button type="button" onClick={() => ask(item)} key={item}>{item}</button>)}</div>
-              <form onSubmit={submit}><label htmlFor="hbi-chat-input">Ask a question</label><div><input id="hbi-chat-input" value={input} onChange={(event) => setInput(event.target.value)} placeholder="Type your question…"/><button type="submit" aria-label="Send question">→</button></div></form>
-              <div className="chatbot-demo-note"><small>Demo only—answers use information from this website.</small><button type="button" onClick={changePath}>Change my path</button></div>
+              <div className="chatbot-suggestions">{suggestions.map((item) => <button type="button" disabled={pending} onClick={() => void ask(item)} key={item}>{item}</button>)}</div>
+              <form onSubmit={submit}><label htmlFor="hbi-chat-input">Ask a question</label><div><input id="hbi-chat-input" value={input} disabled={pending} maxLength={900} onChange={(event) => setInput(event.target.value)} placeholder="Type your question…"/><button type="submit" disabled={pending || !input.trim()} aria-label="Send question">→</button></div></form>
+              <div className="chatbot-demo-note"><small>AI-generated answers use verified HBI website information.</small><button type="button" onClick={changePath}>Change my path</button></div>
             </>
           )}
         </section>
