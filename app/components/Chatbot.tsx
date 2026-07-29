@@ -15,7 +15,7 @@ const visitorPaths = [
 
 function answerFor(question: string) {
   const value = question.toLowerCase();
-  if (value.includes("steam") || value.includes("student") || value.includes("program")) return "HBI STEAM Academy prepares students through hands-on challenges in AI, data science, cybersecurity, IoT, product development, digital media, and business.";
+  if (value.includes("steam") || value.includes("student") || value.includes("program")) return "HBI STEAM Academy is the nonprofit arm of HBIVentures. It prepares students through hands-on challenges in AI, data science, cybersecurity, IoT, product development, digital media, and business.";
   if (value.includes("partner") || value.includes("sponsor")) return "HBI works with education, technology, sports, healthcare, media, and community organizations. Use the Connect With Us button to begin a partnership conversation.";
   if (value.includes("technology") || value.includes("ai") || value.includes("iot")) return "HBI focuses on AI, data science, connected devices, cybersecurity, smart systems, connected mobility, product innovation, UX, and creative technology.";
   if (value.includes("foundation") || value.includes("donat")) return "The HBI Foundation expands access through scholarships, community programs, charitable giving, corporate partnerships, and mission-aligned investment.";
