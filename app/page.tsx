@@ -6,7 +6,7 @@ const pillars = [
     number: "01",
     icon: "🎓",
     title: "HBI STEAM Academy",
-    copy: "Preparing middle and high school students for college, careers, and entrepreneurship through hands-on challenges in AI, data science, cybersecurity, IoT, connected systems, product development, digital media, and business.",
+    copy: "The nonprofit arm of HBIVentures, HBI STEAM Academy prepares middle and high school students for college, careers, and entrepreneurship through hands-on challenges in AI, data science, cybersecurity, IoT, connected systems, product development, digital media, and business.",
     action: "Sponsor a Cohort",
     href: "/steam-academy",
   },
