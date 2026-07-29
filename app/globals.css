@@ -160,6 +160,7 @@ body{font-size:18px;line-height:1.6}.topline{height:40px;font-size:11px}.site-he
 
 .contact-hero h1{margin-bottom:clamp(30px,4vw,52px)}
 .contact-aside h2{margin:0 0 clamp(20px,2.25vw,32px)}
+.featured-copy h2{margin-bottom:clamp(22px,2.5vw,36px)}
 
 @media(max-width:1100px){
   .chatbot-toggle{width:52px;height:52px;padding:0;font-size:0;display:grid;place-items:center}
