@@ -147,7 +147,7 @@ export default function Home() {
           <StudentCarousel />
           <div className="featured-copy">
             <p className="eyebrow"><span>●</span> Innovation in action</p>
-            <h2>Students using AI to solve civic and community challenges.</h2>
+            <h2>Students leveraging Emerging Technology to solve real world problems.</h2>
             <p>Through guided learning modules, industry mentors, team collaboration, and hands-on product development, HBI teams turn real needs into concepts, prototypes, and confident presentations.</p>
             <div className="feature-tags"><span>Mentors</span><span>Learning modules</span><span>Team collaboration</span><span>Product development</span></div>
             <a className="arrow-link" href="mailto:info@hbiventures.com?subject=HBI%20innovation%20portfolio">Explore the innovation portfolio <span>↗</span></a>
