@@ -14,7 +14,7 @@ const pillars = [
     number: "02",
     icon: "⚙️",
     title: "HBI Innovation Foundry",
-    copy: "Helping organizations transform ideas into practical solutions through AI-enabled products, connected devices, data-driven decision tools, virtual assistants, rapid prototyping, and emerging-technology strategy.",
+    copy: "Helping organizations move from idea to MVP through three-month development sprints spanning web applications, solutions architecture, product development, AI agents, connected devices, and data-driven tools.",
     action: "Explore Solutions",
     href: "/innovation-foundry",
   },
