@@ -3,11 +3,15 @@ import { SiteFooter, SiteHeader } from "../components/SiteHeader";
 
 export const metadata: Metadata = {
   title: "HBI Innovation Foundry | HBIVentures",
-  description: "HBI’s applied product-development and commercialization engine for AI, IoT, cybersecurity, smart cities, and connected mobility.",
+  description: "HBI’s applied innovation engine for web applications, solutions architecture, product development, AI agents, IoT, cybersecurity, smart cities, and connected mobility.",
 };
 
 const capabilities = [
   ["AI", "Artificial Intelligence", "AI-first strategy, intelligent assistants, workflow automation, predictive insights, and generative applications."],
+  ["AG", "AI Agent Development", "Purpose-built AI agents, copilots, knowledge retrieval, tool integration, workflow orchestration, and responsible deployment."],
+  ["WA", "Web Application Development", "Responsive, accessible web applications that connect intuitive user experiences with secure, scalable technology."],
+  ["SA", "Solutions Architecture", "Cloud, data, integration, security, and application architectures designed around business goals and long-term scale."],
+  ["PD", "Product Development", "Product discovery, user experience, rapid prototyping, MVP delivery, testing, and launch readiness."],
   ["IoT", "IoT & Smart Infrastructure", "Sensors, edge devices, connected environments, cloud integration, and real-time monitoring."],
   ["CY", "Cybersecurity", "Secure architectures, privacy, threat awareness, data governance, and resilient connected systems."],
   ["SC", "Smart Cities", "Mobility, public services, infrastructure intelligence, and data-enabled decision support."],
@@ -40,13 +44,14 @@ export default function FoundryPage() {
         <section className="capabilities-section">
           <div className="section-heading light-heading"><div><p className="eyebrow"><span>●</span> Core capabilities</p><h2>Technology with<br />a job to do.</h2></div><p>Every capability is applied through a human-centered lens, with clear users, measurable outcomes, and a path beyond the prototype.</p></div>
           <div className="capability-grid">
-            {capabilities.map(([abbr, title, copy], index) => <article key={abbr}><span>{abbr}</span><b>0{index + 1}</b><h3>{title}</h3><p>{copy}</p></article>)}
+            {capabilities.map(([abbr, title, copy], index) => <article key={abbr}><span>{abbr}</span><b>{String(index + 1).padStart(2, "0")}</b><h3>{title}</h3><p>{copy}</p></article>)}
           </div>
         </section>
 
         <section className="engagement-section">
           <div className="section-kicker"><span>02</span><p>Engagement model</p></div>
-          <h2>From challenge statement<br />to scalable impact.</h2>
+          <h2>From challenge statement<br />to MVP in three months.</h2>
+          <p className="engagement-intro">The HBI Innovation Foundry structures MVP projects as focused three-month development sprints, aligning discovery, solutions architecture, product development, testing, and launch readiness around a defined outcome.</p>
           <div className="engagement-steps">
             <article><b>01</b><h3>Discover</h3><p>Define users, needs, constraints, and desired outcomes.</p></article>
             <article><b>02</b><h3>Design</h3><p>Develop concepts, experiences, architectures, and business assumptions.</p></article>
