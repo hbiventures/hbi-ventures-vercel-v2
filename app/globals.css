@@ -122,6 +122,32 @@ body{font-size:18px;line-height:1.6}.topline{height:40px;font-size:11px}.site-he
 }
 @media(prefers-reduced-motion:reduce){.brand-mark:after,.reference-hero:after,.orbit-ring,.orbit-core,.orbit-card,.orbit-dot,.chatbot-toggle span{animation:none!important}}
 
+/* Keep every split layout inside the viewport.
+   Percentage tracks previously consumed 100% of the container before their
+   column gap was added, which pushed the second column off screen. */
+.about-main>*,.technology-section>*,.partners-section>*,.subpage-intro-grid>*,
+.partnership-section>*,.contact-layout>*,.strategic-section>*,
+.academy-feature>*,.arts-section>*,.pathways-section>*,.video-section>*,
+.network-heading>*,.creative-network>*{min-width:0}
+
+:where(h1,h2,h3,p,a,li,label,button,strong,span){overflow-wrap:break-word}
+
+@media(min-width:1001px){
+  .about-main{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}
+  .technology-section{grid-template-columns:minmax(0,19fr) minmax(0,31fr)}
+  .partners-section{grid-template-columns:minmax(0,21fr) minmax(0,29fr)}
+  .subpage-intro-grid{grid-template-columns:minmax(0,29fr) minmax(0,21fr)}
+  .partnership-section{grid-template-columns:minmax(0,11fr) minmax(0,9fr)}
+  .contact-layout{grid-template-columns:minmax(0,2fr) minmax(0,3fr)}
+  .strategic-section{grid-template-columns:minmax(0,9fr) minmax(0,11fr)}
+  .academy-feature{grid-template-columns:minmax(0,27fr) minmax(0,23fr)}
+  .arts-section{grid-template-columns:minmax(0,14fr) minmax(0,11fr)}
+  .pathways-section{grid-template-columns:minmax(0,17fr) minmax(0,33fr)}
+  .video-section{grid-template-columns:minmax(0,9fr) minmax(0,11fr)}
+  .network-heading{grid-template-columns:minmax(0,31fr) minmax(0,19fr)}
+  .creative-network{grid-template-columns:minmax(0,9fr) minmax(0,11fr)}
+}
+
 /* HBIVentures monochrome brand theme */
 :root{--navy:#050505;--navy2:#181818;--cobalt:#292929;--cyan:#d8d8d8;--orange:#858585;--ivory:#f3f3f1;--ink:#101010;--muted:#626262}
 body{background:#f3f3f1;color:#101010}
