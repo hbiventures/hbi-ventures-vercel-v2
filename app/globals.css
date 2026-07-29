@@ -148,6 +148,31 @@ body{font-size:18px;line-height:1.6}.topline{height:40px;font-size:11px}.site-he
   .creative-network{grid-template-columns:minmax(0,9fr) minmax(0,11fr)}
 }
 
+/* Keep navigation and display typography from colliding with page copy. */
+.mobile-menu:not([open])>nav{display:none!important}
+.mobile-menu[open]>nav{display:grid!important}
+
+.hero h1,.section-heading h2{line-height:1.08}
+
+.subpage-hero h1,.contact-hero h1,.about-main h2,.technology-section h2,
+.contact-section h2,.academy-feature h2,.subpage-intro-grid h2,
+.page-cta h2{line-height:1.15}
+
+.contact-hero h1{margin-bottom:clamp(30px,4vw,52px)}
+
+@media(max-width:1000px){
+  .hero-index{display:none}
+}
+
+@media(min-width:651px) and (max-width:1000px){
+  .student-carousel-stage figcaption{left:24px;right:24px;bottom:92px}
+  .student-carousel-controls{left:24px;right:24px;bottom:24px;justify-content:space-between}
+}
+
+@media(min-width:1001px){
+  .hero-index{right:1vw;top:24px;font-size:min(22vw,320px)}
+}
+
 /* HBIVentures monochrome brand theme */
 :root{--navy:#050505;--navy2:#181818;--cobalt:#292929;--cyan:#d8d8d8;--orange:#858585;--ivory:#f3f3f1;--ink:#101010;--muted:#626262}
 body{background:#f3f3f1;color:#101010}
