@@ -5,27 +5,15 @@ import Image from "next/image";
 
 const slides = [
   {
-    src: "/hero-connected-mobility.jpg",
-    alt: "Connected vehicle cockpit with digital navigation and infotainment displays",
-    label: "Connected mobility",
-    position: "64% center",
-  },
-  {
     src: "/hero-connected-car-att-enhanced.jpeg",
     alt: "Connected-car driving simulator displayed at an AT&T technology event",
     label: "Connected-car simulation",
     position: "center",
   },
   {
-    src: "/hero-digital-dashboard-enhanced.jpeg",
-    alt: "Digital vehicle instrument cluster displaying navigation and driving information",
-    label: "Digital vehicle experience",
-    position: "center",
-  },
-  {
-    src: "/hero-accessible-navigation.jpg",
-    alt: "Presentation of an accessible turn-by-turn navigation application",
-    label: "Accessible navigation",
+    src: "/hero-3d-navigation.jpeg",
+    alt: "In-vehicle navigation display showing a three-dimensional downtown city map",
+    label: "3D city navigation",
     position: "center",
   },
   {
