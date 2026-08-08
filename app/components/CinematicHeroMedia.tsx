@@ -17,12 +17,6 @@ const slides = [
     position: "center",
   },
   {
-    src: "/hero-virtual-reality.jpg",
-    alt: "Visitors experiencing virtual reality at an AT&T SHAPE technology event",
-    label: "Immersive technology",
-    position: "center",
-  },
-  {
     src: "/hero-robotics.jpg",
     alt: "Programmable humanoid robots displayed at a robotics exhibition",
     label: "Robotics & automation",
