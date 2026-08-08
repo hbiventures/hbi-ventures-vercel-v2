@@ -1,36 +1,46 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import {
+  audienceChangeEvent,
+  audiencePaths,
+  audienceStorageKey,
+  getAudiencePath,
+} from "./audiencePaths";
 
 type Message = { role: "assistant" | "user"; text: string };
 
 const suggestions = ["Programs", "Partnerships", "Technology", "Contact"];
-const visitorPaths = [
-  { id: "student", label: "Student or family", detail: "Programs, skills, and career pathways", message: "Great—I’ll guide you toward student programs, hands-on learning, and future career pathways.", links: [["Explore STEAM Academy", "/steam-academy"], ["Watch student stories", "/#stories"]] },
-  { id: "educator", label: "School or educator", detail: "Cohorts, curriculum, and collaboration", message: "Welcome! I’ll highlight cohort opportunities, project-based learning, and ways schools can work with HBI.", links: [["View STEAM programs", "/steam-academy"], ["Discuss a partnership", "/contact"]] },
-  { id: "partner", label: "Business or partner", detail: "Innovation, talent, and sponsorship", message: "I’ll focus your experience on innovation services, talent development, sponsorship, and strategic partnerships.", links: [["Explore the Foundry", "/innovation-foundry"], ["Meet HBI partners", "/partners"]] },
-  { id: "supporter", label: "Donor or supporter", detail: "Access, scholarships, and impact", message: "Thank you. I’ll guide you toward the HBI Foundation, community impact, and ways to expand access and opportunity.", links: [["Visit the Foundation", "/foundation"], ["Connect with HBI", "/contact"]] },
-  { id: "technology", label: "Technology explorer", detail: "AI, IoT, products, and portfolio", message: "Let’s explore HBI’s work across AI, IoT, data science, connected systems, and product innovation.", links: [["View the portfolio", "/portfolio"], ["Explore technology", "/innovation-foundry"]] },
-];
+const visitorPaths = audiencePaths.filter((path) => path.id !== "overview");
 
 export function Chatbot() {
   const [open, setOpen] = useState(false);
-  const [profile, setProfile] = useState<string | null>(null);
+  const [profile, setProfile] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    const savedPath = getAudiencePath(window.localStorage.getItem(audienceStorageKey));
+    return savedPath && savedPath.id !== "overview" ? savedPath.id : null;
+  });
   const [input, setInput] = useState("");
   const [pending, setPending] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", text: "Hi! I’m HBI’s virtual assistant. What would you like to accomplish today?" },
   ]);
-  const selectedPath = visitorPaths.find((path) => path.id === profile);
+  const selectedPath = getAudiencePath(profile);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      const savedPath = window.localStorage.getItem("hbi-visitor-path");
-      if (savedPath) setProfile(savedPath);
-      if (!window.localStorage.getItem("hbi-assistant-seen")) setOpen(true);
-    }, 0);
+    function syncAudience(event: Event) {
+      const id = (event as CustomEvent<{ id?: string }>).detail?.id;
+      const path = getAudiencePath(id ?? null);
+      if (!path || path.id === "overview") {
+        setProfile(null);
+        return;
+      }
+      setProfile(path.id);
+      setMessages([{ role: "assistant", text: path.message }]);
+    }
 
-    return () => window.clearTimeout(timer);
+    window.addEventListener(audienceChangeEvent, syncAudience);
+    return () => window.removeEventListener(audienceChangeEvent, syncAudience);
   }, []);
 
   function choosePath(id: string) {
@@ -38,25 +48,25 @@ export function Chatbot() {
     if (!path) return;
     setProfile(id);
     setMessages([{ role: "assistant", text: path.message }]);
-    window.localStorage.setItem("hbi-visitor-path", id);
-    window.localStorage.setItem("hbi-assistant-seen", "true");
+    window.localStorage.setItem(audienceStorageKey, id);
+    window.dispatchEvent(new CustomEvent(audienceChangeEvent, { detail: { id } }));
   }
 
   function skipWelcome() {
-    window.localStorage.setItem("hbi-assistant-seen", "true");
     setOpen(false);
   }
 
   function closeAssistant() {
-    if (!profile) window.localStorage.setItem("hbi-assistant-seen", "true");
     setOpen(false);
   }
 
   function changePath() {
     setProfile(null);
     setMessages([{ role: "assistant", text: "What would you like to accomplish today?" }]);
-    window.localStorage.removeItem("hbi-visitor-path");
-    setOpen(true);
+    window.localStorage.removeItem(audienceStorageKey);
+    window.dispatchEvent(new CustomEvent(audienceChangeEvent, { detail: { id: "overview" } }));
+    setOpen(false);
+    window.setTimeout(() => document.getElementById("audience-selector")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
   }
 
   async function ask(question: string) {

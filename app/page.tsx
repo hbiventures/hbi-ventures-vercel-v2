@@ -1,5 +1,7 @@
 import { SiteFooter, SiteHeader } from "./components/SiteHeader";
 import { StudentCarousel } from "./components/StudentCarousel";
+import { AudienceHero } from "./components/AudienceHero";
+import { CinematicHeroMedia } from "./components/CinematicHeroMedia";
 
 const pillars = [
   {
@@ -44,31 +46,9 @@ export default function Home() {
 
       <div id="main-content">
         <section className="reference-hero" id="top">
+          <CinematicHeroMedia />
           <div className="reference-hero-inner">
-            <div className="reference-hero-copy">
-              <p className="reference-kicker">AI-first innovation · Emerging technology · Community impact</p>
-              <h1>Turning emerging<br />technology into<br />real-world<br />opportunity.</h1>
-              <p className="reference-intro">HBIVentures applies an AI-first, human-centered mindset to connect education, industry, and community through artificial intelligence, data science, connected mobility, Internet of Things, smart-city innovation, and technology-enabled product development.</p>
-              <div className="reference-tags"><span>Artificial Intelligence</span><span>Smart Cities</span><span>Connected Car</span><span>IoT</span><span>Data Science</span></div>
-              <div className="reference-actions">
-                <a className="reference-primary" href="#pillars">Explore Our Work</a>
-                <a className="reference-secondary" href="/contact">Partner With HBI</a>
-              </div>
-              <div className="reference-stats">
-                <div><strong>320+</strong><span>Students Served</span></div>
-                <div><strong>80+</strong><span>Student Prototypes</span></div>
-                <div><strong>Since 2016</strong><span>Creating Impact</span></div>
-              </div>
-            </div>
-            <div className="reference-orbit" aria-label="HBI technology ecosystem">
-              <div className="orbit-ring orbit-ring-one" />
-              <div className="orbit-ring orbit-ring-two" />
-              <div className="orbit-core">HBI</div>
-              <div className="orbit-card orbit-ai"><b>AI</b><strong>Intelligent Systems</strong></div>
-              <div className="orbit-card orbit-iot"><b>IoT</b><strong>Connected Technology</strong></div>
-              <div className="orbit-card orbit-data"><b>DATA</b><strong>Insight &amp; Innovation</strong></div>
-              <i className="orbit-dot dot-one" /><i className="orbit-dot dot-two" /><i className="orbit-dot dot-three" />
-            </div>
+            <AudienceHero />
           </div>
         </section>
 
