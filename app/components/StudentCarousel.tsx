@@ -122,9 +122,30 @@ const slides = [
     caption: "Students presenting a long-term plan for growth and impact",
     position: "center",
   },
+  {
+    src: "/carousel-student-collaboration.jpg",
+    alt: "Students working together on a classroom project during an HBI learning session",
+    label: "Team collaboration",
+    caption: "Students working together to develop and refine project ideas",
+    position: "center",
+  },
+  {
+    src: "/carousel-digital-learning-lab.jpg",
+    alt: "Students participating in a collaborative technology session in a computer lab",
+    label: "Digital learning",
+    caption: "Students applying technology skills in a collaborative computer lab",
+    position: "center",
+  },
+  {
+    src: "/carousel-student-presentation-team.jpg",
+    alt: "A student team presenting its work to an audience during an HBI program",
+    label: "Student presentations",
+    caption: "Student teams sharing their work and building presentation confidence",
+    position: "center",
+  },
 ];
 
-const carouselSlides = [0, 7, 9, 1, 10, 2, 11, 3, 12, 4, 13, 5, 14, 6, 15, 8, 16].map(
+const carouselSlides = [0, 7, 9, 1, 10, 2, 11, 3, 12, 4, 13, 5, 14, 6, 15, 8, 16, 17, 18, 19].map(
   (index) => slides[index],
 );
 
