@@ -153,7 +153,7 @@ export default function Home() {
           </div>
           <div className="home-video-grid">
             <article>
-              <div className="home-video embedded-video"><iframe src="https://www.youtube.com/embed/U9mMioFsEB0?si=sjlYGTBs5PZWeBAy" title="Metric Mate on Shark Tank" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div>
+              <div className="home-video embedded-video"><iframe src="https://www.youtube.com/embed/U9mMioFsEB0?si=fD3RpB1mJCYcq9tf" title="Metric Mate on Shark Tank" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div>
               <div><a className="partner-logo-link" href="https://www.themetricmate.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Metric Mate"><img className="story-partner-logo metric-logo" src="/metric-mate-logo.jpg" alt="Metric Mate"/></a><p className="eyebrow dark-eyebrow"><span>●</span> Performance technology</p><h3>Metric Mate</h3><p>See how connected fitness, athlete assessments, and applied analytics create new pathways into sports technology and digital health.</p><a href="https://youtu.be/U9mMioFsEB0?si=uBhLv_DAGIAqyc4c" target="_blank" rel="noopener noreferrer">Watch the Metric Mate video <span>↗</span></a></div>
             </article>
             <article>
