@@ -5,20 +5,20 @@ import { CinematicHeroMedia } from "./components/CinematicHeroMedia";
 
 const pillars = [
   {
-    number: "01",
-    icon: "🎓",
-    title: "HBI STEAM Academy",
-    copy: "The nonprofit arm of HBIVentures, HBI STEAM Academy prepares middle and high school students for college, careers, and entrepreneurship through hands-on challenges in AI, data science, cybersecurity, IoT, connected systems, product development, digital media, and business.",
-    action: "Sponsor a Cohort",
-    href: "/steam-academy",
-  },
-  {
     number: "02",
     icon: "⚙️",
     title: "HBI Innovation Foundry",
     copy: "Helping organizations move from idea to MVP through three-month development sprints spanning web applications, solutions architecture, product development, AI agents, connected devices, and data-driven tools.",
     action: "Explore Solutions",
     href: "/innovation-foundry",
+  },
+  {
+    number: "01",
+    icon: "🎓",
+    title: "HBI STEAM Academy",
+    copy: "The nonprofit arm of HBIVentures, HBI STEAM Academy prepares middle and high school students for college, careers, and entrepreneurship through hands-on challenges in AI, data science, cybersecurity, IoT, connected systems, product development, digital media, and business.",
+    action: "Sponsor a Cohort",
+    href: "/steam-academy",
   },
   {
     number: "03",
