@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Chatbot } from "./components/Chatbot";
+import { PostHogProvider } from "./PostHogProvider";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://hbi-ventures.io"),
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}<Chatbot /></body>
+      <body><PostHogProvider>{children}<Chatbot /></PostHogProvider></body>
     </html>
   );
 }
