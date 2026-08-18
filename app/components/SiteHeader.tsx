@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const navigation = [
   ["Our Pillars", "/#pillars"],
   ["Impact", "/#impact"],
@@ -12,9 +14,9 @@ export function SiteHeader() {
     <>
       <a className="skip-link" href="#main-content">Skip to content</a>
       <header className="site-header">
-        <a className="brand" href="/" aria-label="HBIVentures home">
+        <Link className="brand" href="/" aria-label="HBIVentures home">
           <span className="brand-wordmark"><b>HBI</b>Ventures</span>
-        </a>
+        </Link>
         <nav className="desktop-nav" aria-label="Main navigation">
           {navigation.map(([label, href]) => <a href={href} key={href}>{label}</a>)}
         </nav>
