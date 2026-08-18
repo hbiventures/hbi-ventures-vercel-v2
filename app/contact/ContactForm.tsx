@@ -1,6 +1,11 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
+import posthog from "posthog-js";
+
+const posthogConfigured = Boolean(
+  process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN && process.env.NEXT_PUBLIC_POSTHOG_HOST,
+);
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -30,6 +35,11 @@ export function ContactForm() {
         throw new Error(result.error || "We could not send your message.");
       }
 
+      if (posthogConfigured) {
+        posthog.capture("contact_form_submitted", {
+          interest: typeof payload.interest === "string" ? payload.interest : undefined,
+        });
+      }
       form.reset();
       submissionId.current = null;
       setStatus("success");
