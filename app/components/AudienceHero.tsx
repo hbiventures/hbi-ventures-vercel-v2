@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import posthog from "posthog-js";
 import {
   audienceChangeEvent,
   audiencePaths,
@@ -8,6 +9,10 @@ import {
   getAudiencePath,
   type AudienceId,
 } from "./audiencePaths";
+
+const posthogConfigured = Boolean(
+  process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN && process.env.NEXT_PUBLIC_POSTHOG_HOST,
+);
 
 export function AudienceHero() {
   const audienceId = useSyncExternalStore<AudienceId>(
@@ -25,6 +30,9 @@ export function AudienceHero() {
   const audience = getAudiencePath(audienceId) ?? audiencePaths[0];
 
   function chooseAudience(id: AudienceId) {
+    if (posthogConfigured) {
+      posthog.capture("audience_selected", { audience: id });
+    }
     if (id === "overview") window.localStorage.removeItem(audienceStorageKey);
     else window.localStorage.setItem(audienceStorageKey, id);
     window.dispatchEvent(new CustomEvent(audienceChangeEvent, { detail: { id } }));
