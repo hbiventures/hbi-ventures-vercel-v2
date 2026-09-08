@@ -13,6 +13,13 @@ Production-ready multi-page website for HBIVentures, built with Next.js and conf
 
 The included `vercel.json` and package scripts already contain the correct build settings.
 
+## Deployment workflow
+
+- `main` is the production branch for hbiventures.com.
+- `staging` is the shared review branch and deploys through Vercel Preview.
+- Feature branches receive temporary Vercel Preview deployments.
+- Promote approved changes from feature branches to `staging`, then merge `staging` into `main` for production.
+
 ## Pages
 
 - Home
