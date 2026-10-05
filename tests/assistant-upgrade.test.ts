@@ -29,7 +29,8 @@ test('stream decoder handles split UTF-8, multiline records and malformed data',
 const voiceSource = readFileSync(new URL('../app/api/voice/route.ts', import.meta.url), 'utf8')
   .replace('"../../lib/navigator"', JSON.stringify(new URL('../app/lib/navigator.ts', import.meta.url).href))
   .replace('"../../lib/platform-projects"', JSON.stringify(new URL('../app/lib/platform-projects.ts', import.meta.url).href))
-  .replace('"../../lib/assistant-rate-limit"', JSON.stringify(new URL('../app/lib/assistant-rate-limit.ts', import.meta.url).href));
+  .replace('"../../lib/assistant-rate-limit"', JSON.stringify(new URL('../app/lib/assistant-rate-limit.ts', import.meta.url).href))
+  .replace('"../../lib/voice-session"', JSON.stringify(new URL('../app/lib/voice-session.ts', import.meta.url).href));
 const voiceCompiled = ts.transpileModule(voiceSource, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
 const { POST } = await import(`data:text/javascript;base64,${Buffer.from(voiceCompiled).toString('base64')}`);
 test('voice uses existing server credential and never returns it; gated and origin checked', async t => {
@@ -40,6 +41,12 @@ test('voice uses existing server credential and never returns it; gated and orig
   t.mock.method(globalThis, 'fetch', async (_url: string, init: RequestInit) => {
     requests++; const config = JSON.parse(String((init.body as FormData).get('session')));
     assert.match(config.instructions, /not a human/); assert.match(config.instructions, /no business action tools/);
+    assert.match(config.instructions, /Virtual Customer Care Assistant/);
+    assert.equal(config.max_output_tokens, 2048);
+    assert.equal(config.audio.input.turn_detection.threshold, 0.65);
+    assert.equal(config.audio.input.turn_detection.silence_duration_ms, 700);
+    assert.equal(config.audio.input.turn_detection.interrupt_response, true);
+    assert.equal(config.audio.input.noise_reduction.type, 'near_field');
     assert.equal((init.headers as Record<string, string>).Authorization, 'Bearer synthetic-test-key');
     return new Response(mode === 'success' ? 'v=0\r\nmock answer' : 'private provider error', { status: mode === 'success' ? 200 : 500 });
   });

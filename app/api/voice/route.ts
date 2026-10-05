@@ -1,6 +1,7 @@
 import { navigatorInstructions } from "../../lib/navigator";
 import { platformProjects } from "../../lib/platform-projects";
 import { assistantQuotaConfigured, assistantRateLimit } from "../../lib/assistant-rate-limit";
+import { voiceInstructions, voiceOutputTokenLimit } from "../../lib/voice-session";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -24,9 +25,9 @@ export async function POST(request: Request) {
   form.set("sdp", sdp);
   form.set("session", JSON.stringify({
     type: "realtime", model: process.env.OPENAI_VOICE_MODEL || "gpt-realtime-2.1",
-    instructions: `${navigatorInstructions(platformProjects)}\nVOICE: Introduce yourself as HBI's automated Customer Care Assistant with an AI-generated voice. Speak naturally in short turns. This is a separate voice conversation; do not claim to remember the text chat. You have no business action tools. Never claim to book, send or access a customer's records.`,
-    max_output_tokens: 600,
-    audio: { input: { transcription: { model: "gpt-4o-mini-transcribe" }, turn_detection: { type: "server_vad", interrupt_response: true, create_response: true } }, output: { voice: "marin" } },
+    instructions: `${navigatorInstructions(platformProjects)}\n${voiceInstructions}`,
+    max_output_tokens: voiceOutputTokenLimit,
+    audio: { input: { noise_reduction: { type: "near_field" }, transcription: { model: "gpt-4o-mini-transcribe" }, turn_detection: { type: "server_vad", threshold: 0.65, silence_duration_ms: 700, prefix_padding_ms: 300, interrupt_response: true, create_response: true } }, output: { voice: "marin" } },
   }));
   try {
     const response = await fetch("https://api.openai.com/v1/realtime/calls", { method: "POST", headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}` }, body: form, signal: AbortSignal.any([request.signal, AbortSignal.timeout(20000)]) });

@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MicrophoneIcon, MicrophoneSlashIcon } from "@phosphor-icons/react";
 import type { ChatMessage } from "../lib/navigator";
+import { voiceGreeting, voiceResponseNotice } from "../lib/voice-session";
 
 type Caption = ChatMessage & { id: string };
 export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: ChatMessage[]) => void; onEnd: () => void }) {
@@ -66,10 +67,12 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
         if (["failed", "disconnected", "closed"].includes(connection.connectionState)) { disconnect(); setPhase("ended"); setError("Voice disconnected. Your completed captions are below; text chat is still available."); }
       };
       const data = connection.createDataChannel("oai-events"); channel.current = data;
-      data.onopen = () => data.send(JSON.stringify({ type: "response.create", response: { instructions: "Briefly introduce yourself as HBI's automated Customer Care Assistant with an AI-generated voice and ask how you can help. Do not claim to be human." } }));
+      data.onopen = () => data.send(JSON.stringify({ type: "response.create", response: { instructions: voiceGreeting } }));
       data.onmessage = event => {
         try {
           const value = JSON.parse(event.data);
+          const notice = voiceResponseNotice(value);
+          if (notice !== null) setError(notice);
           if (value.type === "conversation.item.input_audio_transcription.completed") addCaption(value.item_id, "user", value.transcript || "");
           if (value.type === "response.output_audio_transcript.done") addCaption(value.item_id || value.response_id, "assistant", value.transcript || "");
           if (value.type === "response.output_audio_transcript.delta") setCaption(current => (current + (value.delta || "")).slice(-4000));
@@ -98,7 +101,7 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
     onEnd();
   }
   return <section className="assistant-voice ph-no-capture" aria-label="Talk to HBI">
-    <span className="assistant-eyebrow">Talk to HBI · optional voice</span><h2>A conversation, at your pace.</h2>
+    <span className="assistant-eyebrow">Talk to HBI · optional voice</span><h2>Your Virtual Customer Care Assistant.</h2>
     <p>This is an AI-generated voice, not a live HBI team member. Audio is sent to OpenAI during the call. HBI does not save an audio recording in this experience. Provider data policies still apply.</p>
     {(phase === "ready" || phase === "ended") && <><label className="navigator-approval"><input type="checkbox" checked={consent} onChange={event => setConsent(event.target.checked)} />I agree to send microphone audio to OpenAI for this voice conversation.</label><button type="button" className="navigator-primary" disabled={!consent || !available} onClick={() => void start()}>Start voice conversation</button></>}
     {available !== true && <p role="status">{available === null ? "Checking voice availability…" : "Voice is not enabled in this environment yet. Text conversation and Contact HBI remain available."}</p>}
