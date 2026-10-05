@@ -120,7 +120,7 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
         <Image className="marin-core" src="/refresh/marin-voice-core.png" width={140} height={140} sizes="140px" alt="" />
         <span className="marin-voice-bars">{[0, 1, 2, 3, 4].map(index => <i key={index} />)}</span>
       </div>
-      <div className="marin-status"><span className="assistant-eyebrow">MARIN · VOICE</span><p role="status" aria-atomic="true">{voiceVisualLabels[visualState]}</p><small>{phase === "live" ? muted ? "Microphone off · Marin can still reply" : "Microphone on · you can interrupt" : "Microphone off"}</small></div>
+      <div className="marin-status"><p role="status" aria-atomic="true">{voiceVisualLabels[visualState]}</p><small>{phase === "live" ? muted ? "Microphone off · Marin can still reply" : "Microphone on · you can interrupt" : "Microphone off"}</small></div>
       <button type="button" className="marin-motion-toggle" aria-pressed={motionPaused} onClick={() => setMotionPaused(current => !current)}>{motionPaused ? "Resume animation" : "Pause animation"}</button>
     </div>
     <p>This is an AI-generated voice, not a live HBI team member. Audio is sent to OpenAI during the call. HBI does not save an audio recording in this experience. Provider data policies still apply.</p>
