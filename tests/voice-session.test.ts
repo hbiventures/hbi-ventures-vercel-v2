@@ -14,6 +14,8 @@ test('Marin cheerleader delivery applies consistently to the greeting and conver
 });
 
 test('voice greeting uses the approved identity and retains truthful disclosure', () => {
+  assert.match(voiceGreeting, /Hello, I'm Marin, HBI's Virtual Customer Care Assistant/);
+  assert.match(voiceInstructions, /Your name is Marin/);
   assert.match(voiceGreeting, /HBI's Virtual Customer Care Assistant/);
   assert.doesNotMatch(voiceGreeting, /AI agent|AI-generated|automated Customer/);
   assert.match(voiceInstructions, /Be honest.*if asked/);

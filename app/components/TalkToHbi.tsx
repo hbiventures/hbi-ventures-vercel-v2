@@ -1,13 +1,18 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { MicrophoneIcon, MicrophoneSlashIcon } from "@phosphor-icons/react";
 import type { ChatMessage } from "../lib/navigator";
 import { voiceGreeting, voiceResponseNotice } from "../lib/voice-session";
+import { initialVoiceActivity, nextVoiceActivity, voiceVisualLabels, voiceVisualState } from "../lib/voice-activity";
 
 type Caption = ChatMessage & { id: string };
 export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: ChatMessage[]) => void; onEnd: () => void }) {
   const [phase, setPhase] = useState<"ready" | "connecting" | "live" | "ended">("ready");
   const [muted, setMuted] = useState(false);
+  const [activity, setActivity] = useState(initialVoiceActivity);
+  const [playbackPaused, setPlaybackPaused] = useState(true);
+  const [motionPaused, setMotionPaused] = useState(false);
   const [error, setError] = useState("");
   const [captions, setCaptions] = useState<Caption[]>([]);
   const [caption, setCaption] = useState("");
@@ -54,6 +59,7 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
     if (!consent || !available || pc.current || phase === "connecting") return;
     const attempt = ++generation.current;
     setError(""); setPhase("connecting"); setMuted(false);
+    setActivity(initialVoiceActivity); setPlaybackPaused(true);
     try {
       if (!navigator.mediaDevices?.getUserMedia || typeof RTCPeerConnection === "undefined") throw new Error("unsupported");
       const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true }, video: false });
@@ -69,8 +75,10 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
       const data = connection.createDataChannel("oai-events"); channel.current = data;
       data.onopen = () => data.send(JSON.stringify({ type: "response.create", response: { instructions: voiceGreeting } }));
       data.onmessage = event => {
+        if (attempt !== generation.current) return;
         try {
           const value = JSON.parse(event.data);
+          setActivity(current => nextVoiceActivity(current, value));
           const notice = voiceResponseNotice(value);
           if (notice !== null) setError(notice);
           if (value.type === "conversation.item.input_audio_transcription.completed") addCaption(value.item_id, "user", value.transcript || "");
@@ -100,16 +108,28 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
     if (!delivered.current) { onTranscript(transcript.current.map(({ role, text }) => ({ role, text }))); delivered.current = true; }
     onEnd();
   }
+  const visualState = voiceVisualState(phase, activity, muted, playbackPaused);
   return <section className="assistant-voice ph-no-capture" aria-label="Talk to HBI">
-    <span className="assistant-eyebrow">Talk to HBI · optional voice</span><h2>Your Virtual Customer Care Assistant.</h2>
+    <span className="assistant-eyebrow">Talk to HBI · optional voice</span><h2>Meet Marin.</h2>
+    <p>HBI’s Virtual Customer Care Assistant.</p>
+    <div className="marin-presence" data-state={visualState} data-motion={motionPaused ? "paused" : "active"}>
+      <div className="marin-stage" aria-hidden="true">
+        <span className="marin-halo" />
+        <span className="marin-orbit marin-orbit-one" />
+        <span className="marin-orbit marin-orbit-two" />
+        <Image className="marin-core" src="/refresh/marin-voice-core.png" width={140} height={140} sizes="140px" alt="" />
+        <span className="marin-voice-bars">{[0, 1, 2, 3, 4].map(index => <i key={index} />)}</span>
+      </div>
+      <div className="marin-status"><span className="assistant-eyebrow">MARIN · VOICE</span><p role="status" aria-atomic="true">{voiceVisualLabels[visualState]}</p><small>{phase === "live" ? muted ? "Microphone off · Marin can still reply" : "Microphone on · you can interrupt" : "Microphone off"}</small></div>
+      <button type="button" className="marin-motion-toggle" aria-pressed={motionPaused} onClick={() => setMotionPaused(current => !current)}>{motionPaused ? "Resume animation" : "Pause animation"}</button>
+    </div>
     <p>This is an AI-generated voice, not a live HBI team member. Audio is sent to OpenAI during the call. HBI does not save an audio recording in this experience. Provider data policies still apply.</p>
     {(phase === "ready" || phase === "ended") && <><label className="navigator-approval"><input type="checkbox" checked={consent} onChange={event => setConsent(event.target.checked)} />I agree to send microphone audio to OpenAI for this voice conversation.</label><button type="button" className="navigator-primary" disabled={!consent || !available} onClick={() => void start()}>Start voice conversation</button></>}
     {available !== true && <p role="status">{available === null ? "Checking voice availability…" : "Voice is not enabled in this environment yet. Text conversation and Contact HBI remain available."}</p>}
-    <p role="status">{phase === "connecting" ? "Connecting voice…" : phase === "live" ? muted ? "Microphone muted" : "Microphone on · listening — you can interrupt" : "Microphone off"}</p>
     {(phase === "connecting" || phase === "live") && <div className="assistant-actions"><button type="button" disabled={phase !== "live"} onClick={() => { const next = !muted; media.current?.getAudioTracks().forEach(track => { track.enabled = !next; }); setMuted(next); }}>{muted ? <MicrophoneSlashIcon aria-hidden="true" /> : <MicrophoneIcon aria-hidden="true" />}{muted ? "Unmute microphone" : "Mute microphone"}</button><button type="button" onClick={end}>End voice conversation</button></div>}
-    <audio ref={audio} autoPlay controls aria-label="Assistant voice playback" />
+    <audio ref={audio} autoPlay controls aria-label="Marin voice playback" onPlaying={event => setPlaybackPaused(event.currentTarget.muted || event.currentTarget.volume === 0)} onPause={() => setPlaybackPaused(true)} onWaiting={() => setPlaybackPaused(true)} onVolumeChange={event => setPlaybackPaused(event.currentTarget.paused || event.currentTarget.muted || event.currentTarget.volume === 0)} />
     {error && <p role="alert">{error}</p>}
-    <div className="assistant-captions" role="log" aria-label="Voice captions" aria-live="polite">{captions.map(item => <p key={`${item.role}-${item.id}`}><strong>{item.role === "user" ? "You" : "HBI"}:</strong> {item.text}</p>)}{caption && <p aria-live="off">{caption}</p>}</div>
+    <div className="assistant-captions" role="log" aria-label="Voice captions" aria-live="polite">{captions.map(item => <p key={`${item.role}-${item.id}`}><strong>{item.role === "user" ? "You" : "Marin"}:</strong> {item.text}</p>)}{caption && <p aria-live="off">{caption}</p>}</div>
     <p>Captions may contain errors. Returning to text adds completed captions to this browser’s conversation, labeled as voice. Review them before choosing to share a transcript. The voice session starts separately from your text chat.</p>
     <button type="button" className="navigator-back" onClick={back}>Return to text conversation</button>
   </section>;

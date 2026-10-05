@@ -106,6 +106,35 @@ body:has(.wt-home[data-motion="paused"]) :is(.assistant-thinking-mark, .assistan
 .assistant-voice p { font-size: 14px; line-height: 1.6; }
 .assistant-voice audio { width: 100%; margin-top: 16px; }
 .assistant-voice .navigator-approval { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.5; margin: 20px 0; }
+.marin-presence { position: relative; display: grid; grid-template-columns: 164px minmax(0, 1fr); align-items: center; gap: 8px; margin: 18px 0; padding: 10px 16px 34px 8px; border: 1px solid #c3d2ed; border-radius: 18px; background: radial-gradient(ellipse at 22% 45%, #e0ebff, #f5f8ff 65%); overflow: hidden; }
+.marin-stage { position: relative; height: 164px; perspective: 500px; display: grid; place-items: center; isolation: isolate; }
+.marin-core { position: relative; width: 140px; height: 140px; object-fit: contain; z-index: 2; transform: rotate(-8deg); }
+.marin-halo { position: absolute; width: 112px; height: 112px; border-radius: 50%; background: #92baff; opacity: .25; box-shadow: 0 0 32px 8px #a6c5ff; }
+.marin-orbit { position: absolute; width: 154px; height: 154px; border: 1px solid #3d6fc1; border-radius: 50%; opacity: .35; transform: rotateX(66deg) rotateY(-18deg); }
+.marin-orbit-two { transform: rotateX(-60deg) rotateY(40deg); border-color: #98b1da; }
+.marin-status { position: relative; z-index: 3; }
+.marin-status p { margin: 8px 0 4px; color: #102444; font-weight: 650; font-size: 17px; line-height: 1.35; }
+.marin-status small { display: block; color: #465c7d; font-size: 12px; line-height: 1.6; }
+.marin-motion-toggle { position: absolute; right: 16px; bottom: 4px; min-height: 32px; padding: 4px 0; border: 0; background: transparent; color: #315890; font: inherit; font-size: 11px; cursor: pointer; }
+.marin-motion-toggle:focus-visible { outline: 2px solid #214fc7; outline-offset: 2px; border-radius: 3px; }
+.marin-voice-bars { display: flex; align-items: center; gap: 4px; position: absolute; bottom: 4px; height: 18px; z-index: 3; }
+.marin-voice-bars i { width: 3px; height: 4px; border-radius: 3px; background: #214fc7; }
+.marin-presence:is([data-state="listening"], [data-state="hearing"]) .marin-halo { animation: marin-listen 3s ease-in-out infinite; }
+.marin-presence[data-state="hearing"] .marin-orbit { animation: marin-orbit 5s linear infinite; opacity: .7; }
+.marin-presence:is([data-state="connecting"], [data-state="thinking"]) .marin-orbit { animation: marin-orbit 7s linear infinite; }
+.marin-presence[data-state="speaking"] .marin-core { animation: marin-speak 1.8s ease-in-out infinite; }
+.marin-presence[data-state="speaking"] .marin-orbit { animation: marin-orbit 4s linear infinite; opacity: .7; }
+.marin-presence[data-state="speaking"] .marin-voice-bars i { animation: marin-wave .9s ease-in-out infinite alternate; }
+.marin-presence[data-state="speaking"] .marin-voice-bars i:nth-child(2n) { animation-delay: -.4s; }
+.marin-presence[data-state="speaking"] .marin-voice-bars i:nth-child(3) { animation-delay: -.7s; }
+.marin-presence:is([data-state="muted"], [data-state="ended"], [data-state="paused"]) .marin-stage { opacity: .65; }
+@keyframes marin-listen { 50% { transform: scale(1.16); opacity: .45; } }
+@keyframes marin-orbit { from { transform: rotateZ(0deg) rotateX(66deg) rotateY(-18deg); } to { transform: rotateZ(360deg) rotateX(66deg) rotateY(-18deg); } }
+@keyframes marin-speak { 50% { transform: translateY(-3px) rotate(2deg) scale(1.035); } }
+@keyframes marin-wave { to { transform: scaleY(3.5); } }
+.marin-presence[data-motion="paused"] *, body:has(.wt-home[data-motion="paused"]) .marin-presence *, .navigator-dialog:not([open]) .marin-presence * { animation-play-state: paused !important; }
+@media (max-width: 380px) { .marin-presence { grid-template-columns: 124px minmax(0, 1fr); padding-right: 10px; gap: 4px; } .marin-stage { transform: scale(.8); transform-origin: center; width: 124px; height: 142px; } .marin-status p { font-size: 15px; } }
+@media (prefers-reduced-motion: reduce) { .marin-presence * { animation: none !important; transition: none !important; } .marin-motion-toggle { display: none; } }
 .assistant-captions { max-height: 240px; overflow-y: auto; overflow-wrap: anywhere; }
 .assistant-captions:empty { display: none; }
 .assistant-captions p { padding: 12px; border-radius: 8px; background: #fff; border: 1px solid #dce3ef; }
