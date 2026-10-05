@@ -17,7 +17,12 @@ export function assistantQuotaConfigured() {
 /** Shared REST Redis when configured; fail closed in production rather than claim local quotas are global. */
 export async function assistantRateLimit(request: Request, channel: "chat" | "voice") {
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-  const key = `hbi:${channel}:${createHash("sha256").update(ip).digest("hex")}:${Math.floor(Date.now() / 600000)}`;
+  // Use trusted deployment configuration, never request headers, to isolate quotas.
+  // Keep this application's namespace distinct when the Redis store is shared.
+  const environment = ["production", "preview", "development"].includes(process.env.VERCEL_ENV ?? "")
+    ? process.env.VERCEL_ENV
+    : process.env.NODE_ENV === "production" ? "production" : "development";
+  const key = `hbi:ventures:${environment}:${channel}:${createHash("sha256").update(ip).digest("hex")}:${Math.floor(Date.now() / 600000)}`;
   const maximum = channel === "voice" ? 3 : 20;
   const { url, token } = quotaCredentials();
   if (url && token) {
