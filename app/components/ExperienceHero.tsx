@@ -12,7 +12,8 @@ export function ExperienceHero() {
         <div className="wt-hero-copy">
           <p className="wt-kicker">HBI Innovation Foundry</p>
           <h1 id="experience-title">Your digital<br />experience<br /><span>should do more.</span></h1>
-          <p className="wt-hero-intro">Your digital experience should be a living vision board into your organization—showing who you are, what you stand for, and where you’re going.</p>
+          <p className="wt-hero-intro">Your digital experience should be a living vision board into your organization—showing who you are, what you offer, what you stand for, and where you’re going.</p>
+          <p className="wt-hero-services">For small and midsize organizations: digital experiences, customer care assistants, connected tools and workflow automation.</p>
           <div className="wt-actions"><EngagementLink className="eco-button" entry="hero">Discuss your project</EngagementLink><a className="eco-button wt-button-outline" href="#work">See our work</a></div>
           <a className="wt-hero-offer" href="#engagement">Explore our capabilities</a>
           <CinematicMotionControl />

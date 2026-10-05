@@ -15,11 +15,11 @@ const stepDescriptions = ["A visitor submits a request through your digital expe
 export function WorkflowTheatre() {
   const [selected, setSelected] = useState(1);
   const [scenario, setScenario] = useState(1);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const capability = capabilities[selected];
   const StepIcons = [ChatCircleDotsIcon, FileTextIcon, UserCircleIcon];
-  function select(index: number) { setSelected(index); setScenario(index === 3 ? 2 : index === 1 ? 1 : -1); setStep(1); }
+  function select(index: number) { setSelected(index); setScenario(index === 3 ? 2 : index === 1 ? 1 : -1); setStep(0); }
   function navigate(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     const next = event.key === "ArrowRight" ? (index + 1) % capabilities.length : event.key === "ArrowLeft" ? (index + capabilities.length - 1) % capabilities.length : event.key === "Home" ? 0 : event.key === "End" ? capabilities.length - 1 : null;
     if (next === null) return;

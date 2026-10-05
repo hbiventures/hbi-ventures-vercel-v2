@@ -24,12 +24,14 @@ export function ProofShowcase() {
             <h3>{project.label}</h3><p className="wt-project-name">{project.name}</p>
           </a>
           <p className="wt-project-proof">{proof[project.id]}</p>
-          <a className="wt-project-link" href={project.url} target="_blank" rel="noopener noreferrer">{project.id === "steam" ? "Visit hbisteam.org" : `Explore ${project.label}`}</a>
+          <div className="wt-project-actions">
+            <a className="wt-project-link" href={project.url} target="_blank" rel="noopener noreferrer">{project.id === "steam" ? "Visit hbisteam.org" : `Explore ${project.label}`}</a>
+            <EngagementLink entry={project.id} className="wt-project-inquiry">Discuss a similar project<span className="sr-only"> to {project.label}</span></EngagementLink>
+          </div>
           <details className="wt-project-details"><summary>Project story &amp; delivered capabilities</summary>
             <h4>The focus</h4><p>{project.focus}</p>
             <h4>What HBI delivered</h4><ul>{project.capabilities.map(item => <li key={item}>{item}</li>)}</ul>
             <h4>The experience</h4><p>{project.experience}</p><p>{project.detail}</p>
-            <EngagementLink entry={project.id}>Discuss a similar project</EngagementLink>
           </details>
         </article>)}
       </div>
