@@ -35,3 +35,22 @@ test('voice completion notices distinguish truncation, failure and normal interr
   assert.equal(voiceResponseNotice({ type: 'response.output_audio_transcript.delta' }), null);
   assert.equal(voiceResponseNotice({ type: 'response.done' }), null);
 });
+
+test('session privacy names platform and processor, separates retention and requires a fresh microphone opt-in', () => {
+  const voice = readFileSync('app/components/TalkToHbi.tsx', 'utf8');
+  const chat = readFileSync('app/components/Chatbot.tsx', 'utf8');
+  assert.match(voice, /HBI Digital Experience Platform uses OpenAI APIs/);
+  assert.match(voice, /directly from your browser to OpenAI/);
+  assert.match(voice, /does not delete information already sent or processed/);
+  assert.match(voice, /Sharing a transcript.*separate review and consent/);
+  assert.match(voice, /Muting pauses microphone input but keeps the session connected/);
+  assert.match(voice, /Each new voice session requires a fresh opt-in/);
+  assert.match(voice, /disabled=\{!consent \|\| !available\}/);
+  const start = voice.slice(voice.indexOf('async function start()'), voice.indexOf('function end()'));
+  assert.ok(start.indexOf('if (!consent') < start.indexOf('setConsent(false)'));
+  assert.ok(start.indexOf('setConsent(false)') < start.indexOf('await navigator.mediaDevices.getUserMedia'));
+  assert.match(chat, /Questions and conversation context.*HBI Digital Experience Platform/);
+  assert.match(chat, /Messages are processed by HBI’s platform and OpenAI/);
+  assert.doesNotMatch(chat, /Nothing is sent to HBI’s team/);
+  for (const source of [voice, chat]) assert.match(source, /https:\/\/developers.openai.com\/api\/docs\/guides\/your-data/);
+});
