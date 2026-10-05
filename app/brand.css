@@ -1,0 +1,18 @@
+/* Owner-requested Academy engraved emblem, paired with the Ventures identity. */
+.hbi-brand-lockup { display: inline-flex; align-items: center; gap: 12px; color: inherit; text-align: left; white-space: nowrap; }
+.hbi-header .hbi-brand-lockup img, .hbi-footer .hbi-brand-lockup img { display: block; width: 63.33px; height: 76px; object-fit: contain; background: transparent; flex: 0 0 auto; }
+.ecosystem-home .hbi-brand-lockup img { filter: brightness(1.55); }
+.hbi-brand-name { display: flex; flex-direction: column; gap: 3px; font-family: var(--font-geist); }
+.hbi-brand-name strong { font-size: 29px; font-weight: 650; line-height: 1; letter-spacing: -.04em; }
+.hbi-brand-name > span { font-size: 13px; line-height: 1.4; letter-spacing: .16em; text-transform: uppercase; font-weight: 450; }
+.hbi-footer, .ecosystem-home .hbi-footer { grid-template-columns: 190px 1fr auto; }
+@media (min-width: 701px) and (max-width: 1150px) {
+  .hbi-header { gap: 20px; }
+  .hbi-footer, .ecosystem-home .hbi-footer { grid-template-columns: 190px 1fr; }
+}
+@media (max-width: 700px) {
+  .hbi-header .hbi-brand-lockup img { width: 50px; height: 60px; }
+  .hbi-header .hbi-brand-lockup { gap: 10px; }
+  .hbi-header .hbi-brand-name strong { font-size: 25px; }
+  .hbi-header .hbi-brand-name > span { font-size: 11px; }
+}

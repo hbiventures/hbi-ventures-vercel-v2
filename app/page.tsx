@@ -1,188 +1,64 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { MagnifyingGlassIcon, GearSixIcon, RocketLaunchIcon, ChartBarIcon } from "@phosphor-icons/react/ssr";
 import { SiteFooter, SiteHeader } from "./components/SiteHeader";
-import { StudentCarousel } from "./components/StudentCarousel";
-import { AudienceHero } from "./components/AudienceHero";
-import { CinematicHeroMedia } from "./components/CinematicHeroMedia";
+import { ExperienceHero } from "./components/ExperienceHero";
+import { PillarsOverview } from "./components/PillarsOverview";
+import { ProofShowcase } from "./components/ProofShowcase";
+import { WorkflowTheatre } from "./components/WorkflowTheatre";
+import { InnovationNavigator } from "./components/InnovationNavigator";
+import { AssessmentDisclosure } from "./components/AssessmentDisclosure";
+import { ExperienceOffer } from "./components/ExperienceOffer";
+import { EngagementLink } from "./components/EngagementLink";
 
-const pillars = [
-  {
-    number: "02",
-    icon: "⚙️",
-    title: "HBI Innovation Foundry",
-    copy: "Helping organizations move from idea to MVP through three-month development sprints spanning web applications, solutions architecture, product development, AI agents, connected devices, and data-driven tools.",
-    action: "Explore Solutions",
-    href: "/innovation-foundry",
-  },
-  {
-    number: "01",
-    icon: "🎓",
-    title: "HBI STEAM Academy",
-    copy: "The nonprofit arm of HBIVentures, HBI STEAM Academy prepares middle and high school students for college, careers, and entrepreneurship through hands-on challenges in AI, data science, cybersecurity, IoT, connected systems, product development, digital media, and business.",
-    action: "Sponsor a Cohort",
-    href: "/steam-academy",
-  },
-  {
-    number: "03",
-    icon: "🤝",
-    title: "HBI Foundation",
-    copy: "Expanding access to high-quality education and innovation opportunities through charitable giving, corporate partnerships, scholarships, community programs, and mission-aligned investment.",
-    action: "Support the Mission",
-    href: "/foundation",
-  },
+export const metadata: Metadata = {
+  title: "HBI Ventures — Your digital experience should do more",
+  description: "Your digital experience should be a living vision board into your organization. Bring your purpose, people and work to life with HBI Innovation Foundry’s design, AI, automation, integrations and analytics.",
+};
+
+const featuredPartners = [
+  { name: "Metric Mate", image: "/metric-mate-logo.jpg", url: "https://www.themetricmate.com/", field: "Performance technology" },
+  { name: "Soccer IQ Institute", image: "/soccer-iq-logo.png", url: "https://www.socceriqinstitute.com/", field: "Sports & development" },
+  { name: "FAM Incorporated", image: "/fam-logo.png", url: "https://www.famincorporated.org/", field: "Arts & creative media" },
+  { name: "The ORTHO Project", image: "/ortho-project.png", url: "https://www.orthoproject.org/", field: "Healthcare & sports medicine" },
+  { name: "The LEWIS Registry", image: "/lewis-registry-logo.png", url: "https://www.thelewisregistry.org/", field: "Civic & community innovation" },
+];
+const partnerGroups = [
+  { title: "School systems & education", names: ["Morehouse College TRIO Program", "Gwinnett County Public Schools", "Fayette County Public Schools", "Georgia Institute of Technology", "Clark Atlanta University", "Atlanta Public Schools"] },
+  { title: "Industry & innovation", names: ["Microsoft", "OpenAI", "Metric Mate", "FAM Incorporated", "Soccer IQ Institute", "The ORTHO Project", "The LEWIS Registry"] },
+  { title: "Community & creative industries", names: ["Urban League of Greater Atlanta", "Georgia Film Academy", "Tyler Perry Studios", "Dallas Austin Foundation", "Boston University Theatre Program", "Georgia Governor’s Office of Film"] },
 ];
 
-const technologies = [
-  ["AI", "Artificial intelligence & data science"],
-  ["IoT", "Connected devices & smart systems"],
-  ["CY", "Cybersecurity & digital trust"],
-  ["CM", "Connected mobility"],
-  ["PX", "Product innovation & UX"],
-  ["CT", "Creative technology & media"],
+
+const processSteps = [
+  { icon: MagnifyingGlassIcon, title: "Discover", copy: "Understand your goals and audience." },
+  { icon: GearSixIcon, title: "Design & build", copy: "Develop and integrate your solution." },
+  { icon: RocketLaunchIcon, title: "Launch", copy: "Test, train and move into production." },
+  { icon: ChartBarIcon, title: "Measure & improve", copy: "Refine based on insight and evolving needs." },
 ];
 
 export default function Home() {
-  return (
-    <main>
-      <SiteHeader />
-
-      <div id="main-content">
-        <section className="reference-hero" id="top">
-          <CinematicHeroMedia />
-          <div className="reference-hero-inner">
-            <AudienceHero />
-          </div>
-        </section>
-
-        <section className="reference-pillars" id="pillars">
-          <div className="reference-section-heading">
-            <p className="reference-kicker">Our three pillars</p>
-            <h2>One vision. Three engines for<br />impact.</h2>
-            <p>Each pillar advances a distinct part of the HBI mission while working together to create stronger pathways from learning to opportunity.</p>
-          </div>
-          <div className="reference-pillar-grid">
-            {pillars.map((pillar) => (
-              <article className={pillar.number === "02" ? "reference-pillar-card featured" : "reference-pillar-card"} key={pillar.number}>
-                <div className="reference-pillar-top"><span>{pillar.icon}</span><b>{pillar.number}</b></div>
-                <h3>{pillar.title}</h3>
-                <p>{pillar.copy}</p>
-                <a href={pillar.href}>{pillar.action} <span>→</span></a>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mobile-explore" aria-labelledby="mobile-explore-title">
-          <p className="reference-kicker">Continue your journey</p>
-          <h2 id="mobile-explore-title">Go directly to what matters to you.</h2>
-          <p>Explore HBI’s model, technology capabilities, and portfolio without working through every detail on the home page.</p>
-          <div>
-            <a href="/about"><strong>How HBI works</strong><span>Mission, model, and impact →</span></a>
-            <a href="/innovation-foundry"><strong>Technology solutions</strong><span>AI, IoT, data, and product strategy →</span></a>
-            <a href="/portfolio"><strong>Innovation portfolio</strong><span>Projects, prototypes, and applied work →</span></a>
-          </div>
-        </section>
-
-        <section className="about-section" id="about">
-          <div className="section-kicker"><span>01</span><p>One connected organization</p></div>
-          <div className="about-main">
-            <h2>Innovation works best when <em>opportunity is built in.</em></h2>
-            <div className="about-copy">
-              <p>We connect education, product development, commercialization, workforce pathways, equitable access, and community outcomes.</p>
-              <p>Each HBI pillar has a distinct job. Together, they create an ecosystem where people learn, ideas become products, and progress reaches the communities it should serve.</p>
-            </div>
-          </div>
-        </section>
-
-        <section className="pipeline-section" id="pipeline">
-          <div className="pipeline-copy">
-            <p className="eyebrow dark-eyebrow"><span>●</span> The HBI pipeline</p>
-            <h2>From first spark to lasting impact.</h2>
-          </div>
-          <div className="pipeline-flow">
-            <article><b>01</b><span>Discover</span><p>Explore future technologies and opportunity pathways.</p></article>
-            <i>→</i>
-            <article><b>02</b><span>Develop</span><p>Build technical, creative, leadership, and product skills.</p></article>
-            <i>→</i>
-            <article><b>03</b><span>Build & test</span><p>Prototype solutions around real-world challenges.</p></article>
-            <i>→</i>
-            <article><b>04</b><span>Scale impact</span><p>Move talent, products, and partnerships into the world.</p></article>
-          </div>
-        </section>
-
-        <section className="technology-section" id="technology">
-          <div className="tech-intro">
-            <div className="section-kicker"><span>02</span><p>Technology focus</p></div>
-            <h2>Globally informed.<br /><em>Locally relevant.</em></h2>
-            <p>We build capability in the technologies shaping industries—then apply them to challenges that matter here and now.</p>
-          </div>
-          <div className="tech-grid">
-            {technologies.map(([abbr, title], index) => (
-              <article key={abbr} className={index === 0 ? "featured-tech" : ""}>
-                <span>{abbr}</span><h3>{title}</h3><b>0{index + 1}</b>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="featured-section">
-          <StudentCarousel />
-          <div className="featured-copy">
-            <p className="eyebrow"><span>●</span> Innovation in action</p>
-            <h2>Students leveraging Emerging Technology to solve real world problems.</h2>
-            <p>Through guided learning modules, industry mentors, team collaboration, and hands-on product development, HBI teams turn real needs into concepts, prototypes, and confident presentations.</p>
-            <div className="feature-tags"><span>Mentors</span><span>Learning modules</span><span>Team collaboration</span><span>Product development</span></div>
-            <a className="arrow-link" href="mailto:info@hbiventures.com?subject=HBI%20innovation%20portfolio">Explore the innovation portfolio <span>↗</span></a>
-          </div>
-        </section>
-
-        <section className="impact-section" id="impact">
-          <div className="impact-title">
-            <p className="eyebrow dark-eyebrow"><span>●</span> A decade of progress</p>
-            <h2>Impact is the<br />output that matters.</h2>
-          </div>
-          <div className="impact-numbers">
-            <article><strong>320<sup>+</sup></strong><p>Students served through innovation-centered learning.</p></article>
-            <article><strong>80<sup>+</sup></strong><p>Student prototypes designed around real challenges.</p></article>
-            <article><strong>10<sup>yrs</sup></strong><p>Developing talent and community-centered innovation.</p></article>
-          </div>
-        </section>
-
-        <section className="home-stories" id="stories">
-          <div className="section-heading">
-            <div><p className="eyebrow dark-eyebrow"><span>●</span> Partners in action</p><h2>See the work.<br />Meet the partners.</h2></div>
-            <p>Stories of technology, sport, learning, and collaboration—available directly as you move down the home page.</p>
-          </div>
-          <div className="home-video-grid">
-            <article>
-              <div className="home-video embedded-video"><iframe src="https://www.youtube.com/embed/U9mMioFsEB0?si=fD3RpB1mJCYcq9tf" title="Metric Mate on Shark Tank" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div>
-              <div><a className="partner-logo-link" href="https://www.themetricmate.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Metric Mate"><img className="story-partner-logo metric-logo" src="/metric-mate-logo.jpg" alt="Metric Mate"/></a><p className="eyebrow dark-eyebrow"><span>●</span> Performance technology</p><h3>Metric Mate</h3><p>See how connected fitness, athlete assessments, and applied analytics create new pathways into sports technology and digital health.</p><a href="https://youtu.be/U9mMioFsEB0?si=uBhLv_DAGIAqyc4c" target="_blank" rel="noopener noreferrer">Watch the Metric Mate video <span>↗</span></a></div>
-            </article>
-            <article>
-              <div className="home-video embedded-video"><iframe src="https://www.youtube.com/embed/zdBmtdo4v7Q" title="Soccer IQ Institute — Innovation Through Sport" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div>
-              <div><a className="partner-logo-link" href="https://www.socceriqinstitute.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Soccer IQ Institute"><img className="story-partner-logo soccer-logo" src="/soccer-iq-logo.png" alt="Soccer IQ Institute"/></a><p className="eyebrow dark-eyebrow"><span>●</span> Innovation through sport</p><h3>Soccer IQ Institute</h3><p>Explore youth development, sports technology, connected devices, data-informed performance, and holistic coaching.</p><a href="https://www.socceriqinstitute.com/" target="_blank" rel="noopener noreferrer">Visit Soccer IQ Institute <span>↗</span></a></div>
-            </article>
-          </div>
-        </section>
-
-        <section className="partners-section" id="partners">
-          <div className="partners-copy"><p className="eyebrow"><span>●</span> Innovation network</p><h2>Partnership powers every stage.</h2><p>Education, technology, healthcare, sports, media, and community partners bring expertise and opportunity into the HBI pipeline.</p><a href="/partners">Explore the complete partner network <span>↗</span></a></div>
-          <div className="home-partner-logos">
-            <a href="https://www.themetricmate.com/" target="_blank" rel="noopener noreferrer"><img src="/metric-mate-logo.jpg" alt="Metric Mate"/><span>Performance technology</span></a>
-            <a href="https://www.socceriqinstitute.com/" target="_blank" rel="noopener noreferrer"><img src="/soccer-iq-logo.png" alt="Soccer IQ Institute"/><strong>Soccer IQ Institute</strong><span>Sports technology</span></a>
-            <a href="https://www.famincorporated.org/" target="_blank" rel="noopener noreferrer"><img src="/fam-logo.png" alt="FAM Incorporated"/><strong>FAM Incorporated</strong><span>Arts education & creative media</span></a>
-            <a href="https://www.orthoproject.org/" target="_blank" rel="noopener noreferrer"><img src="/ortho-project.png" alt="The ORTHO Project"/><span>Healthcare & sports medicine</span></a>
-            <a className="lewis-tile" href="https://www.thelewisregistry.org/" target="_blank" rel="noopener noreferrer"><img src="/lewis-registry-logo.png" alt="The LEWIS Registry"/><strong>The LEWIS Registry</strong><span>Civic & community innovation</span></a>
-          </div>
-        </section>
-
-        <section className="contact-section">
-          <p className="eyebrow"><span>●</span> Build the future with us</p>
-          <h2>Bring the challenge.<br /><em>We’ll build the pathway.</em></h2>
-          <a href="mailto:info@hbiventures.com?subject=Partnership%20inquiry">Start a conversation <span>↗</span></a>
-          <div className="contact-orbit" />
-        </section>
-      </div>
-
-      <SiteFooter />
-    </main>
-  );
+  return <main className="wt-home">
+    <SiteHeader />
+    <div id="main-content" tabIndex={-1}>
+      <ExperienceHero />
+      <PillarsOverview />
+      <ProofShowcase />
+      <ExperienceOffer />
+      <WorkflowTheatre />
+      <section className="wt-process wt-container" aria-labelledby="process-title">
+        <div className="wt-process-heading"><h2 id="process-title">Start with the challenge.</h2><p>Delivery scope and ongoing support are agreed for each engagement.</p></div>
+        <div className="wt-process-grid">{processSteps.map(item => <article key={item.title}><item.icon size={42} weight="light" aria-hidden="true" /><div><h3>{item.title}</h3><p>{item.copy}</p></div></article>)}</div>
+      </section>
+      <section className="wt-partners" id="partners" aria-labelledby="partners-title"><div className="wt-container">
+        <div className="wt-partner-heading"><h2 className="wt-kicker" id="partners-title">Our partners</h2><Link href="/partners">Explore the complete partner network</Link></div>
+        <div className="wt-partner-row">{featuredPartners.map(partner => <a key={partner.name} href={partner.url} target="_blank" rel="noopener noreferrer"><Image src={partner.image} alt="" width={104} height={56} sizes="104px" /><strong>{partner.name}</strong></a>)}</div>
+        <details className="wt-directory"><summary>All 19 partners</summary><div className="eco-partner-directory">{partnerGroups.map(group => <div key={group.title}><h3>{group.title}</h3><ul>{group.names.map(name => <li key={name}>{name}</li>)}</ul></div>)}</div></details>
+      </div></section>
+      <section className="wt-closing"><div className="wt-container"><div><p className="wt-kicker">Let’s build a more connected experience</p><h2>What could work better<br />in your organization?</h2></div><div className="wt-closing-actions"><div className="wt-actions"><EngagementLink className="eco-button" entry="closing">Discuss your project</EngagementLink><a className="eco-button wt-button-outline" href="#assessment">Explore your automation opportunities</a></div><p>Tell us your priority. We’ll review the fit and discuss scope before any commitment.</p></div></div></section>
+      <AssessmentDisclosure><InnovationNavigator /></AssessmentDisclosure>
+    </div>
+    <SiteFooter />
+  </main>;
 }

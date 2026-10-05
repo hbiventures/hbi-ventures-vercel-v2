@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
+import "@fontsource-variable/inter";
 import "./globals.css";
+import "./ecosystem.css";
+import "./brand.css";
+import "./navigator.css";
+import "./workflow-theatre.css";
 import { Chatbot } from "./components/Chatbot";
 import { PostHogProvider } from "./PostHogProvider";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hbi-ventures.io"),
+  icons: { icon: "/refresh/hbi-logo.png" },
+  metadataBase: new URL("https://www.hbiventures.com"),
   title: "HBIVentures — Innovation, Talent & Community Impact",
   description: "HBIVentures builds, tests, and scales emerging technologies while developing diverse technical talent through three integrated pillars.",
   openGraph: {
@@ -23,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body><PostHogProvider>{children}<Chatbot /></PostHogProvider></body>
     </html>
   );

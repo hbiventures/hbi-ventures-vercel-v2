@@ -1,0 +1,38 @@
+import Image from "next/image";
+import { platformFoundation, platformProjects } from "../lib/platform-projects";
+import { EngagementLink } from "./EngagementLink";
+
+const proof = {
+  lia: "Video, custom forms, payments, site and campaign analytics, and analytics-informed strategy.",
+  ejc: "Ask EJC visitor assistant, calendar-backed events, automated gathering updates, booking and giving pathways, analytics and reporting.",
+  steam: "Immersive design, motion-led storytelling, responsive development, hosting, analytics and reporting.",
+};
+
+export function ProofShowcase() {
+  return <section className="wt-platform" id="platform" aria-labelledby="platform-title">
+    <div className="wt-container">
+      <Image className="wt-dep-logo" src="/refresh/hbi-dep-logo.png" alt="Powered by HBI Digital Experience Platform" width={1350} height={220} sizes="(max-width: 700px) 88vw, 650px" />
+      <h2 id="platform-title">One platform. Distinct experiences.</h2>
+      <p className="wt-platform-intro">An AI-powered platform developed within the HBI Innovation Foundry.</p>
+      <ul className="wt-foundation" aria-label="Delivered across every project">{platformFoundation.map(item => <li key={item}>{item}</li>)}</ul>
+      <div className="wt-project-grid" id="work">
+        {platformProjects.map(project => <article className="wt-project" key={project.id}>
+          <a className="wt-project-image" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.name} (opens in new tab)`}>
+            <Image src={project.image} alt={`${project.name} website`} width={project.width} height={project.height} sizes="(max-width: 700px) 90vw, 30vw" />
+          </a>
+          <a className="wt-project-title" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`${project.label}: ${project.name} (opens in new tab)`}>
+            <h3>{project.label}</h3><p className="wt-project-name">{project.name}</p>
+          </a>
+          <p className="wt-project-proof">{proof[project.id]}</p>
+          <a className="wt-project-link" href={project.url} target="_blank" rel="noopener noreferrer">{project.id === "steam" ? "Visit hbisteam.org" : `Explore ${project.label}`}</a>
+          <details className="wt-project-details"><summary>Project story &amp; delivered capabilities</summary>
+            <h4>The focus</h4><p>{project.focus}</p>
+            <h4>What HBI delivered</h4><ul>{project.capabilities.map(item => <li key={item}>{item}</li>)}</ul>
+            <h4>The experience</h4><p>{project.experience}</p><p>{project.detail}</p>
+            <EngagementLink entry={project.id}>Discuss a similar project</EngagementLink>
+          </details>
+        </article>)}
+      </div>
+    </div>
+  </section>;
+}

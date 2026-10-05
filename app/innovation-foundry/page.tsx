@@ -9,6 +9,8 @@ export const metadata: Metadata = {
 const capabilities = [
   ["AI", "Artificial Intelligence", "AI-first strategy, intelligent assistants, workflow automation, predictive insights, and generative applications."],
   ["AG", "AI Agent Development", "Purpose-built AI agents, copilots, knowledge retrieval, tool integration, workflow orchestration, and responsible deployment."],
+  ["IN", "API & Business-tool Integration", "Connect digital experiences, forms, calendars, payment services and business systems. CRM and email connections depend on available APIs, access permissions and agreed scope."],
+  ["AU", "Workflow Automation", "Assess repeatable work such as inquiry routing, follow-up preparation and approval handoffs. Design around human review, consent, exception handling and the tools your business uses."],
   ["WA", "Web Application Development", "Responsive, accessible web applications that connect intuitive user experiences with secure, scalable technology."],
   ["SA", "Solutions Architecture", "Cloud, data, integration, security, and application architectures designed around business goals and long-term scale."],
   ["PD", "Product Development", "Product discovery, user experience, rapid prototyping, MVP delivery, testing, and launch readiness."],
@@ -26,41 +28,40 @@ export default function FoundryPage() {
       <div id="main-content">
         <section className="subpage-hero foundry-hero">
           <div>
-            <p className="eyebrow"><span>●</span> Pillar 02 · Build, test, scale</p>
+            <p className="eyebrow"><span>●</span> Build, test, scale</p>
             <h1>HBI Innovation<br /><em>Foundry</em></h1>
           </div>
           <p>HBI’s applied product-development and commercialization engine—connecting global innovation capabilities with locally relevant challenges and opportunities.</p>
-          <div className="hero-index">02</div>
         </section>
 
         <section className="subpage-intro">
-          <div className="section-kicker"><span>01</span><p>The mission</p></div>
+          <div className="section-kicker"><p>The mission</p></div>
           <div className="subpage-intro-grid">
             <h2>Turning emerging technologies into <em>practical solutions.</em></h2>
-            <div><p className="lead">The Foundry brings together technical experts, students, industry partners, researchers, and communities.</p><p>Together, they explore concepts, prototype solutions, validate value, and advance commercialization around challenges that matter.</p></div>
+            <div><p className="lead">The Foundry brings together technical experts, students, industry partners, researchers, and communities.</p><p>Together, they explore concepts, prototype solutions, validate value, and advance commercialization around challenges that matter.</p><p>For small and medium-sized businesses, we scope practical ways to connect existing tools, automate repeatable work and improve customer experiences. Start with one process; a complete digital-experience rebuild is not required.</p></div>
           </div>
         </section>
 
         <section className="capabilities-section">
           <div className="section-heading light-heading"><div><p className="eyebrow"><span>●</span> Core capabilities</p><h2>Technology with<br />a job to do.</h2></div><p>Every capability is applied through a human-centered lens, with clear users, measurable outcomes, and a path beyond the prototype.</p></div>
           <div className="capability-grid">
-            {capabilities.map(([abbr, title, copy], index) => <article key={abbr}><span>{abbr}</span><b>{String(index + 1).padStart(2, "0")}</b><h3>{title}</h3><p>{copy}</p></article>)}
+            {capabilities.map(([abbr, title, copy]) => <article key={abbr}><span>{abbr}</span><h3>{title}</h3><p>{copy}</p></article>)}
           </div>
         </section>
 
         <section className="engagement-section">
-          <div className="section-kicker"><span>02</span><p>Engagement model</p></div>
+          <div className="section-kicker"><p>Engagement model</p></div>
           <h2>From challenge statement<br />to MVP in three months.</h2>
           <p className="engagement-intro">The HBI Innovation Foundry structures MVP projects as focused three-month development sprints, aligning discovery, solutions architecture, product development, testing, and launch readiness around a defined outcome.</p>
           <div className="engagement-steps">
-            <article><b>01</b><h3>Discover</h3><p>Define users, needs, constraints, and desired outcomes.</p></article>
-            <article><b>02</b><h3>Design</h3><p>Develop concepts, experiences, architectures, and business assumptions.</p></article>
-            <article><b>03</b><h3>Prototype</h3><p>Build testable products, workflows, demonstrations, and pilots.</p></article>
-            <article><b>04</b><h3>Validate & scale</h3><p>Measure performance, refine the model, and prepare for deployment or commercialization.</p></article>
+            <article><h3>Discover</h3><p>Define users, needs, constraints, and desired outcomes.</p></article>
+            <article><h3>Design</h3><p>Develop concepts, experiences, architectures, and business assumptions.</p></article>
+            <article><h3>Prototype</h3><p>Build testable products, workflows, demonstrations, and pilots.</p></article>
+            <article><h3>Validate & scale</h3><p>Measure performance, refine the model, and prepare for deployment or commercialization.</p></article>
           </div>
         </section>
 
-        <section className="page-cta"><p className="eyebrow"><span>●</span> Bring us a challenge</p><h2>Let’s turn possibility<br /><em>into proof.</em></h2><a href="/contact">Start a Foundry conversation <span>↗</span></a></section>
+        <section className="page-cta"><p className="eyebrow"><span>●</span> Bring us a challenge</p><h2>Let’s turn possibility<br /><em>into proof.</em></h2><a href="/contact">Start a Foundry conversation</a></section>
       </div>
       <SiteFooter />
     </main>

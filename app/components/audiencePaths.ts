@@ -56,17 +56,16 @@ export const audiencePaths: AudiencePath[] = [
     intro:
       "Explore hands-on experiences where students use AI, data, connected technology, design, and entrepreneurship to solve real-world problems.",
     tags: ["Hands-on Projects", "AI & Data", "Mentorship", "Career Pathways"],
-    primary: { label: "Explore STEAM Academy", href: "/steam-academy" },
-    secondary: { label: "See Student Work", href: "/#stories" },
+    primary: { label: "Visit HBI STEAM", href: "https://hbisteam.org" },
+    secondary: { label: "Explore Student Programs", href: "https://hbisteam.org" },
     stats: [
       { value: "320+", label: "Students Served" },
       { value: "80+", label: "Prototypes Built" },
       { value: "10 yrs", label: "Building Pathways" },
     ],
-    message: "Great—I’ll guide you toward student programs, hands-on learning, and future career pathways.",
+    message: "Visit hbisteam.org for Academy programs, student projects and learning opportunities.",
     links: [
-      ["Explore STEAM Academy", "/steam-academy"],
-      ["Watch student stories", "/#stories"],
+      ["Visit HBI STEAM", "https://hbisteam.org"],
     ],
   },
   {
@@ -78,17 +77,16 @@ export const audiencePaths: AudiencePath[] = [
     intro:
       "Partner with HBI to create project-based cohorts, industry-aligned learning, mentorship, and authentic challenges that turn technology into student momentum.",
     tags: ["Custom Cohorts", "Curriculum", "Industry Mentors", "Capstones"],
-    primary: { label: "Bring HBI to Your School", href: "/contact" },
-    secondary: { label: "View Academy Programs", href: "/steam-academy" },
+    primary: { label: "Visit HBI STEAM", href: "https://hbisteam.org" },
+    secondary: { label: "View Academy Programs", href: "https://hbisteam.org" },
     stats: [
       { value: "3", label: "Integrated Pillars" },
       { value: "80+", label: "Student Prototypes" },
       { value: "2016", label: "Programs Since" },
     ],
-    message: "Welcome! I’ll highlight cohort opportunities, project-based learning, and ways schools can work with HBI.",
+    message: "Visit hbisteam.org for Academy programs and information about working with HBI STEAM as a school or educator.",
     links: [
-      ["View STEAM programs", "/steam-academy"],
-      ["Discuss a partnership", "/contact"],
+      ["Visit HBI STEAM", "https://hbisteam.org"],
     ],
   },
   {
