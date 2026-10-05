@@ -1,7 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { voiceGreeting, voiceInstructions, voiceOutputTokenLimit, voiceResponseNotice } from '../app/lib/voice-session.ts';
+import { voiceDelivery, voiceGreeting, voiceInstructions, voiceOutputTokenLimit, voiceResponseNotice } from '../app/lib/voice-session.ts';
+
+test('Marin cheerleader delivery applies consistently to the greeting and conversation', () => {
+  assert.ok(voiceGreeting.includes(voiceDelivery));
+  assert.ok(voiceInstructions.includes(voiceDelivery));
+  assert.match(voiceDelivery, /CHEERLEADER.*enthusiastic and bubbly/);
+  assert.match(voiceDelivery, /not rushed or shouty/);
+  assert.match(voiceDelivery, /finish sentence endings clearly/);
+  assert.match(voiceDelivery, /calm and empathetic/);
+  assert.match(readFileSync('app/api/voice/route.ts', 'utf8'), /voice: "marin"/);
+});
 
 test('voice greeting uses the approved identity and retains truthful disclosure', () => {
   assert.match(voiceGreeting, /HBI's Virtual Customer Care Assistant/);
