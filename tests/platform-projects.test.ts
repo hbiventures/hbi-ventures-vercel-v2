@@ -36,10 +36,10 @@ test('project details preserve confirmed integration scope and Academy destinati
   assert.doesNotMatch(platformProjects[1].detail, /Stripe|on-site checkout|payment processor/);
 });
 
-test('homepage retains partner directory, assessment, and platform hierarchy', () => {
+test('homepage retains assessment and platform hierarchy without Academy partner listings', () => {
   const homepage = readFileSync('app/page.tsx', 'utf8');
   const platform = readFileSync('app/components/ProofShowcase.tsx', 'utf8');
-  assert.match(homepage, /19 partners/);
+  assert.doesNotMatch(homepage, /19 partners|featuredPartners|partnerGroups|wt-partners/);
   assert.match(homepage, /<InnovationNavigator/);
   assert.match(homepage, /<ProofShowcase/);
   assert.ok(homepage.indexOf('<ProofShowcase') < homepage.indexOf('<WorkflowTheatre'));

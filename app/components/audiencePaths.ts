@@ -108,7 +108,7 @@ export const audiencePaths: AudiencePath[] = [
     message: "I’ll focus your experience on innovation services, talent development, sponsorship, and strategic partnerships.",
     links: [
       ["Explore the Foundry", "/innovation-foundry"],
-      ["Meet HBI partners", "/partners"],
+      ["Meet STEAM Academy partners", "https://hbisteam.org/about#partners-title"],
     ],
   },
   {

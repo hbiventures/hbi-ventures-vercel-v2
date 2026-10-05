@@ -10,7 +10,6 @@ const navigation = [
   ["Pillars", "/#pillars"],
   ["Platform", "/#platform"],
   ["Our work", "/#work"],
-  ["Partners", "/#partners"],
   ["About", "/about"],
   ["Contact", "/contact"],
 ];

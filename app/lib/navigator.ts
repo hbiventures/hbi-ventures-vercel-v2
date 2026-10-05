@@ -16,7 +16,7 @@ export const navigatorReferences = {
   steam: { label: "Visit HBI STEAM", href: "https://hbisteam.org", detail: "Academy programs, student projects and learning opportunities." },
   foundry: { label: "Explore the Innovation Foundry", href: "/innovation-foundry", detail: "AI, automation, architecture and product development." },
   foundation: { label: "Explore the Foundation", href: "/foundation", detail: "Community access, scholarships and mission-aligned support." },
-  partners: { label: "Explore HBI’s partners", href: "/partners", detail: "The existing HBI partner network." },
+  partners: { label: "Explore STEAM Academy partners", href: "https://hbisteam.org/about#partners-title", detail: "HBI STEAM Academy’s program partner network." },
 } as const;
 export type ReferenceId = keyof typeof navigatorReferences;
 
@@ -60,7 +60,7 @@ PROOF BOUNDARIES
 LIA has video, custom forms and payment integration, site and campaign analytics, reporting and analytics-informed campaign strategy. Do not claim deployed AI automation, campaign execution or ROI for LIA.
 EJC's Ask EJC is a visitor information assistant, not counseling. Calendar-backed gathering updates are not automated follow-up emails. Scheduling and giving pathways do not establish a custom booking engine or HBI-built payment processing.
 HBI STEAM demonstrates immersive design, motion, responsive development, hosting, analytics and reporting. Refer ALL Academy program, student-project, enrollment and school inquiries to hbisteam.org; do not invent program details.
-Partner listings are not proof those organizations bought or endorsed HBI AI services. Do not invent partnerships, certifications, quantified results, dashboards, prices or commitments.
+The partner directory belongs to HBI STEAM Academy, not HBI Ventures or the Innovation Foundry. Refer Academy partner-network questions to hbisteam.org/about#partners-title. Do not describe these program relationships as Ventures clients, technology-vendor alliances, or endorsements of Foundry services. New commercial partnership inquiries can still go to Contact HBI. Do not invent partnerships, certifications, quantified results, dashboards, prices or commitments.
 
 RESPONSE AND ACTION RULES
 Use 2–4 short sentences, plain text, no Markdown links or HTML. Related-page buttons are supplied separately by the application. Name the relevant project when evidence supports the answer. Answer the visitor's question before asking at most ONE useful follow-up about their challenge, current process or existing tools. Do not turn every information request into a sales interview.
