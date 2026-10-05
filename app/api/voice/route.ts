@@ -1,11 +1,11 @@
 import { navigatorInstructions } from "../../lib/navigator";
 import { platformProjects } from "../../lib/platform-projects";
-import { assistantRateLimit } from "../../lib/assistant-rate-limit";
+import { assistantQuotaConfigured, assistantRateLimit } from "../../lib/assistant-rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
 export function GET() {
-  const quotaReady = process.env.NODE_ENV !== "production" || Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+  const quotaReady = process.env.NODE_ENV !== "production" || assistantQuotaConfigured();
   return Response.json({ available: Boolean(process.env.HBI_VOICE_ENABLED === "true" && process.env.OPENAI_API_KEY && quotaReady) }, { headers: { "Cache-Control": "no-store" } });
 }
 export async function POST(request: Request) {
