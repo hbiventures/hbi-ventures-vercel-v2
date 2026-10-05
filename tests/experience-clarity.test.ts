@@ -30,3 +30,21 @@ test('workflow demonstrations start and reset at the first step', () => {
   assert.match(theatre, /\[step, setStep\] = useState\(0\)/);
   assert.match(theatre, /function select\(index: number\).*setStep\(0\)/);
 });
+
+test('vision copy is visible and divided into readable themes with a distinct conclusion', () => {
+  const offer = readFileSync('app/components/ExperienceOffer.tsx', 'utf8');
+  const story = offer.slice(offer.indexOf('className="wt-offer-story"'), offer.indexOf('className="wt-offer-platform"'));
+  for (const phrase of [
+    'More than a collection of web pages, we create a connected digital experience',
+    'Bring your brand to life',
+    'Turn engagement into action',
+    'Connect the work behind the experience',
+    'AI-powered assistants, integrations, automation, and analytics work together',
+    'a manual process, a disconnected system, or a customer journey',
+    'The result is more than a website.',
+    'grow with your organization.',
+  ]) assert.ok(story.includes(phrase), `Missing vision content: ${phrase}`);
+  assert.equal((story.match(/<h3>/g) ?? []).length, 3);
+  assert.equal((story.match(/<p(?:\s|>)/g) ?? []).length, 9);
+  assert.ok(!story.includes('<details'));
+});

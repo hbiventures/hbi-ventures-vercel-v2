@@ -45,7 +45,7 @@ test('conversion copy retains scope boundaries and owner-confirmed project stori
   const offer = readFileSync('app/components/ExperienceOffer.tsx', 'utf8');
   assert.match(offer, /Scope, timing and support are agreed together/);
   assert.match(offer, /Your vision/);
-  assert.match(offer, /A living vision board brings your purpose, people, work and ambitions into view/);
+  assert.match(offer, /a living vision of your brand—bringing your purpose, people, work, impact, and ambitions to life/);
   assert.doesNotMatch(offer, /Connected Digital Experience Launch|Knowledge Assistant Pilot|pricing|vendor fees/);
   for (const service of engagementOffers) assert.doesNotMatch(service.label, /Launch|Pilot|Package|Tier/);
   for (const project of platformProjects) {

@@ -357,6 +357,15 @@ section[id], div[id], details[id], nav[id] { scroll-margin-top: 24px; }
 .wt-offer h2 { font-size: clamp(32px, 3.4vw, 48px); }
 .wt-offer p { color: #526074; font-size: 15px; line-height: 1.7; }
 .wt-offer .wt-offer-intro { color: #1b2e4b; font-size: 18px; }
+.wt-offer-story { grid-column: 1 / -1; }
+.wt-offer-story .wt-offer-intro { max-width: 74ch; margin-block: 24px 32px; }
+.wt-offer-narrative { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; }
+.wt-offer-narrative > div { border-top: 1px solid #ced7e6; padding-top: 20px; }
+.wt-offer-narrative h3 { color: #102440; font-size: 21px; line-height: 1.3; letter-spacing: -.025em; margin: 0 0 16px; }
+.wt-offer-narrative p { margin: 0 0 16px; }
+.wt-offer .wt-offer-result { max-width: 90ch; border-left: 3px solid #214baf; padding-left: 22px; margin: 24px 0 0; color: #1b2e4b; font-size: 18px; }
+.wt-offer-result strong { display: block; margin-bottom: 6px; }
+.wt-offer-platform .wt-platform-art { margin-top: 0; }
 .wt-offer .eco-button { margin-top: 10px; }
 .wt-offer .wt-offer-note { font-size: 12px; }
 .wt-offer-scope h3 { font-size: 20px; margin: 0 0 12px; }
@@ -398,6 +407,7 @@ section[id], div[id], details[id], nav[id] { scroll-margin-top: 24px; }
 .contact-reference { display: block; overflow-wrap: anywhere; margin-top: 10px; font-size: 12px; }
 @media (max-width: 900px) {
   .wt-offer-layout { grid-template-columns: 1fr; gap: 28px; }
+  .wt-offer-narrative { grid-template-columns: 1fr; gap: 12px; }
 }
 @media (max-width: 700px) {
   .wt-offer { padding-block: 35px; }
