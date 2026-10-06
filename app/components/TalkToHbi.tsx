@@ -17,6 +17,7 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
   const [captions, setCaptions] = useState<Caption[]>([]);
   const [caption, setCaption] = useState("");
   const [consent, setConsent] = useState(false);
+  const privacyNotice = useRef<HTMLDetailsElement>(null);
   const [available, setAvailable] = useState<boolean | null>(null);
   const pc = useRef<RTCPeerConnection | null>(null);
   const media = useRef<MediaStream | null>(null);
@@ -59,6 +60,7 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
     if (!consent || !available || pc.current || phase === "connecting") return;
     // Each start consumes this opt-in; a later session requires a new choice.
     setConsent(false);
+    if (privacyNotice.current) privacyNotice.current.open = false;
     const attempt = ++generation.current;
     setError(""); setPhase("connecting"); setMuted(false);
     setActivity(initialVoiceActivity); setPlaybackPaused(true);
@@ -125,8 +127,11 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
       <div className="marin-status"><p role="status" aria-atomic="true">{voiceVisualLabels[visualState]}</p><small>{phase === "live" ? muted ? "Microphone off · Marin can still reply" : "Microphone on · you can interrupt" : "Microphone off"}</small></div>
       <button type="button" className="marin-motion-toggle" aria-pressed={motionPaused} onClick={() => setMotionPaused(current => !current)}>{motionPaused ? "Resume animation" : "Pause animation"}</button>
     </div>
+    <details ref={privacyNotice} className="assistant-privacy" open={!consent && (phase === "ready" || phase === "ended")}>
+    <summary>Voice privacy notice</summary>
     <p>This is an AI-generated voice, not a live HBI team member. The HBI Digital Experience Platform uses OpenAI APIs to provide this session-based voice conversation. While connected, your microphone audio goes directly from your browser to OpenAI for processing.</p>
     <p>Your microphone stays off until you opt in, select Start voice conversation and allow browser microphone access. Ending the voice session or closing the assistant stops its microphone tracks and closes its voice connection. Muting pauses microphone input but keeps the session connected.</p>
+    </details>
     <details className="assistant-privacy"><summary>Session privacy & data handling</summary><p>HBI does not save an audio recording in this experience. Captions can remain in this page after a call; returning to text adds completed captions to the current conversation. Sharing a transcript with HBI’s team requires separate review and consent on your inquiry.</p><p>Ending a session stops further microphone transmission; it does not delete information already sent or processed. OpenAI’s retention policies and applicable account settings still apply. See <a href="https://developers.openai.com/api/docs/guides/your-data" target="_blank" rel="noopener noreferrer">OpenAI’s API data controls (opens in a new tab)</a>.</p><p>Please do not share passwords, payment-card details, health information or other sensitive information. Voice is optional; you can use text instead. Each new voice session requires a fresh opt-in, even if your browser remembers microphone permission.</p></details>
     {(phase === "ready" || phase === "ended") && <><label className="navigator-approval"><input type="checkbox" checked={consent} onChange={event => setConsent(event.target.checked)} />I agree to activate my microphone for this voice session on the HBI Digital Experience Platform and send my audio to OpenAI for processing through its APIs.</label><button type="button" className="navigator-primary" disabled={!consent || !available} onClick={() => void start()}>Start voice conversation</button></>}
     {available !== true && <p role="status">{available === null ? "Checking voice availability…" : "Voice is not enabled in this environment yet. Text conversation and Contact HBI remain available."}</p>}

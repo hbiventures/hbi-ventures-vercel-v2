@@ -54,3 +54,14 @@ test('session privacy names platform and processor, separates retention and requ
   assert.doesNotMatch(chat, /Nothing is sent to HBI’s team/);
   for (const source of [voice, chat]) assert.match(source, /https:\/\/developers.openai.com\/api\/docs\/guides\/your-data/);
 });
+
+test('voice privacy notice collapses on consent and connection, and returns before a new session', () => {
+  const voice = readFileSync('app/components/TalkToHbi.tsx', 'utf8');
+  assert.match(voice, /<details ref=\{privacyNotice\}[^>]*open=\{!consent && \(phase === "ready" \|\| phase === "ended"\)\}/);
+  assert.match(voice, /<summary>Voice privacy notice<\/summary>/);
+  const start = voice.slice(voice.indexOf('async function start()'), voice.indexOf('function end()'));
+  assert.ok(start.indexOf('privacyNotice.current.open = false') < start.indexOf('await navigator.mediaDevices.getUserMedia'));
+  assert.match(voice, /checked=\{consent\} onChange=\{event => setConsent\(event.target.checked\)\}/);
+  assert.match(voice, /media.current\?\.getTracks\(\).forEach\(track => track.stop\(\)\)/);
+  assert.match(voice, /connection.close\(\)/);
+});
