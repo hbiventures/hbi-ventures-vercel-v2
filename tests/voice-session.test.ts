@@ -73,8 +73,10 @@ test('voice privacy notice collapses on consent and connection, and returns befo
   const collapse = voice.slice(voice.indexOf('function collapsePrivacy()'), voice.indexOf('async function start()'));
   assert.match(collapse, /privacyNotice.current.open = false/);
   assert.match(collapse, /privacyDetails.current.open = false/);
+  assert.match(collapse, /captionsNotice.current.open = false/);
   assert.match(collapse, /if \(checked\) collapsePrivacy\(\)/);
   assert.match(voice, /<details ref=\{privacyDetails\}/);
+  assert.match(voice, /<details ref=\{captionsNotice\}[^>]*open=\{!consent && \(phase === "ready" \|\| phase === "ended"\)\}><summary>About voice captions<\/summary><p>Captions may contain errors/);
   assert.match(voice, /media.current\?\.getTracks\(\).forEach\(track => track.stop\(\)\)/);
   assert.match(voice, /connection.close\(\)/);
 });

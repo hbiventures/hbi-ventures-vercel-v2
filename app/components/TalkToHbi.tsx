@@ -19,6 +19,7 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
   const [consent, setConsent] = useState(false);
   const privacyNotice = useRef<HTMLDetailsElement>(null);
   const privacyDetails = useRef<HTMLDetailsElement>(null);
+  const captionsNotice = useRef<HTMLDetailsElement>(null);
   const [available, setAvailable] = useState<boolean | null>(null);
   const pc = useRef<RTCPeerConnection | null>(null);
   const media = useRef<MediaStream | null>(null);
@@ -60,6 +61,7 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
   function collapsePrivacy() {
     if (privacyNotice.current) privacyNotice.current.open = false;
     if (privacyDetails.current) privacyDetails.current.open = false;
+    if (captionsNotice.current) captionsNotice.current.open = false;
   }
 
   function updateConsent(checked: boolean) {
@@ -150,7 +152,7 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
     <audio ref={audio} autoPlay controls aria-label="Marin voice playback" onPlaying={event => setPlaybackPaused(event.currentTarget.muted || event.currentTarget.volume === 0)} onPause={() => setPlaybackPaused(true)} onWaiting={() => setPlaybackPaused(true)} onVolumeChange={event => setPlaybackPaused(event.currentTarget.paused || event.currentTarget.muted || event.currentTarget.volume === 0)} />
     {error && <p role="alert">{error}</p>}
     <div className="assistant-captions" role="log" aria-label="Voice captions" aria-live="polite">{captions.map(item => <p key={`${item.role}-${item.id}`}><strong>{item.role === "user" ? "You" : "Marin"}:</strong> {item.text}</p>)}{caption && <p aria-live="off">{caption}</p>}</div>
-    <p>Captions may contain errors. Returning to text adds completed captions to this browser’s conversation, labeled as voice. Review them before choosing to share a transcript. The voice session starts separately from your text chat.</p>
+    <details ref={captionsNotice} className="assistant-privacy" open={!consent && (phase === "ready" || phase === "ended")}><summary>About voice captions</summary><p>Captions may contain errors. Returning to text adds completed captions to this browser’s conversation, labeled as voice. Review them before choosing to share a transcript. The voice session starts separately from your text chat.</p></details>
     <button type="button" className="navigator-back" onClick={back}>Return to text conversation</button>
   </section>;
 }
