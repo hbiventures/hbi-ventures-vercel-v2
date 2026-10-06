@@ -10,7 +10,14 @@ test('Marin cheerleader delivery applies consistently to the greeting and conver
   assert.match(voiceDelivery, /not rushed or shouty/);
   assert.match(voiceDelivery, /finish sentence endings clearly/);
   assert.match(voiceDelivery, /calm and empathetic/);
+  assert.match(voiceDelivery, /upbeat from the first "Hello"/);
+  assert.match(voiceDelivery, /lively pitch variation/);
+  assert.match(voiceDelivery, /brisk conversational pace/);
+  assert.match(voiceDelivery, /across follow-up turns, not just the introduction/);
+  assert.match(voiceDelivery, /quiet or brief visitor response alone is not a reason to become subdued/);
+  assert.match(voiceDelivery, /Respect an explicit request to slow down/);
   assert.match(readFileSync('app/api/voice/route.ts', 'utf8'), /voice: "marin"/);
+  assert.match(readFileSync('app/api/voice/route.ts', 'utf8'), /instructions:.*voiceInstructions/);
 });
 
 test('voice greeting uses the approved identity and retains truthful disclosure', () => {
