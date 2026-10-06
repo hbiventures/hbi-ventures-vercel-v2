@@ -60,8 +60,14 @@ test('voice privacy notice collapses on consent and connection, and returns befo
   assert.match(voice, /<details ref=\{privacyNotice\}[^>]*open=\{!consent && \(phase === "ready" \|\| phase === "ended"\)\}/);
   assert.match(voice, /<summary>Voice privacy notice<\/summary>/);
   const start = voice.slice(voice.indexOf('async function start()'), voice.indexOf('function end()'));
-  assert.ok(start.indexOf('privacyNotice.current.open = false') < start.indexOf('await navigator.mediaDevices.getUserMedia'));
-  assert.match(voice, /checked=\{consent\} onChange=\{event => setConsent\(event.target.checked\)\}/);
+  assert.ok(start.indexOf('collapsePrivacy()') >= 0);
+  assert.ok(start.indexOf('collapsePrivacy()') < start.indexOf('await navigator.mediaDevices.getUserMedia'));
+  assert.match(voice, /checked=\{consent\} onChange=\{event => updateConsent\(event.target.checked\)\}/);
+  const collapse = voice.slice(voice.indexOf('function collapsePrivacy()'), voice.indexOf('async function start()'));
+  assert.match(collapse, /privacyNotice.current.open = false/);
+  assert.match(collapse, /privacyDetails.current.open = false/);
+  assert.match(collapse, /if \(checked\) collapsePrivacy\(\)/);
+  assert.match(voice, /<details ref=\{privacyDetails\}/);
   assert.match(voice, /media.current\?\.getTracks\(\).forEach\(track => track.stop\(\)\)/);
   assert.match(voice, /connection.close\(\)/);
 });
