@@ -30,24 +30,22 @@ export function ExperienceIntro({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-    const small = matchMedia("(max-width: 700px)");
     let seen = false;
     try { seen = sessionStorage.getItem(INTRO_SEEN_KEY) === "yes"; } catch { /* No tracking fallback. */ }
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
     const frame = requestAnimationFrame(() => {
       const next = introMode({ seen, hash: location.hash, scrollY: window.scrollY,
-        reducedMotion: reduced.matches, smallScreen: small.matches, saveData: !!connection?.saveData });
+        reducedMotion: reduced.matches, saveData: !!connection?.saveData });
       setMode(next);
       if (next !== "hidden") remember();
     });
     const preferStatic = () => {
-      if (reduced.matches || small.matches) {
+      if (reduced.matches) {
         video.current?.pause();
         setMode(current => current === "hidden" ? current : "static");
       }
     };
     reduced.addEventListener("change", preferStatic);
-    small.addEventListener("change", preferStatic);
     window.addEventListener("hashchange", finish);
     window.addEventListener("hbi-open-navigator", finish);
     const onPageHide = () => { video.current?.pause(); remember(); };
@@ -55,7 +53,6 @@ export function ExperienceIntro({ children }: { children: ReactNode }) {
     return () => {
       cancelAnimationFrame(frame);
       reduced.removeEventListener("change", preferStatic);
-      small.removeEventListener("change", preferStatic);
       window.removeEventListener("hashchange", finish);
       window.removeEventListener("hbi-open-navigator", finish);
       window.removeEventListener("pagehide", onPageHide);
@@ -85,10 +82,9 @@ export function ExperienceIntro({ children }: { children: ReactNode }) {
 
   function replay() {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const small = matchMedia("(max-width: 700px)").matches;
     const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
     setPaused(false);
-    setMode(reduced || small || saveData ? "static" : "video");
+    setMode(reduced || saveData ? "static" : "video");
     requestAnimationFrame(() => { stage.current?.scrollIntoView({ behavior: "instant", block: "start" }); skip.current?.focus({ preventScroll: true }); });
   }
 
@@ -103,7 +99,7 @@ export function ExperienceIntro({ children }: { children: ReactNode }) {
     {mode !== "hidden" && <section className={styles.stage} ref={stage} aria-label="One platform. Distinct experiences."
       onKeyDown={event => { if (event.key === "Escape") finish(); }}>
       <div className={styles.media}>
-        {mode === "video" ? <video ref={video} muted playsInline preload="auto"
+        {mode === "video" ? <video ref={video} autoPlay muted playsInline preload="auto"
           poster="/intro/platform-story-poster.webp" onEnded={finish} onError={() => setMode("static")}
           aria-label="Silent ten-second introduction: LIA, EJC and HBI STEAM, built on the HBI Digital Experience Platform, developed in the Innovation Foundry.">
           <source src="/intro/platform-story-v1.mp4" type="video/mp4" />
