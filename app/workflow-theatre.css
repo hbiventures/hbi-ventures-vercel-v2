@@ -187,7 +187,8 @@ section[id], div[id], details[id], nav[id] { scroll-margin-top: 24px; }
 .eco-navigator { background: #f5f7fb; }
 .eco-nav-choices button[aria-pressed=true] { background: var(--navy); border-color: var(--navy); }
 .eco-approval input { accent-color: var(--cobalt); }
-.hbi-footer, .wt-home .hbi-footer { grid-template-columns: 245px 1fr auto; padding: 35px max(40px, calc((100vw - 1320px) / 2)); gap: 32px; border-top: 1px solid #e5eaf1; }
+/* Keep footer contact details and copyright above the fixed Customer Care launcher. */
+.hbi-footer, .wt-home .hbi-footer { grid-template-columns: 245px 1fr auto; padding: 35px max(40px, calc((100vw - 1320px) / 2)) 85px; gap: 32px; border-top: 1px solid #e5eaf1; }
 .hbi-footer .hbi-brand-lockup img { width: 40px; height: 48px; }
 .hbi-footer a { color: var(--ink); }
 .hbi-footer nav { gap: 18px; }
