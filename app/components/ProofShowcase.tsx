@@ -19,15 +19,15 @@ export function ProofShowcase() {
       <ul className="wt-foundation" aria-label="Delivered across every project">{platformFoundation.map(item => <li key={item}>{item}</li>)}</ul>
       <article className="wt-platform-capability" aria-labelledby="virtual-front-desk-capability-title">
         <div className="wt-platform-capability-copy">
-          <p className="wt-kicker">Featured platform capability</p>
-          <h3 id="virtual-front-desk-capability-title">Virtual Front Desk</h3>
-          <p>Help customers get approved answers, understand the right service, and continue to the scheduling or inquiry path your business already uses.</p>
-          <Link href="/innovation-foundry/virtual-front-desk">Explore Virtual Front Desk examples <ArrowRightIcon size={19} aria-hidden="true" /></Link>
+          <p className="wt-kicker">New platform product</p>
+          <h3 id="virtual-front-desk-capability-title">Digital Front Desk</h3>
+          <p>Help customers get approved answers, understand the right service, and take a clear next step. Connect your existing experience—or let HBI build the digital home and workflow with you.</p>
+          <Link href="/innovation-foundry/virtual-front-desk">Explore Digital Front Desk examples <ArrowRightIcon size={19} aria-hidden="true" /></Link>
         </div>
-        <ul aria-label="Virtual Front Desk workflow">
+        <ul aria-label="Digital Front Desk workflow">
           <li><ChatCircleDotsIcon size={25} weight="light" aria-hidden="true" /><span><strong>Answer</strong>Approved service, policy, and preparation questions</span></li>
           <li><PathIcon size={25} weight="light" aria-hidden="true" /><span><strong>Route</strong>Guide customers to the right service or person</span></li>
-          <li><CalendarCheckIcon size={25} weight="light" aria-hidden="true" /><span><strong>Continue</strong>Use the business’s existing booking or inquiry process</span></li>
+          <li><CalendarCheckIcon size={25} weight="light" aria-hidden="true" /><span><strong>Continue</strong>Follow an existing or newly designed inquiry process</span></li>
         </ul>
         <p className="wt-platform-capability-audience"><strong>Examples:</strong> plumbers, electricians, HVAC and field-service teams; salons and wellness businesses; professional services; venues; and fitness organizations.</p>
       </article>

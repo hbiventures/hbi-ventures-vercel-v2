@@ -64,7 +64,7 @@ export function VirtualFrontDeskClient({ initialIndustry, rawCity, rawCampaign, 
       <div className={styles.heroCopy}>
         <p className={styles.eyebrow}>{scenario.eyebrow}</p>
         <h1 id="virtual-front-desk-title">Turn customer questions into <span>scheduled next steps.</span></h1>
-        <p className={styles.heroIntro}>HBI Innovation Foundry helps appointment- and inquiry-driven businesses add a virtual front desk that answers approved questions, guides customers to the right service, and connects them to the scheduling process they already use.</p>
+        <p className={styles.heroIntro}>HBI Digital Front Desk answers approved questions, guides customers to the right service, and connects them to a clear next step. Built on the HBI Digital Experience Platform in our Innovation Foundry, it can connect existing tools—or be part of a complete digital experience and workflow we build with you.</p>
         <div className={styles.actions}>
           <Link href={reviewHref} className={styles.primary} onClick={() => capture("workflow_review_cta_clicked", { industry, city, campaign, placement: "hero" })}>Request a 15-minute workflow review <ArrowRightIcon size={20} aria-hidden="true" /></Link>
           <button type="button" className={styles.secondary} onClick={scrollToExamples}>See an example for your industry</button>
@@ -77,7 +77,7 @@ export function VirtualFrontDeskClient({ initialIndustry, rawCity, rawCampaign, 
           <li><ChatCircleDotsIcon size={24} aria-hidden="true" /><span><strong>Ask</strong>A customer has a question before booking.</span></li>
           <li><CheckCircleIcon size={24} aria-hidden="true" /><span><strong>Guide</strong>The assistant uses approved business information.</span></li>
           <li><PathIcon size={24} aria-hidden="true" /><span><strong>Route</strong>The customer reaches the right service or person.</span></li>
-          <li><CalendarCheckIcon size={24} aria-hidden="true" /><span><strong>Continue</strong>They use your existing scheduling or inquiry path.</span></li>
+          <li><CalendarCheckIcon size={24} aria-hidden="true" /><span><strong>Continue</strong>They follow your existing scheduling or inquiry path—or one we design with you.</span></li>
         </ol>
         <small>The assistant does not promise availability or confirm an appointment unless an approved tool connection supports it.</small>
       </div>
@@ -98,10 +98,10 @@ export function VirtualFrontDeskClient({ initialIndustry, rawCity, rawCampaign, 
       <div className={styles.sectionHeading}>
         <div className={styles.featuredProduct}>
           <p className={styles.sectionKicker}>Featured HBI product</p>
-          <h2 id="examples-title">Virtual Front Desk</h2>
+          <h2 id="examples-title">Digital Front Desk</h2>
           <strong>See it work in your industry.</strong>
         </div>
-        <p>Choose your industry to see how Virtual Front Desk can answer common questions, guide the customer, and connect them to the scheduling or inquiry path your team already uses.</p>
+        <p>Digital Front Desk—also called Virtual Front Desk—is a new product built on the HBI Digital Experience Platform, developed in the HBI Innovation Foundry. Choose your industry to explore how it could help customers find answers and take their next step.</p>
       </div>
       <div className={styles.tabs} role="group" aria-label="Choose an industry example">
         <button type="button" aria-pressed={industry === "general"} onClick={() => selectIndustry("general")}>All businesses</button>
@@ -139,7 +139,7 @@ export function VirtualFrontDeskClient({ initialIndustry, rawCity, rawCampaign, 
         </article>)}
       </div>
       <div className={styles.storyPrompt}>
-        <div><strong>Want to hear one of these stories?</strong><p>Open Marin’s voice experience, review HBI’s <a href="/privacy#voice">Privacy Notice</a>, and ask how Virtual Front Desk could support your business.</p></div>
+        <div><strong>Want to hear one of these stories?</strong><p>Open Marin’s voice experience, review HBI’s <a href="/privacy#voice">Privacy Notice</a>, and ask how Digital Front Desk could support your business.</p></div>
         <button type="button" onClick={() => openAssistant("voice")}><ChatCircleDotsIcon size={20} aria-hidden="true" />Ask Marin for an example</button>
       </div>
     </section>
@@ -147,11 +147,12 @@ export function VirtualFrontDeskClient({ initialIndustry, rawCity, rawCampaign, 
     <section className={styles.scope} aria-labelledby="scope-title">
       <div className={styles.sectionHeading}>
         <div><p className={styles.sectionKicker}>What we review together</p><h2 id="scope-title">A bounded first workflow.</h2></div>
-        <p>The review focuses on one repeatable customer journey and the tools already involved.</p>
+        <p>The review focuses on one customer journey, whether we connect existing tools or design the process with you.</p>
       </div>
       <div className={styles.scopeGrid}>
+        <article><h3>No website or workflow yet?</h3><p>HBI can build an end-to-end solution to house your Digital Front Desk: discovery, UX/UI design, a website or application, approved content, intake forms, workflow design, integrations, hosting, analytics and reporting. We agree scope, feasibility, permissions and support before building.</p></article>
         <article><h3>Approved information</h3><p>Which services, policies, FAQs, and business details the assistant may use.</p></article>
-        <article><h3>Current booking path</h3><p>Where customers schedule, request an estimate, submit an inquiry, or reach a person today.</p></article>
+        <article><h3>Your customer pathway</h3><p>Connect how customers schedule, request an estimate or reach a person today—or define a new pathway together.</p></article>
         <article><h3>Human handoff</h3><p>Which questions or exceptions should always move to an owner or team member.</p></article>
         <article><h3>Useful measurement</h3><p>Which questions, completed handoffs, or qualified requests would show whether the pilot is useful.</p></article>
       </div>
@@ -172,7 +173,7 @@ export function VirtualFrontDeskClient({ initialIndustry, rawCity, rawCampaign, 
     </section>
 
     <section className={styles.finalCta} aria-labelledby="final-cta-title">
-      <div><p className={styles.sectionKicker}>Bring one workflow</p><h2 id="final-cta-title">Let’s find the clearest next step.</h2><p>We’ll review the questions customers ask, how you respond today, and whether your current scheduling or inquiry tools can support a bounded pilot.</p></div>
+      <div><p className={styles.sectionKicker}>Bring a goal or a workflow</p><h2 id="final-cta-title">Let’s find the clearest next step.</h2><p>We’ll review the questions customers ask and the experience you want to create—then scope how to connect your current tools or build the foundation you need.</p></div>
       <div className={styles.finalActions}>
         <Link href={reviewHref} className={styles.primary} onClick={() => capture("workflow_review_cta_clicked", { industry, city, campaign, placement: "closing" })}>Request a 15-minute workflow review <ArrowRightIcon size={20} aria-hidden="true" /></Link>
         <button type="button" className={styles.assistantButton} onClick={() => openAssistant()}><ChatCircleDotsIcon size={20} aria-hidden="true" />Ask HBI Customer Care Assistant</button>

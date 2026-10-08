@@ -16,6 +16,10 @@ test('Marin cheerleader delivery applies consistently to the greeting and conver
   assert.match(voiceDelivery, /across follow-up turns, not just the introduction/);
   assert.match(voiceDelivery, /quiet or brief visitor response alone is not a reason to become subdued/);
   assert.match(voiceDelivery, /Respect an explicit request to slow down/);
+  assert.match(voiceDelivery, /welcoming cheerleader, not a relaxed narrator/);
+  assert.match(voiceDelivery, /no soft fade-out/);
+  assert.match(voiceDelivery, /Before each ordinary reply, reset/);
+  assert.match(voiceDelivery, /Delivery directions are silent instructions/);
   assert.match(readFileSync('app/api/voice/route.ts', 'utf8'), /voice: "marin"/);
   assert.match(readFileSync('app/api/voice/route.ts', 'utf8'), /instructions:.*voiceInstructions/);
 });
@@ -24,6 +28,9 @@ test('voice greeting uses the approved identity and retains truthful disclosure'
   assert.match(voiceGreeting, /Hello, I'm Marin, HBI's Virtual Customer Care Assistant/);
   assert.match(voiceInstructions, /Your name is Marin/);
   assert.match(voiceGreeting, /HBI's Virtual Customer Care Assistant/);
+  assert.match(voiceGreeting, /Digital Front Desk/);
+  assert.match(voiceGreeting, /complete digital experience/);
+  assert.match(voiceInstructions, /HBI can build the end-to-end foundation/);
   assert.doesNotMatch(voiceGreeting, /AI agent|AI-generated|automated Customer/);
   assert.match(voiceInstructions, /Be honest.*if asked/);
   assert.match(voiceInstructions, /short, complete sentences/);

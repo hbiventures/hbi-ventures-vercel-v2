@@ -55,7 +55,10 @@ test("landing copy retains scope and proof boundaries", () => {
   assert.match(page, /not a claim that the same workflow or result is already deployed/);
   assert.match(page, /Request a 15-minute workflow review/);
   assert.match(page, /Featured HBI product/);
-  assert.match(page, /<h2 id="examples-title">Virtual Front Desk<\/h2>/);
+  assert.match(page, /<h2 id="examples-title">Digital Front Desk<\/h2>/);
+  assert.match(page, /also called Virtual Front Desk/);
+  assert.match(page, /No website or workflow yet/);
+  assert.match(page, /end-to-end solution to house your Digital Front Desk/);
   assert.match(page, /See it work in your industry/);
   assert.match(page, /prefers-reduced-motion/);
   assert.match(page, /industry_examples_cta_clicked/);

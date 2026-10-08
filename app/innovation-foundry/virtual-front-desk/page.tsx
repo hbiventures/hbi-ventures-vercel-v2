@@ -4,12 +4,12 @@ import { parseVirtualFrontDeskIndustry } from "../../lib/virtual-front-desk";
 import { VirtualFrontDeskClient } from "./VirtualFrontDeskClient";
 
 export const metadata: Metadata = {
-  title: "Virtual Front Desk for Local Small Businesses | HBI Innovation Foundry",
-  description: "Explore a virtual front desk that uses approved business information to answer customer questions and guide people into your existing scheduling or inquiry process.",
+  title: "Digital Front Desk for Small Businesses | HBI Innovation Foundry",
+  description: "Explore HBI Digital Front Desk: approved answers and clear customer next steps. Connect existing tools or let HBI build your digital experience and workflow end to end.",
   alternates: { canonical: "/innovation-foundry/virtual-front-desk" },
   openGraph: {
-    title: "Turn customer questions into scheduled next steps",
-    description: "A focused virtual front desk and scheduling-pathway review for College Park and East Point small businesses.",
+    title: "Digital Front Desk — built on the HBI Digital Experience Platform",
+    description: "Connect your existing customer journey or build a new digital experience and workflow with HBI Innovation Foundry.",
     url: "/innovation-foundry/virtual-front-desk",
     type: "website",
   },

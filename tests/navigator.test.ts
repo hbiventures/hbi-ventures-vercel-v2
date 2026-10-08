@@ -18,6 +18,9 @@ test('related project links are relevant, bounded and app-owned', () => {
   assert.ok(relatedReferences('Video, payment and campaign strategy').includes('lia'));
   assert.ok(relatedReferences('Academy enrollment').includes('steam'));
   assert.ok(relatedReferences('How could a plumber use a virtual front desk?').includes('frontDesk'));
+  assert.equal(relatedReferences('LIA video, EJC calendar, STEAM, analytics and Digital Front Desk')[0], 'frontDesk');
+  assert.equal(relatedReferences('Digital front-desk for a new business')[0], 'frontDesk');
+  assert.equal(navigatorReferences.frontDesk.href, '/innovation-foundry/virtual-front-desk');
   assert.equal(navigatorReferences.steam.href, 'https://hbisteam.org');
   assert.ok(!isReferenceId('https://untrusted.example'));
   assert.ok(!isReferenceId('__proto__'));

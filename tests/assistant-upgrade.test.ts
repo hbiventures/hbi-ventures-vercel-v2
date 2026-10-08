@@ -42,6 +42,13 @@ test('voice uses existing server credential and never returns it; gated and orig
     requests++; const config = JSON.parse(String((init.body as FormData).get('session')));
     assert.match(config.instructions, /not a human/); assert.match(config.instructions, /no business action tools/);
     assert.match(config.instructions, /Virtual Customer Care Assistant/);
+    assert.match(config.instructions, /welcoming cheerleader, not a relaxed narrator/);
+    assert.match(config.instructions, /TURN RESET/);
+    assert.match(config.instructions, /Digital Front Desk is a new HBI product/);
+    assert.match(config.instructions, /No existing website or established workflow is required/);
+    assert.match(config.instructions, /Internal skills and third-party tools support HBI's delivery process/);
+    assert.match(config.instructions, /No prices, packages, guaranteed savings/);
+    assert.equal(config.audio.output.voice, 'marin');
     assert.equal(config.max_output_tokens, 2048);
     assert.equal(config.audio.input.turn_detection.threshold, 0.65);
     assert.equal(config.audio.input.turn_detection.silence_duration_ms, 700);
