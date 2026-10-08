@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SiteFooter, SiteHeader } from "../components/SiteHeader";
 import { ContactForm } from "./ContactForm";
 import { parseEngagementEntry, parseEngagementOffer } from "../lib/engagement";
+import { parseVirtualFrontDeskCampaign, parseVirtualFrontDeskCity, parseVirtualFrontDeskContent, parseVirtualFrontDeskIndustry, type VirtualFrontDeskAttribution } from "../lib/virtual-front-desk";
 
 export const metadata: Metadata = {
   title: "Connect With HBIVentures",
@@ -12,6 +13,13 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
   const query = await searchParams;
   const offer = parseEngagementOffer(query.offer);
   const entry = parseEngagementEntry(query.from);
+  const industry = parseVirtualFrontDeskIndustry(query.vfd_industry);
+  const attribution: VirtualFrontDeskAttribution | undefined = entry === "virtual-front-desk" ? {
+    industry,
+    city: parseVirtualFrontDeskCity(query.vfd_city),
+    campaign: parseVirtualFrontDeskCampaign(query.vfd_campaign),
+    content: parseVirtualFrontDeskContent(query.vfd_content, industry),
+  } : undefined;
   return (
     <main>
       <SiteHeader />
@@ -28,7 +36,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
             <a href="mailto:info@hbiventures.com">info@hbiventures.com</a>
             <details className="contact-other"><summary>Here for another part of HBI?</summary><p>Partnerships, sponsorships, research, volunteering and community inquiries are welcome. Choose the relevant area in the form.</p><p>For Academy programs and student projects, visit <a href="https://hbisteam.org">HBI STEAM Academy</a>.</p></details>
           </div>
-          <ContactForm key={`${offer}:${entry}`} initialOffer={offer} entry={entry} />
+          <ContactForm key={`${offer}:${entry}:${attribution?.industry ?? "none"}`} initialOffer={offer} entry={entry} initialAttribution={attribution} />
         </section>
       </div>
       <SiteFooter />

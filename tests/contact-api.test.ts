@@ -7,7 +7,8 @@ import ts from 'typescript';
 const source = readFileSync(new URL('../app/api/contact/route.ts', import.meta.url), 'utf8')
   .replace('"next/server"', JSON.stringify(import.meta.resolve('next/server.js')))
   .replace('"../../lib/engagement"', JSON.stringify(new URL('../app/lib/engagement.ts', import.meta.url).href))
-  .replace('"../../lib/assistant-interests"', JSON.stringify(new URL('../app/lib/assistant-interests.ts', import.meta.url).href));
+  .replace('"../../lib/assistant-interests"', JSON.stringify(new URL('../app/lib/assistant-interests.ts', import.meta.url).href))
+  .replace('"../../lib/virtual-front-desk"', JSON.stringify(new URL('../app/lib/virtual-front-desk.ts', import.meta.url).href));
 const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
 const { POST } = await import(`data:text/javascript;base64,${Buffer.from(compiled).toString('base64')}`);
 let sequence = 0;
@@ -70,6 +71,19 @@ test('Contact API validates input and preserves email delivery with mocked provi
       assert.equal(response.status, 200);
       assert.ok(String(calls.at(-1)!.body.text).includes(`Service to discuss: ${label}`));
     }
+  });
+  await t.test('virtual front desk inquiries retain only allowlisted landing context', async () => {
+    const response = await POST(request({ ...valid, offer: 'assistant', entry: 'virtual-front-desk', vfd_industry: 'events', vfd_city: 'east-point', vfd_campaign: 'virtual_front_desk_oct2026', vfd_content: 'events_v1' }));
+    assert.equal(response.status, 200);
+    const text = String(calls.at(-1)!.body.text);
+    assert.match(text, /Landing industry: Events & hospitality/);
+    assert.match(text, /Landing market: East Point/);
+    assert.match(text, /Landing campaign: virtual_front_desk_oct2026/);
+    assert.match(text, /Landing content: events_v1/);
+    await POST(request({ ...valid, entry: 'virtual-front-desk', vfd_industry: '<private>', vfd_city: 'home-address', vfd_campaign: 'private-campaign', vfd_content: 'private-content' }));
+    const bounded = String(calls.at(-1)!.body.text);
+    assert.doesNotMatch(bounded, /<private>|home-address|private-campaign|private-content/);
+    assert.match(bounded, /Landing industry: All small businesses/);
   });
   await t.test('legacy forms work; unknown attribution is not echoed', async () => {
     const { offer, entry, submission_id, ...legacy } = valid;

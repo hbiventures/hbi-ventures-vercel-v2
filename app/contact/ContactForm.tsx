@@ -6,6 +6,7 @@ import { assessmentInterest, assessmentStorageKey, parseApprovedAssessment } fro
 import { contactInterests, engagementOffers, parseContactInterest, parseEngagementEntry, parseEngagementOffer, type EngagementEntry, type EngagementOffer } from "../lib/engagement";
 import { assistantHandoffKey, assistantInterests, parseAssistantHandoff, type AssistantHandoff } from "../lib/assistant-interests";
 import { trackAssistant } from "../lib/assistant-analytics";
+import { parseVirtualFrontDeskCampaign, parseVirtualFrontDeskCity, parseVirtualFrontDeskContent, parseVirtualFrontDeskIndustry, virtualFrontDeskScenarios, type VirtualFrontDeskAttribution } from "../lib/virtual-front-desk";
 
 const posthogConfigured = Boolean(
   process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN && process.env.NEXT_PUBLIC_POSTHOG_HOST,
@@ -16,15 +17,23 @@ function trackContact(event: string, form: HTMLFormElement) {
   const data = new FormData(form);
   // Explicit allowlisted categories only; never names, email, message, URLs or lead references.
   try {
+    const entry = parseEngagementEntry(data.get("entry"));
+    const landingIndustry = parseVirtualFrontDeskIndustry(data.get("vfd_industry"));
     posthog.capture(event, {
       offer: parseEngagementOffer(data.get("offer")) || "not_selected",
-      entry: parseEngagementEntry(data.get("entry")),
+      entry,
       interest: parseContactInterest(data.get("interest")) || "not_selected",
+      ...(entry === "virtual-front-desk" ? {
+        landing_industry: landingIndustry,
+        landing_city: parseVirtualFrontDeskCity(data.get("vfd_city")),
+        landing_campaign: parseVirtualFrontDeskCampaign(data.get("vfd_campaign")),
+        landing_content: parseVirtualFrontDeskContent(data.get("vfd_content"), landingIndustry),
+      } : {}),
     });
   } catch { /* A tracking failure must not block an inquiry or report it as failed. */ }
 }
 
-export function ContactForm({ initialOffer = "", entry = "direct" }: { initialOffer?: EngagementOffer | ""; entry?: EngagementEntry }) {
+export function ContactForm({ initialOffer = "", entry = "direct", initialAttribution }: { initialOffer?: EngagementOffer | ""; entry?: EngagementEntry; initialAttribution?: VirtualFrontDeskAttribution }) {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const submission = useRef<{ signature: string; id: string } | null>(null);
@@ -114,8 +123,15 @@ export function ContactForm({ initialOffer = "", entry = "direct" }: { initialOf
       if (!started.current) { started.current = true; trackContact("contact_form_started", event.currentTarget); }
     }}>
       <input type="hidden" name="entry" value={entry} />
+      {initialAttribution && <>
+        <input type="hidden" name="vfd_industry" value={initialAttribution.industry} />
+        <input type="hidden" name="vfd_city" value={initialAttribution.city} />
+        <input type="hidden" name="vfd_campaign" value={initialAttribution.campaign} />
+        <input type="hidden" name="vfd_content" value={initialAttribution.content} />
+      </>}
       {prefilled && <div className="assessment-prefill-note" role="status"><strong>Your reviewed brief is ready.</strong>You can edit it below. Nothing is sent until you choose “Send message”.</div>}
       <p className="contact-form-intro">Tell us a little about your project. Required fields are marked with *.</p>
+      {initialAttribution && <p className="assessment-prefill-note" role="status"><strong>Workflow review context saved.</strong>{virtualFrontDeskScenarios[initialAttribution.industry].label}{initialAttribution.city !== "local" ? ` · ${initialAttribution.city === "east-point" ? "East Point" : "College Park"}` : ""}. This category-only context will accompany your inquiry; add your current tools and scheduling path below.</p>}
       <label className="form-honeypot" aria-hidden="true">Website<input name="website" autoComplete="off" tabIndex={-1} /></label>
       <div className="form-row"><label>First name *<input name="first_name" maxLength={80} autoComplete="given-name" required /></label><label>Last name *<input name="last_name" maxLength={80} autoComplete="family-name" required /></label></div>
       <div className="form-row"><label>Email address *<input type="email" name="email" maxLength={254} autoComplete="email" required /></label><label>Phone number <span>Optional</span><input type="tel" name="phone" maxLength={40} autoComplete="tel" /></label></div>
@@ -131,7 +147,7 @@ export function ContactForm({ initialOffer = "", entry = "direct" }: { initialOf
         {status === "success" && <p className="form-success">Thank you—your inquiry has been accepted for email delivery to HBI. We’ll review it and follow up using your contact details.{reference && <span className="contact-reference">Inquiry reference: {reference}</span>}</p>}
         {status === "error" && <p className="form-error">{errorMessage} <a href="mailto:info@hbiventures.com">Email us directly</a></p>}
       </div>
-      <p className="form-note">Sending shares these details with HBI via our email provider, Resend, so we can respond. Do not include passwords, payment details or private customer information. This form does not send your message to the AI assistant.</p>
+      <p className="form-note">Sending shares these details with HBI via our email provider, Resend, so we can respond. Do not include passwords, payment details or private customer information. This form does not send your message to the AI assistant. <a href="/privacy#information">Privacy Notice</a>.</p>
     </form>
   );
 }

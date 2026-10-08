@@ -17,9 +17,6 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
   const [captions, setCaptions] = useState<Caption[]>([]);
   const [caption, setCaption] = useState("");
   const [consent, setConsent] = useState(false);
-  const privacyNotice = useRef<HTMLDetailsElement>(null);
-  const privacyDetails = useRef<HTMLDetailsElement>(null);
-  const captionsNotice = useRef<HTMLDetailsElement>(null);
   const [available, setAvailable] = useState<boolean | null>(null);
   const pc = useRef<RTCPeerConnection | null>(null);
   const media = useRef<MediaStream | null>(null);
@@ -58,22 +55,10 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
     setCaptions([...transcript.current]); setCaption("");
   }
 
-  function collapsePrivacy() {
-    if (privacyNotice.current) privacyNotice.current.open = false;
-    if (privacyDetails.current) privacyDetails.current.open = false;
-    if (captionsNotice.current) captionsNotice.current.open = false;
-  }
-
-  function updateConsent(checked: boolean) {
-    setConsent(checked);
-    if (checked) collapsePrivacy();
-  }
-
   async function start() {
     if (!consent || !available || pc.current || phase === "connecting") return;
     // Each start consumes this opt-in; a later session requires a new choice.
     setConsent(false);
-    collapsePrivacy();
     const attempt = ++generation.current;
     setError(""); setPhase("connecting"); setMuted(false);
     setActivity(initialVoiceActivity); setPlaybackPaused(true);
@@ -134,25 +119,19 @@ export function TalkToHbi({ onTranscript, onEnd }: { onTranscript: (messages: Ch
         <span className="marin-halo" />
         <span className="marin-orbit marin-orbit-one" />
         <span className="marin-orbit marin-orbit-two" />
-        <Image className="marin-core" src="/refresh/marin-voice-core.png" width={140} height={140} sizes="140px" alt="" />
+        <Image className="marin-core" src="/refresh/hbi-emblem-engraved.png" width={360} height={432} sizes="112px" alt="" />
         <span className="marin-voice-bars">{[0, 1, 2, 3, 4].map(index => <i key={index} />)}</span>
       </div>
       <div className="marin-status"><p role="status" aria-atomic="true">{voiceVisualLabels[visualState]}</p><small>{phase === "live" ? muted ? "Microphone off · Marin can still reply" : "Microphone on · you can interrupt" : "Microphone off"}</small></div>
       <button type="button" className="marin-motion-toggle" aria-pressed={motionPaused} onClick={() => setMotionPaused(current => !current)}>{motionPaused ? "Resume animation" : "Pause animation"}</button>
     </div>
-    <details ref={privacyNotice} className="assistant-privacy" open={!consent && (phase === "ready" || phase === "ended")}>
-    <summary>Voice privacy notice</summary>
-    <p>This is an AI-generated voice, not a live HBI team member. The HBI Digital Experience Platform uses OpenAI APIs to provide this session-based voice conversation. While connected, your microphone audio goes directly from your browser to OpenAI for processing.</p>
-    <p>Your microphone stays off until you opt in, select Start voice conversation and allow browser microphone access. Ending the voice session or closing the assistant stops its microphone tracks and closes its voice connection. Muting pauses microphone input but keeps the session connected.</p>
-    </details>
-    <details ref={privacyDetails} className="assistant-privacy"><summary>Session privacy & data handling</summary><p>HBI does not save an audio recording in this experience. Captions can remain in this page after a call; returning to text adds completed captions to the current conversation. Sharing a transcript with HBI’s team requires separate review and consent on your inquiry.</p><p>Ending a session stops further microphone transmission; it does not delete information already sent or processed. OpenAI’s retention policies and applicable account settings still apply. See <a href="https://developers.openai.com/api/docs/guides/your-data" target="_blank" rel="noopener noreferrer">OpenAI’s API data controls (opens in a new tab)</a>.</p><p>Please do not share passwords, payment-card details, health information or other sensitive information. Voice is optional; you can use text instead. Each new voice session requires a fresh opt-in, even if your browser remembers microphone permission.</p></details>
-    {(phase === "ready" || phase === "ended") && <><label className="navigator-approval"><input type="checkbox" checked={consent} onChange={event => updateConsent(event.target.checked)} />I agree to activate my microphone for this voice session on the HBI Digital Experience Platform and send my audio to OpenAI for processing through its APIs.</label><button type="button" className="navigator-primary" disabled={!consent || !available} onClick={() => void start()}>Start voice conversation</button></>}
+    <p className="assistant-voice-privacy">Marin is an AI-generated voice. Your microphone stays off until you opt in. <a href="/privacy#voice">Read the Privacy Notice</a>.</p>
+    {(phase === "ready" || phase === "ended") && <><label className="navigator-approval"><input type="checkbox" checked={consent} onChange={event => setConsent(event.target.checked)} />I agree to activate my microphone for this voice session on the HBI Digital Experience Platform and send my audio to OpenAI for processing through its APIs. Each new voice session requires a fresh opt-in.</label><button type="button" className="navigator-primary" disabled={!consent || !available} onClick={() => void start()}>Start voice conversation</button></>}
     {available !== true && <p role="status">{available === null ? "Checking voice availability…" : "Voice is not enabled in this environment yet. Text conversation and Contact HBI remain available."}</p>}
     {(phase === "connecting" || phase === "live") && <div className="assistant-actions"><button type="button" disabled={phase !== "live"} onClick={() => { const next = !muted; media.current?.getAudioTracks().forEach(track => { track.enabled = !next; }); setMuted(next); }}>{muted ? <MicrophoneSlashIcon aria-hidden="true" /> : <MicrophoneIcon aria-hidden="true" />}{muted ? "Unmute microphone" : "Mute microphone"}</button><button type="button" onClick={end}>End voice conversation</button></div>}
     <audio ref={audio} autoPlay controls aria-label="Marin voice playback" onPlaying={event => setPlaybackPaused(event.currentTarget.muted || event.currentTarget.volume === 0)} onPause={() => setPlaybackPaused(true)} onWaiting={() => setPlaybackPaused(true)} onVolumeChange={event => setPlaybackPaused(event.currentTarget.paused || event.currentTarget.muted || event.currentTarget.volume === 0)} />
     {error && <p role="alert">{error}</p>}
     <div className="assistant-captions" role="log" aria-label="Voice captions" aria-live="polite">{captions.map(item => <p key={`${item.role}-${item.id}`}><strong>{item.role === "user" ? "You" : "Marin"}:</strong> {item.text}</p>)}{caption && <p aria-live="off">{caption}</p>}</div>
-    <details ref={captionsNotice} className="assistant-privacy" open={!consent && (phase === "ready" || phase === "ended")}><summary>About voice captions</summary><p>Captions may contain errors. Returning to text adds completed captions to this browser’s conversation, labeled as voice. Review them before choosing to share a transcript. The voice session starts separately from your text chat.</p></details>
     <button type="button" className="navigator-back" onClick={back}>Return to text conversation</button>
   </section>;
 }

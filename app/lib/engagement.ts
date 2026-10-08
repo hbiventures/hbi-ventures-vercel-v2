@@ -8,7 +8,7 @@ export const engagementOffers = [
 ] as const;
 
 export type EngagementOffer = typeof engagementOffers[number]["id"];
-export const engagementEntries = ["hero", "offer", "lia", "ejc", "steam", "closing", "header", "foundry", "assessment", "direct"] as const;
+export const engagementEntries = ["hero", "offer", "lia", "ejc", "steam", "closing", "header", "foundry", "virtual-front-desk", "assessment", "direct"] as const;
 export type EngagementEntry = typeof engagementEntries[number];
 
 export const contactInterests = [

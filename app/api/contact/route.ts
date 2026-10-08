@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { engagementLabel, parseContactInterest, parseEngagementEntry, parseEngagementOffer } from "../../lib/engagement";
 import { assistantInterests, parseAssistantInterests } from "../../lib/assistant-interests";
+import { parseVirtualFrontDeskCampaign, parseVirtualFrontDeskCity, parseVirtualFrontDeskContent, parseVirtualFrontDeskIndustry, virtualFrontDeskScenarios } from "../../lib/virtual-front-desk";
 
 export const runtime = "nodejs";
 
@@ -66,6 +67,10 @@ export async function POST(request: Request) {
   const submissionId = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(submittedId) ? submittedId : crypto.randomUUID();
   const offer = parseEngagementOffer(payload.offer);
   const entry = parseEngagementEntry(payload.entry);
+  const landingIndustry = parseVirtualFrontDeskIndustry(payload.vfd_industry);
+  const landingCity = parseVirtualFrontDeskCity(payload.vfd_city);
+  const landingCampaign = parseVirtualFrontDeskCampaign(payload.vfd_campaign);
+  const landingContent = parseVirtualFrontDeskContent(payload.vfd_content, landingIndustry);
   const confirmedInterests = parseAssistantInterests(payload.assistant_interests);
   const transcriptApproved = payload.transcript_consent === true;
   if (transcriptApproved && (typeof payload.transcript !== "string" || !payload.transcript.trim() || payload.transcript.length > 30000)) return NextResponse.json({ error: "Please review your transcript (maximum 30,000 characters) or remove it." }, { status: 400 });
@@ -109,6 +114,12 @@ export async function POST(request: Request) {
     `Area of interest: ${interest}`,
     `Service to discuss: ${engagementLabel(offer)}`,
     `Website entry: ${entry}`,
+    ...(entry === "virtual-front-desk" ? [
+      `Landing industry: ${virtualFrontDeskScenarios[landingIndustry].label}`,
+      `Landing market: ${landingCity === "east-point" ? "East Point" : landingCity === "college-park" ? "College Park" : "Local / not specified"}`,
+      `Landing campaign: ${landingCampaign}`,
+      `Landing content: ${landingContent}`,
+    ] : []),
     `Inquiry reference: ${submissionId}`,
     `Visitor-confirmed interests: ${assistantInterests.filter(item => confirmedInterests.includes(item.id)).map(item => item.label).join(", ") || "Not provided"}`,
     `Transcript sharing consent: ${transcriptApproved ? "Explicit opt-in on submitted form" : "Not granted; no transcript included"}`,

@@ -14,6 +14,8 @@ const navigation = [
   ["Contact", "/contact"],
 ];
 
+const footerNavigation = [...navigation, ["Privacy", "/privacy"]];
+
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
@@ -51,7 +53,7 @@ export function SiteHeader() {
 export function SiteFooter() {
   return <footer className="hbi-footer">
     <Link href="/" aria-label="HBI Ventures home"><HbiBrand /></Link>
-    <div className="hbi-footer-center"><p>Technology. Talent. Opportunity.</p><nav aria-label="Footer navigation">{navigation.map(([label, href]) => <Link href={href} key={href}>{label}</Link>)}</nav></div>
+    <div className="hbi-footer-center"><p>Technology. Talent. Opportunity.</p><nav aria-label="Footer navigation">{footerNavigation.map(([label, href]) => <Link href={href} key={href}>{label}</Link>)}</nav></div>
     <div className="hbi-footer-contact"><a href="mailto:info@hbiventures.com"><EnvelopeSimpleIcon size={18} aria-hidden="true" />info@hbiventures.com</a><small>© {new Date().getFullYear()} HBI Ventures, LLC</small></div>
   </footer>;
 }

@@ -1,9 +1,11 @@
+import { virtualFrontDeskStories } from "./virtual-front-desk-stories.js";
+
 export type NavigatorTopic = "website" | "automation" | "integrations" | "ecosystem";
 export type ChatMessage = { role: "assistant" | "user"; text: string };
 
 export const navigatorTopics = [
-  { id: "website", label: "Create a digital experience", question: "How could HBI bring our organization’s vision to life through a digital experience, and which projects show that work?" },
-  { id: "automation", label: "Automate work in our business", question: "How could assistants and workflow automation help our small or medium-sized business? Distinguish delivered HBI examples from ideas we would scope." },
+  { id: "website", label: "Improve a customer experience", question: "How could HBI bring our organization’s vision to life through a digital experience, and which projects show that work?" },
+  { id: "automation", label: "Automate a repetitive workflow", question: "How could assistants and workflow automation help our small or medium-sized business? Distinguish delivered HBI examples from ideas we would scope." },
   { id: "integrations", label: "Connect our business tools", question: "How could HBI connect our forms, calendars, payments or business systems? Which integrations has HBI already delivered?" },
   { id: "ecosystem", label: "Explore HBI’s pillars and partnerships", question: "How do HBI’s three pillars fit together, and where can I explore partnerships?" },
 ] as const;
@@ -11,6 +13,7 @@ export const navigatorTopics = [
 // Link destinations are application-owned, never taken from model output.
 export const navigatorReferences = {
   platform: { label: "HBI Digital Experience Platform", href: "/#platform", detail: "AI-powered; developed within HBI Innovation Foundry." },
+  frontDesk: { label: "Explore Virtual Front Desk", href: "/innovation-foundry/virtual-front-desk", detail: "Approved answers, service guidance, human handoff and existing scheduling pathways." },
   lia: { label: "Explore LIA", href: "https://learninginnovationalliance.org", detail: "Video, forms, payments, analytics and analytics-informed campaign strategy." },
   ejc: { label: "Explore EJC", href: "https://experiencejesuschrist.org", detail: "Ask EJC, calendar-backed events, scheduling and giving pathways." },
   steam: { label: "Visit HBI STEAM", href: "https://hbisteam.org", detail: "Academy programs, student projects and learning opportunities." },
@@ -33,6 +36,7 @@ export function relatedReferences(question: string): ReferenceId[] {
   if (/\b(foundation|scholarship|donor)\b/i.test(question)) add("foundation");
   if (/\b(partner|partners|partnerships?)\b/i.test(question)) add("partners");
   if (/\b(platform|website|websites|digital experience|analytics|reporting)\b/i.test(question)) add("platform");
+  if (/\b(virtual front desk|customer care|plumb|electric|hvac|salon|venue|field service)\b/i.test(question)) add("frontDesk");
   if (/\b(automation|agent|foundry|mvp|workflow)\b/i.test(question)) add("foundry");
   return matches.length ? matches.slice(0, 3) : ["foundry", "platform"];
 }
@@ -52,6 +56,11 @@ Focused three-month MVP sprints are an engagement model, not a guaranteed timeli
 HBI positions a digital experience as a living vision board into an organization: it brings purpose, people, work and ambitions to life and gives visitors meaningful ways to connect. This is a design philosophy, not a separate vision-board software product or a promise of business results. Use digital experience as the primary service language; explain website development as one part when relevant.
 HBI presents capabilities and custom solutions, not service packages. Capabilities include digital experiences, virtual assistants, integrations, workflow automation, hosting, analytics and reporting. Education, faith-based and community organizations are examples of relevant audiences, not the only customers HBI can serve. Do not introduce named packages, bundles, tiers or prices. Direct commercial terms to a private conversation with HBI. The team agrees scope, responsibilities, timing and support for each organization; do not guarantee results or imply every capability is included.
 Small and medium-sized businesses can discuss API and business-tool integration, custom forms, scheduling and payment pathways, workflow automation, virtual assistants, analytics and reporting. A complete digital-experience rebuild is not required to discuss these services. CRM/email connections, inquiry routing, follow-up preparation and approval workflows are potential scoped use cases, not delivered-project claims. Confirm available APIs, compatibility, access permissions, data handling, consent, human review, exception handling and support with the HBI team. Do not claim compatibility with every tool, guaranteed savings, deployed CRM integrations or vendor partnerships without approved evidence.
+Virtual Front Desk is an HBI Digital Experience Platform capability for appointment- and inquiry-driven businesses. It can use approved business information to answer routine questions, guide a customer toward the right service, collect bounded non-sensitive context, hand exceptions to a person, and connect the customer to the scheduling or inquiry process the business already uses. It does not itself prove that HBI deployed this workflow for a small business, replace staff, diagnose hazards, provide regulated advice, promise availability, dispatch workers, or confirm an appointment unless an approved tool connection supports that action.
+
+ILLUSTRATIVE VIRTUAL FRONT DESK STORIES
+${virtualFrontDeskStories.map(story => `${story.label}: ${story.moment} HBI could respond by: ${story.response} Potential value to test: ${story.potentialValue} Measure: ${story.measure} Boundary: ${story.boundary}`).join("\n")}
+When a visitor asks how Virtual Front Desk could work, tell one concise story using this sequence: customer moment, assistant response, human or scheduling next step, potential business value, and what HBI would measure. Clearly call it an illustrative example, not a delivered result. Use EJC separately as delivered evidence for a visitor assistant, calendar-backed information, and external scheduling pathways; never imply EJC proves the small-business outcome.
 
 APPROVED PROJECT EVIDENCE
 ${projects.map(p => `${p.name}: ${p.summary}\nDelivered capabilities: ${p.capabilities.join("; ")}. ${p.detail}`).join("\n\n")}
@@ -63,7 +72,7 @@ HBI STEAM demonstrates immersive design, motion, responsive development, hosting
 The partner directory belongs to HBI STEAM Academy, not HBI Ventures or the Innovation Foundry. Refer Academy partner-network questions to hbisteam.org/about#partners-title. Do not describe these program relationships as Ventures clients, technology-vendor alliances, or endorsements of Foundry services. New commercial partnership inquiries can still go to Contact HBI. Do not invent partnerships, certifications, quantified results, dashboards, prices or commitments.
 
 RESPONSE AND ACTION RULES
-Use 2–4 short sentences, plain text, no Markdown links or HTML. Related-page buttons are supplied separately by the application. Name the relevant project when evidence supports the answer. Answer the visitor's question before asking at most ONE useful follow-up about their challenge, current process or existing tools. Do not turn every information request into a sales interview.
+Use 2–4 short sentences, plain text, no Markdown links or HTML. Related-page buttons are supplied separately by the application. Name the relevant project when evidence supports the answer. For a requested Virtual Front Desk story, you may use up to 5 short sentences so the customer moment, response, value, measurement, and boundary remain clear. Answer the visitor's question before asking at most ONE useful follow-up about their challenge, current process or existing tools. Do not turn every information request into a sales interview.
 Distinguish delivered work from a proposed solution or illustrative demo. Unknown facts: say you do not have that detail and offer Contact HBI. Price or timeline questions: explain that the team must confirm scope; do not estimate.
 Visitors may use Prepare project brief to review and edit a guided summary. This is not a completed professional assessment. No brief, message, booking, payment or external action is submitted by this chat. Never claim you performed one. Contact HBI remains available at /contact or info@hbiventures.com. Explicit approval transfers a brief; a separate Send message action on Contact Us is required to submit it.
 Do not request passwords, payment details, private customer records, sensitive personal information or secrets. Do not repeat secrets a visitor supplies. Suggest a non-sensitive description instead. Do not promise confidentiality, zero retention or legal compliance.

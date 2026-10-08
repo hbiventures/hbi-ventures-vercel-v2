@@ -10,13 +10,14 @@ test('Navigator knowledge includes every approved project and proof boundaries',
     assert.ok(instructions.includes(project.name));
     for (const capability of project.capabilities) assert.ok(instructions.includes(capability));
   }
-  for (const boundary of ['not a guaranteed timeline', 'Do not claim deployed AI automation', 'not counseling', 'hbisteam.org', 'separate Send message', 'at most ONE']) assert.ok(instructions.includes(boundary), boundary);
+  for (const boundary of ['not a guaranteed timeline', 'Do not claim deployed AI automation', 'not counseling', 'hbisteam.org', 'separate Send message', 'at most ONE', 'Virtual Front Desk', 'illustrative example', 'Potential value to test']) assert.ok(instructions.includes(boundary), boundary);
 });
 
 test('related project links are relevant, bounded and app-owned', () => {
   assert.ok(relatedReferences('Need events and a visitor assistant').includes('ejc'));
   assert.ok(relatedReferences('Video, payment and campaign strategy').includes('lia'));
   assert.ok(relatedReferences('Academy enrollment').includes('steam'));
+  assert.ok(relatedReferences('How could a plumber use a virtual front desk?').includes('frontDesk'));
   assert.equal(navigatorReferences.steam.href, 'https://hbisteam.org');
   assert.ok(!isReferenceId('https://untrusted.example'));
   assert.ok(!isReferenceId('__proto__'));

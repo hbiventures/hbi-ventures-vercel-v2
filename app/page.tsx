@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { MagnifyingGlassIcon, GearSixIcon, RocketLaunchIcon, ChartBarIcon } from "@phosphor-icons/react/ssr";
 import { SiteFooter, SiteHeader } from "./components/SiteHeader";
 import { ExperienceHero } from "./components/ExperienceHero";
+import { ExperienceIntro } from "./components/ExperienceIntro";
 import { PillarsOverview } from "./components/PillarsOverview";
 import { ProofShowcase } from "./components/ProofShowcase";
 import { WorkflowTheatre } from "./components/WorkflowTheatre";
@@ -26,7 +27,7 @@ export default function Home() {
   return <main className="wt-home">
     <SiteHeader />
     <div id="main-content" tabIndex={-1}>
-      <ExperienceHero />
+      <ExperienceIntro><ExperienceHero /></ExperienceIntro>
       <PillarsOverview />
       <ProofShowcase />
       <ExperienceOffer />

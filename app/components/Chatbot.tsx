@@ -1,7 +1,19 @@
 "use client";
 
 import { FormEvent, type KeyboardEvent, useEffect, useRef, useState } from "react";
-import { CompassIcon, XIcon } from "@phosphor-icons/react";
+import {
+  CaretDownIcon,
+  ChartBarIcon,
+  ChatCircleDotsIcon,
+  CompassIcon,
+  FileTextIcon,
+  GearIcon,
+  LinkIcon,
+  ShieldCheckIcon,
+  UsersIcon,
+  WaveformIcon,
+  XIcon,
+} from "@phosphor-icons/react";
 import { NavigatorBrief } from "./NavigatorBrief";
 import { TalkToHbi } from "./TalkToHbi";
 import { AssistantDemo } from "./AssistantDemo";
@@ -9,6 +21,7 @@ import { readSse } from "../lib/assistant-stream";
 import { suggestInterests, transcriptText } from "../lib/assistant-interests";
 import { assistantAnalyticsConsentKey, trackAssistant as track } from "../lib/assistant-analytics";
 import { isReferenceId, navigatorReferences, navigatorTopics, relatedReferences, visitorBriefSeed, type ChatMessage, type NavigatorTopic, type ReferenceId } from "../lib/navigator";
+import { parseVirtualFrontDeskIndustry, virtualFrontDeskScenarios } from "../lib/virtual-front-desk";
 
 type Message = ChatMessage & { references?: ReferenceId[]; source?: "suggestion" | "freeform" | "voice"; failed?: boolean };
 const welcome: Message = { role: "assistant", text: "I’m HBI’s Customer Care Assistant. I can explain our capabilities, show relevant projects, or help you prepare a project brief. What would you like to improve?" };
@@ -24,9 +37,11 @@ export function Chatbot() {
   const [voiceOpen, setVoiceOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [demoOpen, setDemoOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
   const [partial, setPartial] = useState("");
   const [stopped, setStopped] = useState(false);
   const [analyticsConsent, setAnalyticsConsent] = useState(false);
+  const [landingContext, setLandingContext] = useState("");
   const stopRequested = useRef(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,7 +56,20 @@ export function Chatbot() {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate this tab's explicit consent after SSR
       setAnalyticsConsent(window.sessionStorage.getItem(assistantAnalyticsConsentKey) === "yes");
     } catch { /* Optional analytics. */ }
-    function openNavigator() { setOpen(true); track("chat_opened", { entry: "page" }); }
+    function openNavigator(event: Event) {
+      const detail = event instanceof CustomEvent && event.detail && typeof event.detail === "object" ? event.detail as Record<string, unknown> : null;
+      if (detail?.source === "virtual-front-desk") {
+        const industry = parseVirtualFrontDeskIndustry(detail.industry);
+        setLandingContext(virtualFrontDeskScenarios[industry].label);
+        setVoiceOpen(detail.mode === "voice");
+        track("chat_opened", { entry: "virtual-front-desk", industry });
+      } else {
+        setLandingContext("");
+        setVoiceOpen(false);
+        track("chat_opened", { entry: "page" });
+      }
+      setOpen(true);
+    }
     window.addEventListener("hbi-open-navigator", openNavigator);
     return () => { window.removeEventListener("hbi-open-navigator", openNavigator); inFlight.current?.abort(); };
   }, []);
@@ -113,22 +141,61 @@ export function Chatbot() {
   }
   const defaultReferences: ReferenceId[] = topic === "ecosystem" ? ["foundry", "steam", "foundation", "partners"] : ["lia", "ejc", "steam"];
   const lastQuestion = [...messages].reverse().find(m => m.role === "user");
-  function close() { setVoiceOpen(false); inFlight.current?.abort(); setOpen(false); }
+  function close() { setVoiceOpen(false); setMoreOpen(false); inFlight.current?.abort(); setOpen(false); }
+  function showChat() {
+    setVoiceOpen(false);
+    setBriefOpen(false);
+    window.requestAnimationFrame(() => inputRef.current?.focus());
+  }
+
+  const startTopics = navigatorTopics.filter(item => item.id !== "ecosystem");
+  const topicPresentation = {
+    website: { icon: ChatCircleDotsIcon, detail: "Get guidance on common questions and next steps." },
+    automation: { icon: GearIcon, detail: "Explore ways to save time and reduce manual work." },
+    integrations: { icon: LinkIcon, detail: "Learn how HBI can work with your existing systems." },
+  } as const;
 
   return <div className="navigator-shell">
     <button ref={launcher} type="button" className="navigator-launcher" aria-haspopup="dialog" aria-controls="hbi-navigator-dialog" aria-expanded={open} onClick={() => { setOpen(true); track("chat_opened", { entry: "launcher" }); }}><CompassIcon size={22} aria-hidden="true" />HBI Customer Care Assistant</button>
     <dialog ref={dialog} id="hbi-navigator-dialog" className={`navigator-dialog ph-no-capture${expanded ? " navigator-expanded" : ""}`} aria-labelledby="hbi-assistant-title" onKeyDown={containFocus} onCancel={event => { event.preventDefault(); close(); }}>
       <header className="navigator-header"><div><strong id="hbi-assistant-title">HBI Customer Care Assistant</strong><span>Powered by HBI Digital Experience Platform</span></div><button type="button" className="navigator-close" onClick={close} aria-label="Close HBI Customer Care Assistant"><XIcon size={22} aria-hidden="true" /></button></header>
-      <div className="assistant-toolbar"><button type="button" onClick={() => setExpanded(!expanded)} aria-pressed={expanded}>{expanded ? "Compact view" : "Expand view"}</button><button type="button" disabled={pending || briefOpen} onClick={() => setVoiceOpen(!voiceOpen)} aria-pressed={voiceOpen}>{voiceOpen ? "Close voice" : "Talk to HBI"}</button><button type="button" disabled={pending || voiceOpen || briefOpen} onClick={() => setDemoOpen(!demoOpen)} aria-expanded={demoOpen}>{demoOpen ? "Close demo" : "Try automation demo"}</button></div>
-      <div className="navigator-contact"><span>Explore. Review. Connect.</span><a href="/contact" onClick={() => { track("navigator_contact_opened"); setOpen(false); }}>Contact HBI</a></div>
+      <div className="assistant-modebar">
+        <div className="assistant-mode-tabs" aria-label="Assistant mode">
+          <button type="button" className={!voiceOpen && !briefOpen ? "is-active" : ""} aria-pressed={!voiceOpen && !briefOpen} onClick={showChat}><ChatCircleDotsIcon size={20} aria-hidden="true" />Chat</button>
+          <button type="button" className={voiceOpen ? "is-active" : ""} disabled={pending || briefOpen} aria-pressed={voiceOpen} onClick={() => { setVoiceOpen(true); setDemoOpen(false); }}><WaveformIcon size={21} aria-hidden="true" />Speak with Marin</button>
+        </div>
+        <div className="assistant-more-wrap">
+          <button type="button" className="assistant-more-toggle" aria-expanded={moreOpen} aria-controls="assistant-more-menu" onClick={() => setMoreOpen(current => !current)}>More<CaretDownIcon size={16} aria-hidden="true" /></button>
+          {moreOpen && <div id="assistant-more-menu" className="assistant-more-menu">
+            <button type="button" onClick={() => { setExpanded(current => !current); setMoreOpen(false); }}>{expanded ? "Use compact view" : "Use expanded view"}</button>
+            <button type="button" disabled={pending || voiceOpen || briefOpen} onClick={() => { setDemoOpen(current => !current); setMoreOpen(false); }}>{demoOpen ? "Close automation demo" : "Try automation demo"}</button>
+            <a href="/contact" onClick={() => { track("navigator_contact_opened"); setOpen(false); }}>Contact HBI</a>
+          </div>}
+        </div>
+      </div>
       {voiceOpen && open && <div className="navigator-brief-container"><TalkToHbi onTranscript={items => setMessages(current => [...current, ...items.map(item => ({ ...item, text: `[Voice caption] ${item.text}`, source: "voice" as const }))])} onEnd={() => setVoiceOpen(false)} /></div>}
       <div hidden={!briefOpen || voiceOpen} className="navigator-brief-container"><NavigatorBrief active={briefOpen && open} seed={briefSeed} transcript={transcriptText(messages.slice(1))} suggestedInterests={suggestInterests(messages.filter(m => m.role === "user").map(m => m.text).join(" "))} onBack={() => { setBriefOpen(false); window.requestAnimationFrame(() => inputRef.current?.focus()); }} /></div>
       <div className="navigator-chat" hidden={briefOpen || voiceOpen}>
         <div className="navigator-scroll" ref={log}>
           {demoOpen && <AssistantDemo />}
-          {messages.length === 1 && <section className="navigator-start" aria-label="Optional starting points"><span className="assistant-eyebrow">Explore. Imagine. Build.</span><h2>What could work better?</h2><p>Tell me about your organization. Let’s find a useful next step.</p><div>{navigatorTopics.map(item => <button key={item.id} type="button" disabled={pending} aria-pressed={topic === item.id} onClick={() => { setTopic(item.id); track("chat_path_selected", { topic: item.id }); void ask(item.question, "suggestion"); }}>{item.label}</button>)}</div></section>}
-          <nav className="navigator-projects" aria-label="Explore approved project and HBI pages">{defaultReferences.map(id => <a key={id} href={navigatorReferences[id].href} onClick={() => { track("navigator_evidence_opened", { reference: id }); setOpen(false); }}>{navigatorReferences[id].label}</a>)}</nav>
-          <div role="log" aria-label="Conversation" aria-live="polite" aria-relevant="additions text" className="navigator-messages">{messages.map((message, index) => <article className={`navigator-message ${message.role}`} key={index}><span className="navigator-speaker">{message.role === "user" ? "You" : "HBI Customer Care Assistant"}</span><p>{message.text}</p>{!!message.references?.length && <nav aria-label="Related HBI pages" className="navigator-references"><span>Related work · HBI-approved information</span>{message.references.map(id => <a key={id} href={navigatorReferences[id].href} onClick={() => { track("navigator_evidence_opened", { reference: id }); close(); }}><strong>{navigatorReferences[id].label}</strong><small>{navigatorReferences[id].detail}</small></a>)}</nav>}{message.failed && index === messages.length - 1 && lastQuestion && <button type="button" disabled={pending} onClick={() => void ask(lastQuestion.text, lastQuestion.source ?? "freeform", true)}>Retry answer</button>}</article>)}</div>
+          {messages.length === 1 && <section className="navigator-start" aria-label="Optional starting points">
+            <h2>How can HBI help?</h2>
+            <p>{landingContext ? `You’re viewing the ${landingContext} example. Ask how HBI could shape the approved information, human handoff, and scheduling path.` : "Get answers, explore options, or take the next step for your business."}</p>
+            <div className="navigator-start-list">{startTopics.map(item => {
+              const presentation = topicPresentation[item.id];
+              const TopicIcon = presentation.icon;
+              return <button key={item.id} type="button" disabled={pending} aria-pressed={topic === item.id} onClick={() => { setTopic(item.id); track("chat_path_selected", { topic: item.id }); void ask(item.question, "suggestion"); }}>
+                <span className="navigator-start-icon"><TopicIcon size={23} aria-hidden="true" /></span>
+                <span><strong>{item.label}</strong><small>{presentation.detail}</small></span>
+              </button>;
+            })}</div>
+          </section>}
+          {messages.length === 1 && <button type="button" className="navigator-feature-row navigator-brief-entry" disabled={pending} onClick={prepareBrief}><span className="navigator-feature-icon"><FileTextIcon size={22} aria-hidden="true" /></span><span><strong>Prepare a project brief</strong><small>Share a few details to get better guidance.</small></span></button>}
+          {messages.length === 1 && <details className="navigator-resource-group">
+            <summary><span className="navigator-feature-icon"><ChartBarIcon size={22} aria-hidden="true" /></span><span>Explore example projects and outcomes</span><CaretDownIcon size={18} aria-hidden="true" /></summary>
+            <nav className="navigator-projects" aria-label="Explore approved project and HBI pages">{defaultReferences.map(id => <a key={id} href={navigatorReferences[id].href} onClick={() => { track("navigator_evidence_opened", { reference: id }); setOpen(false); }}><strong>{navigatorReferences[id].label}</strong><small>{navigatorReferences[id].detail}</small></a>)}</nav>
+          </details>}
+          <div role="log" aria-label="Conversation" aria-live="polite" aria-relevant="additions text" className="navigator-messages">{messages.map((message, index) => index === 0 && messages.length === 1 ? null : <article className={`navigator-message ${message.role}`} key={index}><span className="navigator-speaker">{message.role === "user" ? "You" : "HBI Customer Care Assistant"}</span><p>{message.text}</p>{!!message.references?.length && <nav aria-label="Related HBI pages" className="navigator-references"><span>Related work · HBI-approved information</span>{message.references.map(id => <a key={id} href={navigatorReferences[id].href} onClick={() => { track("navigator_evidence_opened", { reference: id }); close(); }}><strong>{navigatorReferences[id].label}</strong><small>{navigatorReferences[id].detail}</small></a>)}</nav>}{message.failed && index === messages.length - 1 && lastQuestion && <button type="button" disabled={pending} onClick={() => void ask(lastQuestion.text, lastQuestion.source ?? "freeform", true)}>Retry answer</button>}</article>)}</div>
           {partial && <article className="navigator-message" aria-hidden="true"><span className="navigator-speaker">HBI · answering</span><p>{partial}</p></article>}
           <div className="navigator-status" role="status" aria-live="polite" aria-atomic="true">
             {pending && (stopped ? "Stopping…" : partial ? "Answering…" : <div className="assistant-thinking">
@@ -137,9 +204,10 @@ export function Chatbot() {
               <span className="assistant-thinking-dots" aria-hidden="true"><i /><i /><i /></span>
             </div>)}
           </div>
-          <details className="assistant-privacy"><summary>Privacy & interest analytics</summary><p>Questions and conversation context you submit are sent to the HBI Digital Experience Platform, which uses OpenAI APIs to process them and generate replies. Voice is a separate, optional session: after your microphone opt-in, audio goes directly from your browser to OpenAI. Ending voice or closing the assistant stops that microphone connection; it does not delete information already processed. <a href="https://developers.openai.com/api/docs/guides/your-data" target="_blank" rel="noopener noreferrer">OpenAI’s API data controls (opens in a new tab)</a> explain provider retention.</p><p>Sharing your transcript with HBI’s team is optional and happens only through your reviewed inquiry with separate consent. Separate, optional interaction analytics use category labels and project clicks, not your questions or contact information.</p><label><input type="checkbox" checked={analyticsConsent} onChange={event => { const enabled = event.target.checked; try { window.sessionStorage.setItem(assistantAnalyticsConsentKey, enabled ? "yes" : "no"); setAnalyticsConsent(enabled); } catch { setAnalyticsConsent(false); } }} />Allow assistant interaction analytics in this browser session.</label><p>You can turn this off at any time. It stops future assistant events; it does not delete previously collected events. Analytics are reported to HBI through PostHog, not shown publicly.</p></details>
+          <div className="navigator-privacy-row"><span className="navigator-feature-icon"><ShieldCheckIcon size={22} aria-hidden="true" /></span><a href="/privacy#assistant" onClick={() => setOpen(false)}>Privacy Notice</a><label><input type="checkbox" checked={analyticsConsent} onChange={event => { const enabled = event.target.checked; try { window.sessionStorage.setItem(assistantAnalyticsConsentKey, enabled ? "yes" : "no"); setAnalyticsConsent(enabled); } catch { setAnalyticsConsent(false); } }} />Allow limited interaction analytics—not my questions</label></div>
+          <a className="navigator-feature-row navigator-contact-link" href="/contact" onClick={() => { track("navigator_contact_opened"); setOpen(false); }}><span className="navigator-feature-icon"><UsersIcon size={22} aria-hidden="true" /></span><span>Contact HBI</span></a>
         </div>
-        <div className="navigator-composer"><div className="assistant-actions"><button type="button" className="navigator-brief-button" disabled={pending} onClick={prepareBrief}>Prepare project brief</button>{pending && <button type="button" onClick={() => { stopRequested.current = true; setStopped(true); inFlight.current?.abort(); }} disabled={stopped}>Stop answer</button>}</div><form onSubmit={submit}><label htmlFor="hbi-chat-input">Ask HBI Customer Care Assistant</label><div><input ref={inputRef} id="hbi-chat-input" value={input} onChange={event => setInput(event.target.value)} maxLength={900} placeholder="What would you like to explore?" autoComplete="off" /><button type="submit" disabled={pending || !input.trim()}>Send</button></div></form><p>Automated assistance can make mistakes. Don’t share sensitive information. Messages are processed by HBI’s platform and OpenAI. No inquiry is submitted to HBI’s team until you review and send it.</p></div>
+        <div className="navigator-composer"><div className="assistant-actions">{messages.length > 1 && <button type="button" className="navigator-brief-button" disabled={pending} onClick={prepareBrief}>Prepare project brief</button>}{pending && <button type="button" onClick={() => { stopRequested.current = true; setStopped(true); inFlight.current?.abort(); }} disabled={stopped}>Stop answer</button>}</div><form onSubmit={submit}><label className="navigator-visually-hidden" htmlFor="hbi-chat-input">Ask HBI Customer Care Assistant</label><div><input ref={inputRef} id="hbi-chat-input" value={input} onChange={event => setInput(event.target.value)} maxLength={900} placeholder="Ask about your business or project" autoComplete="off" /><button type="submit" disabled={pending || !input.trim()}>Send</button></div></form><p>Messages are processed by HBI’s platform and OpenAI. Don’t share sensitive information. <a href="/privacy#assistant" onClick={() => setOpen(false)}>Privacy Notice</a>.</p></div>
       </div>
     </dialog>
   </div>;

@@ -7,12 +7,12 @@ export const metadata: Metadata = {
 };
 
 const priorities = [
-  ["01", "Scholarships & access", "Reduce financial barriers to high-quality STEAM programs, technology experiences, and career exploration."],
-  ["02", "Mentorship", "Connect learners with professionals, researchers, entrepreneurs, educators, and community leaders."],
-  ["03", "Community engagement", "Co-design relevant programs and solutions with schools, families, nonprofits, and neighborhood partners."],
-  ["04", "Volunteer network", "Mobilize technical experts, corporate teams, alumni, and community supporters."],
-  ["05", "Workforce equity", "Create pathways into high-demand technical fields for communities underrepresented in innovation."],
-  ["06", "Long-term sustainability", "Build the funding, partnerships, infrastructure, and measurement systems required for lasting impact."],
+  ["Scholarships & access", "Reduce financial barriers to high-quality STEAM programs, technology experiences, and career exploration."],
+  ["Mentorship", "Connect learners with professionals, researchers, entrepreneurs, educators, and community leaders."],
+  ["Community engagement", "Co-design relevant programs and solutions with schools, families, nonprofits, and neighborhood partners."],
+  ["Volunteer network", "Mobilize technical experts, corporate teams, alumni, and community supporters."],
+  ["Workforce equity", "Create pathways into high-demand technical fields for communities underrepresented in innovation."],
+  ["Long-term sustainability", "Build the funding, partnerships, infrastructure, and measurement systems required for lasting impact."],
 ];
 
 export default function FoundationPage() {
@@ -35,7 +35,7 @@ export default function FoundationPage() {
 
         <section className="priority-section">
           <div className="section-heading light-heading"><div><p className="eyebrow"><span>●</span> What we enable</p><h2>Access designed<br />to last.</h2></div><p>Community impact grows when opportunity is supported with the right people, resources, and long-term infrastructure.</p></div>
-          <div className="priority-grid">{priorities.map(([number, title, copy]) => <article key={number}><h3>{title}</h3><p>{copy}</p></article>)}</div>
+          <div className="priority-grid">{priorities.map(([title, copy]) => <article key={title}><h3>{title}</h3><p>{copy}</p></article>)}</div>
         </section>
 
         <section className="partnership-section">

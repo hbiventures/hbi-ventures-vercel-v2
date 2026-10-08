@@ -15,6 +15,14 @@ test('three delivered platform experiences retain analytics and reporting', () =
   }
 });
 
+test('Platform exposes the Virtual Front Desk capability without presenting it as delivered client proof', () => {
+  const source = readFileSync('app/components/ProofShowcase.tsx', 'utf8');
+  assert.match(source, /Virtual Front Desk/);
+  assert.match(source, /\/innovation-foundry\/virtual-front-desk/);
+  assert.match(source, /plumbers, electricians, HVAC and field-service teams/);
+  assert.match(source, /existing booking or inquiry process/);
+});
+
 test('project names, previews and calls to action link to the three live sites', () => {
   assert.deepEqual(platformProjects.map(project => project.url), [
     'https://learninginnovationalliance.org',

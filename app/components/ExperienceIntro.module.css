@@ -1,0 +1,23 @@
+.host { position: relative; outline: none; }
+/* Keep the project CTA clear; Customer Care remains available in the header. */
+:global(body):has(.stage) :global(.navigator-launcher) { visibility: hidden; }
+.stage { position: relative; background: #091b2c; color: #fff; scroll-margin-top: 106px; }
+.media { width: 100%; max-width: 1600px; margin: auto; aspect-ratio: 16 / 9; max-height: calc(100svh - 245px); min-height: 300px; }
+.media video, .media img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.topControls { position: absolute; top: 18px; right: max(24px, calc((100% - 1440px)/2)); display: flex; gap: 10px; }
+.topControls button, .replay { border: 1px solid #819ab7; border-radius: 24px; background: #091b2cf2; color: #fff; padding: 11px 18px; min-height: 44px; font: inherit; font-size: 13px; cursor: pointer; }
+.caption { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 22px max(24px, calc((100% - 1370px)/2)) 28px; border-top: 1px solid #264562; }
+.caption h1 { font-size: clamp(22px, 2.1vw, 32px); line-height: 1.15; letter-spacing: -.035em; margin: 0 0 8px; }
+.caption p { font-size: 14px; line-height: 1.5; margin: 0; color: #c1d6ed; }
+.cta { display: inline-flex; justify-content: center; align-items: center; background: #1454ff; color: white; border: 1px solid #90baff; border-radius: 32px; padding: 16px 24px; min-height: 48px; font-size: 15px; font-weight: 650; white-space: nowrap; text-decoration: none; }
+.replay { position: absolute; top: 12px; right: 24px; z-index: 4; background: #0d2340; padding: 8px 15px; font-size: 12px; }
+.topControls button:focus-visible, .cta:focus-visible, .replay:focus-visible { outline: 3px solid #a5eaff; outline-offset: 4px; }
+@media (max-width: 700px) {
+  .media { padding-top: 68px; min-height: 0; max-height: none; aspect-ratio: auto; }
+  .media img { height: auto; aspect-ratio: 16 / 9; }
+  .topControls { top: 12px; right: 18px; }
+  .caption { flex-direction: column; align-items: flex-start; gap: 22px; padding: 24px 24px 32px; }
+  .caption h1 { font-size: 32px; max-width: 310px; }
+  .caption p { max-width: 350px; }
+  .replay { right: 18px; top: 8px; }
+}
