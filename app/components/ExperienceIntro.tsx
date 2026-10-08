@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { EngagementLink } from "./EngagementLink";
-import { INTRO_SEEN_KEY, introMode } from "../lib/experience-intro";
+import { INTRO_SEEN_KEY, introMedia, introMode } from "../lib/experience-intro";
 import styles from "./ExperienceIntro.module.css";
 
 type Mode = "hidden" | "static" | "video";
@@ -12,6 +12,7 @@ type Mode = "hidden" | "static" | "video";
 export function ExperienceIntro({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<Mode>("hidden");
   const [paused, setPaused] = useState(false);
+  const [media, setMedia] = useState(() => introMedia(1920));
   const stage = useRef<HTMLElement>(null);
   const host = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
@@ -34,6 +35,7 @@ export function ExperienceIntro({ children }: { children: ReactNode }) {
     try { seen = sessionStorage.getItem(INTRO_SEEN_KEY) === "yes"; } catch { /* No tracking fallback. */ }
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
     const frame = requestAnimationFrame(() => {
+      setMedia(introMedia(window.innerWidth));
       const next = introMode({ seen, hash: location.hash, scrollY: window.scrollY,
         reducedMotion: reduced.matches, saveData: !!connection?.saveData });
       setMode(next);
@@ -84,6 +86,7 @@ export function ExperienceIntro({ children }: { children: ReactNode }) {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
     setPaused(false);
+    setMedia(introMedia(window.innerWidth));
     setMode(reduced || saveData ? "static" : "video");
     requestAnimationFrame(() => { stage.current?.scrollIntoView({ behavior: "instant", block: "start" }); skip.current?.focus({ preventScroll: true }); });
   }
@@ -96,14 +99,14 @@ export function ExperienceIntro({ children }: { children: ReactNode }) {
   }
 
   return <div className={styles.host} ref={host} tabIndex={-1} aria-label="HBI Ventures homepage">
-    {mode !== "hidden" && <section className={styles.stage} ref={stage} aria-label="One platform. Distinct experiences."
+    {mode !== "hidden" && <section className={styles.stage} data-portrait={media.portrait} ref={stage} aria-label="One platform. Distinct experiences."
       onKeyDown={event => { if (event.key === "Escape") finish(); }}>
       <div className={styles.media}>
         {mode === "video" ? <video ref={video} autoPlay muted playsInline preload="auto"
-          poster="/intro/platform-story-poster.webp" onEnded={finish} onError={() => setMode("static")}
+          poster={media.poster} onEnded={finish} onError={() => setMode("static")}
           aria-label="Silent ten-second introduction: LIA, EJC and HBI STEAM, built on the HBI Digital Experience Platform, developed in the Innovation Foundry.">
-          <source src="/intro/platform-story-v1.mp4" type="video/mp4" />
-        </video> : <Image src="/intro/platform-story-poster.webp" alt="LIA, EJC and HBI STEAM connected through the HBI Digital Experience Platform" width={960} height={540} sizes="100vw" priority />}
+          <source src={media.video} type="video/mp4" />
+        </video> : <Image src={media.poster} alt="LIA, EJC and HBI STEAM connected through the HBI Digital Experience Platform" width={media.width} height={media.height} sizes="100vw" priority />}
       </div>
       <div className={styles.topControls}>
         {mode === "video" && <button type="button" onClick={togglePause}>{paused ? "Resume intro" : "Pause intro"}</button>}

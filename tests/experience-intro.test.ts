@@ -1,9 +1,27 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { introMode, INTRO_SEEN_KEY } from '../app/lib/experience-intro.ts';
+import { introMedia, introMode, INTRO_SEEN_KEY } from '../app/lib/experience-intro.ts';
 
 const fresh = { seen: false, hash: '', scrollY: 0, reducedMotion: false, saveData: false };
+test('phone playback selects one readable portrait film and a matching fallback', () => {
+  for (const width of [320, 375, 390, 430, 700]) {
+    const media = introMedia(width);
+    assert.equal(media.portrait, true);
+    assert.equal(media.width / media.height, 4 / 5);
+    assert.match(media.video, /mobile-v1\.mp4$/);
+    assert.match(media.poster, /mobile-poster\.webp$/);
+  }
+  for (const width of [701, 844, 1280, 1920]) {
+    assert.equal(introMedia(width).video, '/intro/platform-story-v1.mp4');
+    assert.equal(introMedia(width).portrait, false);
+  }
+  const source = readFileSync('app/components/ExperienceIntro.tsx', 'utf8');
+  assert.equal((source.match(/<source /g) || []).length, 1);
+  assert.match(source, /poster=\{media\.poster\}/);
+  assert.match(source, /data-portrait=\{media\.portrait\}/);
+  assert.match(source, /setMedia\(introMedia\(window.innerWidth\)\)/);
+});
 test('first desktop visit plays; repeat visits and deep links reach the homepage directly', () => {
   assert.equal(introMode(fresh), 'video');
   assert.equal(introMode({ ...fresh, seen: true }), 'hidden');
