@@ -6,7 +6,7 @@ test('hero makes the audience and capabilities explicit without losing the appro
   const hero = readFileSync('app/components/ExperienceHero.tsx', 'utf8');
   assert.match(hero, /what you offer/);
   assert.match(hero, /small and midsize organizations/);
-  assert.match(hero, /customer care assistants, connected tools and workflow automation/);
+  assert.match(hero, /technology consulting, managed websites, Virtual Help Desk, product development, integrations and workflow automation/);
   assert.match(hero, /living vision board/);
 });
 

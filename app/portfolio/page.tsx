@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { SiteFooter, SiteHeader } from "../components/SiteHeader";
 
-export const metadata: Metadata = { title: "Innovation Portfolio | HBIVentures", description: "Ideas, prototypes, programs, and partnerships that bring emerging technology, education, and community impact together." };
+export const metadata: Metadata = {
+  title: "Innovation Portfolio | HBI Ventures",
+  description: "Explore HBI Ventures work and concepts across applied technology, digital experiences, sports performance, smart communities and human-centered innovation.",
+  alternates: { canonical: "/portfolio" },
+};
 
 const projects = [
   ["Sports Technology & Human Performance","Collaborative programs spanning sports medicine, sensors, performance analytics, digital health, and athlete development.",["IoT","Analytics","Wearables"]],

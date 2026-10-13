@@ -10,10 +10,10 @@ test('both assistant channels receive versioned platform, product and end-to-end
   assert.ok(instructions.includes(assistantStrategyVersion));
   for (const phrase of [
     'developed by HBI within the HBI Innovation Foundry',
-    'Digital Front Desk is a new HBI product',
-    'Virtual Front Desk is an alternate name',
+    'Virtual Help Desk is a new HBI product',
+    'Digital Front Desk and Virtual Front Desk are legacy names',
     'No existing website or established workflow is required',
-    'end-to-end solution to house the Digital Front Desk',
+    'end-to-end solution to house the Virtual Help Desk',
     'a complete rebuild is not automatically necessary',
     'no business action tools',
   ]) assert.ok(instructions.includes(phrase), phrase);

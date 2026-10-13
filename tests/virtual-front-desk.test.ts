@@ -13,7 +13,7 @@ import {
 } from "../app/lib/virtual-front-desk.ts";
 import { parseEngagementEntry } from "../app/lib/engagement.ts";
 
-test("virtual front desk industry and campaign values are strictly allowlisted", () => {
+test("virtual help desk industry and campaign values are strictly allowlisted", () => {
   for (const industry of virtualFrontDeskIndustries) {
     assert.equal(parseVirtualFrontDeskIndustry(industry), industry);
     assert.equal(parseVirtualFrontDeskContent(`${industry}_v1`, industry), `${industry}_v1`);
@@ -55,10 +55,10 @@ test("landing copy retains scope and proof boundaries", () => {
   assert.match(page, /not a claim that the same workflow or result is already deployed/);
   assert.match(page, /Request a 15-minute workflow review/);
   assert.match(page, /Featured HBI product/);
-  assert.match(page, /<h2 id="examples-title">Digital Front Desk<\/h2>/);
-  assert.match(page, /also called Virtual Front Desk/);
+  assert.match(page, /<h2 id="examples-title">Virtual Help Desk<\/h2>/);
+  assert.doesNotMatch(page, /also called Virtual Front Desk/);
   assert.match(page, /No website or workflow yet/);
-  assert.match(page, /end-to-end solution to house your Digital Front Desk/);
+  assert.match(page, /end-to-end solution to house your Virtual Help Desk/);
   assert.match(page, /See it work in your industry/);
   assert.match(page, /prefers-reduced-motion/);
   assert.match(page, /industry_examples_cta_clicked/);

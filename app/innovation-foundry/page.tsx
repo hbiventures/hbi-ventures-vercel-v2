@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { SiteFooter, SiteHeader } from "../components/SiteHeader";
 
 export const metadata: Metadata = {
-  title: "HBI Innovation Foundry | HBIVentures",
-  description: "HBI’s applied innovation engine for web applications, solutions architecture, product development, AI agents, IoT, cybersecurity, smart cities, and connected mobility.",
+  title: "Technology Consulting & Product Development | HBI Innovation Foundry",
+  description: "Technology consulting, managed websites, Virtual Help Desk, API integrations and product development for small and midsize organizations nationwide.",
+  alternates: { canonical: "/innovation-foundry" },
 };
 
 const capabilities = [
+  ["MW", "Managed Websites & Digital Experiences", "Website design, hosting, content updates and ongoing improvement shaped around your organization. Scope, support responsibilities and response expectations are agreed together."],
   ["AI", "Artificial Intelligence", "AI-first strategy, intelligent assistants, workflow automation, predictive insights, and generative applications."],
   ["AG", "AI Agent Development", "Purpose-built AI agents, copilots, knowledge retrieval, tool integration, workflow orchestration, and responsible deployment."],
   ["IN", "API & Business-tool Integration", "Connect digital experiences, forms, calendars, payment services and business systems. CRM and email connections depend on available APIs, access permissions and agreed scope."],
@@ -38,7 +40,7 @@ export default function FoundryPage() {
           <div className="section-kicker"><p>The mission</p></div>
           <div className="subpage-intro-grid">
             <h2>Turning emerging technologies into <em>practical solutions.</em></h2>
-            <div><p className="lead">The Foundry brings together technical experts, students, industry partners, researchers, and communities.</p><p>Together, they explore concepts, prototype solutions, validate value, and advance commercialization around challenges that matter.</p><p>For small and medium-sized businesses, we scope practical ways to connect existing tools, automate repeatable work and improve customer experiences. Start with one process; a complete digital-experience rebuild is not required.</p></div>
+            <div><p className="lead">The Foundry brings together technical experts, students, industry partners, researchers, and communities.</p><p>Together, they explore concepts, prototype solutions, validate value, and advance commercialization around challenges that matter.</p><p>For small and medium-sized businesses across the United States, we scope technology consulting, managed websites, product development, integrations and workflow automation. Start with one process; a complete digital-experience rebuild is not required.</p><p><a href="/innovation-foundry/virtual-front-desk">Explore Virtual Help Desk</a> for approved answers and human handoffs. <a href="/portfolio">Explore our innovation portfolio</a> for work and concepts across the wider HBI ecosystem.</p></div>
           </div>
         </section>
 

@@ -44,7 +44,7 @@ test('voice uses existing server credential and never returns it; gated and orig
     assert.match(config.instructions, /Virtual Customer Care Assistant/);
     assert.match(config.instructions, /welcoming cheerleader, not a relaxed narrator/);
     assert.match(config.instructions, /TURN RESET/);
-    assert.match(config.instructions, /Digital Front Desk is a new HBI product/);
+    assert.match(config.instructions, /Virtual Help Desk is a new HBI product/);
     assert.match(config.instructions, /No existing website or established workflow is required/);
     assert.match(config.instructions, /Internal skills and third-party tools support HBI's delivery process/);
     assert.match(config.instructions, /No prices, packages, guaranteed savings/);

@@ -49,7 +49,7 @@ test('Navigator API contracts with mocked provider only', async t => {
   assert.equal(calls.length,2);
   assert.equal(calls[1].body.store,false);
   assert.match(String(calls[1].body.instructions),/Digital Experience Platform/);
-  assert.match(String(calls[1].body.instructions),/Digital Front Desk is a new HBI product/);
+  assert.match(String(calls[1].body.instructions),/Virtual Help Desk is a new HBI product/);
   assert.match(String(calls[1].body.instructions),/No existing website or established workflow is required/);
   assert.match(String(calls[1].body.instructions),/Internal skills and third-party tools support HBI's delivery process/);
   for (const failure of ['moderation-error','moderation-invalid','flagged','provider-error','empty']) {
