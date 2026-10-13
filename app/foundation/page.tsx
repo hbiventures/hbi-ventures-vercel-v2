@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { SiteFooter, SiteHeader } from "../components/SiteHeader";
 
 export const metadata: Metadata = {
-  title: "HBI Foundation | HBIVentures",
-  description: "Expanding equitable access, mentorship, community engagement, and workforce opportunity in the innovation economy.",
+  title: "HBI Foundation | Access, Mentorship & Opportunity",
+  description: "HBI Foundation expands access to STEAM learning, mentorship, community partnerships and workforce opportunity in the innovation economy.",
+  alternates: { canonical: "/foundation" },
 };
 
 const priorities = [

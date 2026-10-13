@@ -64,14 +64,14 @@ export function VirtualFrontDeskClient({ initialIndustry, rawCity, rawCampaign, 
       <div className={styles.heroCopy}>
         <p className={styles.eyebrow}>{scenario.eyebrow}</p>
         <h1 id="virtual-front-desk-title">Turn customer questions into <span>scheduled next steps.</span></h1>
-        <p className={styles.heroIntro}>HBI Digital Front Desk answers approved questions, guides customers to the right service, and connects them to a clear next step. Built on the HBI Digital Experience Platform in our Innovation Foundry, it can connect existing tools—or be part of a complete digital experience and workflow we build with you.</p>
+        <p className={styles.heroIntro}>HBI Virtual Help Desk answers approved questions, guides customers to the right service, and connects them to a clear next step. Built on the HBI Digital Experience Platform in our Innovation Foundry, it can connect existing tools—or be part of a complete digital experience and workflow we build with you.</p>
         <div className={styles.actions}>
           <Link href={reviewHref} className={styles.primary} onClick={() => capture("workflow_review_cta_clicked", { industry, city, campaign, placement: "hero" })}>Request a 15-minute workflow review <ArrowRightIcon size={20} aria-hidden="true" /></Link>
           <button type="button" className={styles.secondary} onClick={scrollToExamples}>See an example for your industry</button>
         </div>
-        <p className={styles.scopeNote}>Start with one customer journey. We confirm tool compatibility, human handoffs, and scope before anything is connected.</p>
+        <p className={styles.scopeNote}>Available to organizations across the United States. Start with one customer journey. We confirm tool compatibility, human handoffs, and scope before anything is connected.</p>
       </div>
-      <div className={styles.journeyCard} aria-label="Example virtual front desk journey">
+      <div className={styles.journeyCard} aria-label="Example virtual help desk journey">
         <span className={styles.cardKicker}>A customer journey, connected</span>
         <ol>
           <li><ChatCircleDotsIcon size={24} aria-hidden="true" /><span><strong>Ask</strong>A customer has a question before booking.</span></li>
@@ -89,7 +89,7 @@ export function VirtualFrontDeskClient({ initialIndustry, rawCity, rawCampaign, 
         <h2 id="problem-title">Customers often need an answer before they are ready to book.</h2>
         <div>
           <p className={styles.lead}>Repeated questions, unclear service choices, and after-hours inquiries create extra work for a small team.</p>
-          <p>A virtual front desk can give an approved answer, collect the right context, and create a clearer next step—without replacing your staff or current booking system.</p>
+          <p>A virtual help desk can give an approved answer, collect the right context, and create a clearer next step—without replacing your staff or current booking system.</p>
         </div>
       </div>
     </section>
@@ -98,10 +98,10 @@ export function VirtualFrontDeskClient({ initialIndustry, rawCity, rawCampaign, 
       <div className={styles.sectionHeading}>
         <div className={styles.featuredProduct}>
           <p className={styles.sectionKicker}>Featured HBI product</p>
-          <h2 id="examples-title">Digital Front Desk</h2>
+          <h2 id="examples-title">Virtual Help Desk</h2>
           <strong>See it work in your industry.</strong>
         </div>
-        <p>Digital Front Desk—also called Virtual Front Desk—is a new product built on the HBI Digital Experience Platform, developed in the HBI Innovation Foundry. Choose your industry to explore how it could help customers find answers and take their next step.</p>
+        <p>Virtual Help Desk is a new product built on the HBI Digital Experience Platform, developed in the HBI Innovation Foundry. Choose your industry to explore how it could help customers find answers and take their next step.</p>
       </div>
       <div className={styles.tabs} role="group" aria-label="Choose an industry example">
         <button type="button" aria-pressed={industry === "general"} onClick={() => selectIndustry("general")}>All businesses</button>
@@ -139,7 +139,7 @@ export function VirtualFrontDeskClient({ initialIndustry, rawCity, rawCampaign, 
         </article>)}
       </div>
       <div className={styles.storyPrompt}>
-        <div><strong>Want to hear one of these stories?</strong><p>Open Marin’s voice experience, review HBI’s <a href="/privacy#voice">Privacy Notice</a>, and ask how Digital Front Desk could support your business.</p></div>
+        <div><strong>Want to hear one of these stories?</strong><p>Open Marin’s voice experience, review HBI’s <a href="/privacy#voice">Privacy Notice</a>, and ask how Virtual Help Desk could support your business.</p></div>
         <button type="button" onClick={() => openAssistant("voice")}><ChatCircleDotsIcon size={20} aria-hidden="true" />Ask Marin for an example</button>
       </div>
     </section>
@@ -150,7 +150,7 @@ export function VirtualFrontDeskClient({ initialIndustry, rawCity, rawCampaign, 
         <p>The review focuses on one customer journey, whether we connect existing tools or design the process with you.</p>
       </div>
       <div className={styles.scopeGrid}>
-        <article><h3>No website or workflow yet?</h3><p>HBI can build an end-to-end solution to house your Digital Front Desk: discovery, UX/UI design, a website or application, approved content, intake forms, workflow design, integrations, hosting, analytics and reporting. We agree scope, feasibility, permissions and support before building.</p></article>
+        <article><h3>No website or workflow yet?</h3><p>HBI can build an end-to-end solution to house your Virtual Help Desk: discovery, UX/UI design, a website or application, approved content, intake forms, workflow design, integrations, hosting, analytics and reporting. We agree scope, feasibility, permissions and support before building.</p></article>
         <article><h3>Approved information</h3><p>Which services, policies, FAQs, and business details the assistant may use.</p></article>
         <article><h3>Your customer pathway</h3><p>Connect how customers schedule, request an estimate or reach a person today—or define a new pathway together.</p></article>
         <article><h3>Human handoff</h3><p>Which questions or exceptions should always move to an owner or team member.</p></article>

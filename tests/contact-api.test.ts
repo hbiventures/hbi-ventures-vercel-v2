@@ -72,7 +72,7 @@ test('Contact API validates input and preserves email delivery with mocked provi
       assert.ok(String(calls.at(-1)!.body.text).includes(`Service to discuss: ${label}`));
     }
   });
-  await t.test('virtual front desk inquiries retain only allowlisted landing context', async () => {
+  await t.test('virtual help desk inquiries retain only allowlisted landing context', async () => {
     const response = await POST(request({ ...valid, offer: 'assistant', entry: 'virtual-front-desk', vfd_industry: 'events', vfd_city: 'east-point', vfd_campaign: 'virtual_front_desk_oct2026', vfd_content: 'events_v1' }));
     assert.equal(response.status, 200);
     const text = String(calls.at(-1)!.body.text);

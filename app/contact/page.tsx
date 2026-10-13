@@ -5,8 +5,9 @@ import { parseEngagementEntry, parseEngagementOffer } from "../lib/engagement";
 import { parseVirtualFrontDeskCampaign, parseVirtualFrontDeskCity, parseVirtualFrontDeskContent, parseVirtualFrontDeskIndustry, type VirtualFrontDeskAttribution } from "../lib/virtual-front-desk";
 
 export const metadata: Metadata = {
-  title: "Connect With HBIVentures",
-  description: "Bring your organization’s vision to life through a digital experience, virtual assistant, integrations or analytics with HBI Innovation Foundry. Partnership, Academy and community inquiries are welcome too.",
+  title: "Discuss Your Technology Project | HBI Ventures",
+  description: "Discuss a managed website, Virtual Help Desk, product development, business integration or automation project with HBI Innovation Foundry. Scope is agreed together.",
+  alternates: { canonical: "/contact" },
 };
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {

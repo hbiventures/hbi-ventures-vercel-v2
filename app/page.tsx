@@ -12,8 +12,43 @@ import { ExperienceOffer } from "./components/ExperienceOffer";
 import { EngagementLink } from "./components/EngagementLink";
 
 export const metadata: Metadata = {
-  title: "HBI Ventures — Your digital experience should do more",
-  description: "Your digital experience should be a living vision board into your organization. Bring your purpose, people and work to life with HBI Innovation Foundry’s design, AI, automation, integrations and analytics.",
+  title: "Technology Consulting & Managed Websites | HBI Ventures",
+  description: "Technology consulting, managed websites, Virtual Help Desk, integrations and product development for small and midsize organizations across the United States.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "Technology Consulting & Managed Websites | HBI Ventures",
+    description: "Connect your digital experience, customer care and business workflows with HBI Innovation Foundry. Serving organizations nationwide.",
+    url: "/",
+    type: "website",
+    images: [{ url: "/og.png", width: 1536, height: 1024, alt: "HBI Ventures digital experience ecosystem" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Technology Consulting & Managed Websites | HBI Ventures",
+    description: "Digital experiences, Virtual Help Desk, integrations and product development for organizations nationwide.",
+    images: ["/og.png"],
+  },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://www.hbiventures.com/#organization",
+  name: "HBI Ventures",
+  url: "https://www.hbiventures.com/",
+  logo: "https://www.hbiventures.com/refresh/hbi-logo.png",
+  email: "info@hbiventures.com",
+  description: "HBI Ventures connects applied technology, talent development and community opportunity through three complementary pillars.",
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://www.hbiventures.com/#website",
+  name: "HBI Ventures",
+  url: "https://www.hbiventures.com/",
+  inLanguage: "en-US",
+  publisher: { "@id": "https://www.hbiventures.com/#organization" },
 };
 
 const processSteps = [
@@ -25,6 +60,8 @@ const processSteps = [
 
 export default function Home() {
   return <main className="wt-home">
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
     <SiteHeader />
     <div id="main-content" tabIndex={-1}>
       <ExperienceIntro><ExperienceHero /></ExperienceIntro>

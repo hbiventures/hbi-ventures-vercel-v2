@@ -3,7 +3,7 @@ export const engagementOffers = [
   { id: "digital-experience", label: "Digital experience" },
   { id: "integrations", label: "API & business-tool integration" },
   { id: "automation", label: "Workflow automation" },
-  { id: "assistant", label: "Virtual assistants" },
+  { id: "assistant", label: "Virtual Help Desk & customer care assistants" },
   { id: "analytics", label: "Analytics & reporting" },
 ] as const;
 

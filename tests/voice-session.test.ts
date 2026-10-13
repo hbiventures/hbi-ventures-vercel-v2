@@ -28,7 +28,7 @@ test('voice greeting uses the approved identity and retains truthful disclosure'
   assert.match(voiceGreeting, /Hello, I'm Marin, HBI's Virtual Customer Care Assistant/);
   assert.match(voiceInstructions, /Your name is Marin/);
   assert.match(voiceGreeting, /HBI's Virtual Customer Care Assistant/);
-  assert.match(voiceGreeting, /Digital Front Desk/);
+  assert.match(voiceGreeting, /Virtual Help Desk/);
   assert.match(voiceGreeting, /complete digital experience/);
   assert.match(voiceInstructions, /HBI can build the end-to-end foundation/);
   assert.doesNotMatch(voiceGreeting, /AI agent|AI-generated|automated Customer/);

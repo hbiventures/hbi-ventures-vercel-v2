@@ -6,6 +6,7 @@ import styles from "./privacy.module.css";
 export const metadata: Metadata = {
   title: "Privacy Notice | HBI Ventures",
   description: "How HBI Ventures handles information across its website, Customer Care Assistant, voice experience, contact forms and analytics.",
+  alternates: { canonical: "/privacy" },
 };
 
 const sections = [

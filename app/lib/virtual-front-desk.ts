@@ -61,7 +61,7 @@ export const virtualFrontDeskScenarios: Record<VirtualFrontDeskVariant, {
 }> = {
   general: {
     label: "All small businesses",
-    eyebrow: "For College Park & East Point small businesses",
+    eyebrow: "For small businesses nationwide",
     intro: "Help customers get an approved answer, understand the right next step, and continue to the scheduling process your business already uses.",
     question: "Do you offer the service I need?",
     guide: "The assistant asks a few approved questions and explains the most relevant service or inquiry path.",
