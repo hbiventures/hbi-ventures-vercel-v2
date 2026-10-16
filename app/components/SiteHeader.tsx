@@ -9,6 +9,7 @@ import { EngagementLink } from "./EngagementLink";
 const navigation = [
   ["Pillars", "/#pillars"],
   ["Platform", "/#platform"],
+  ["Innovation Studio", "/innovation-studio"],
   ["Our work", "/#work"],
   ["About", "/about"],
   ["Contact", "/contact"],
