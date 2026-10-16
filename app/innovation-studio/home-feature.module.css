@@ -1,0 +1,12 @@
+.feature { background: #f5f7fb; border-block: 1px solid #dbe2ec; padding-block: 40px; }
+.inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 48px; }
+.copy .status { color: #42558b; font-size: 13px; font-weight: 600; line-height: 1.5; margin: 0 0 12px; }
+.copy .title { font-size: clamp(32px, 3vw, 42px); line-height: 1.1; letter-spacing: -.045em; margin: 0 0 14px; }
+.copy .description { color: #46546a; font-size: 17px; line-height: 1.65; max-width: 760px; margin: 0; }
+.inner .action { white-space: nowrap; min-height: 50px; }
+@media (max-width: 900px) {
+  .feature { padding-block: 30px; }
+  .inner { grid-template-columns: 1fr; gap: 22px; }
+  .copy .description { font-size: 16px; }
+  .inner .action { justify-self: start; }
+}

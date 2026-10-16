@@ -10,6 +10,7 @@ import { InnovationNavigator } from "./components/InnovationNavigator";
 import { AssessmentDisclosure } from "./components/AssessmentDisclosure";
 import { ExperienceOffer } from "./components/ExperienceOffer";
 import { EngagementLink } from "./components/EngagementLink";
+import studioFeature from "./innovation-studio/home-feature.module.css";
 
 export const metadata: Metadata = {
   title: "Technology Consulting & Managed Websites | HBI Ventures",
@@ -65,11 +66,13 @@ export default function Home() {
     <SiteHeader />
     <div id="main-content" tabIndex={-1}>
       <ExperienceIntro><ExperienceHero /></ExperienceIntro>
-      <PillarsOverview />
-      <section className="wt-process wt-container" aria-labelledby="studio-feature-title">
-        <div className="wt-process-heading"><div><p className="wt-kicker">In development · Targeting Spring 2027</p><h2 id="studio-feature-title">Innovation Studio</h2></div><p>A planned learning workspace powered by HBI Digital Experience Platform. Students become product teams, connecting introductory lessons and maker labs with instructor and mentor guidance.</p></div>
-        <a className="eco-button" href="/innovation-studio">Explore Innovation Studio</a>
+      <section className={studioFeature.feature} id="innovation-studio" aria-labelledby="studio-feature-title">
+        <div className={`wt-container ${studioFeature.inner}`}>
+          <div className={studioFeature.copy}><p className={studioFeature.status}>In development · Targeting Spring 2027</p><h2 className={studioFeature.title} id="studio-feature-title">Innovation Studio</h2><p className={studioFeature.description}>Students become product teams. A planned learning workspace powered by HBI Digital Experience Platform, connecting introductory lessons and maker labs with instructor and mentor guidance.</p></div>
+          <a className={`eco-button ${studioFeature.action}`} href="/innovation-studio">Explore Innovation Studio</a>
+        </div>
       </section>
+      <PillarsOverview />
       <ProofShowcase />
       <ExperienceOffer />
       <WorkflowTheatre />
