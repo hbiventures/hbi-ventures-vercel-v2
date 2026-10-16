@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 const slides = [
@@ -30,22 +30,36 @@ const slides = [
   },
 ];
 
-export function CinematicHeroMedia() {
+export function CinematicHeroMedia({ sizes = "100vw" }: { sizes?: string }) {
   const [rotation, setRotation] = useState(0);
   const [paused, setPaused] = useState(false);
+  const region = useRef<HTMLDivElement>(null);
   const active = ((rotation % slides.length) + slides.length) % slides.length;
 
   useEffect(() => {
-    if (paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const timer = window.setInterval(() => {
-      setRotation((current) => current + 1);
-    }, 4500);
-
-    return () => window.clearInterval(timer);
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let timer: number | undefined;
+    let visible = true;
+    function updateTimer() {
+      window.clearInterval(timer);
+      if (paused || preference.matches || document.hidden || !visible) return;
+      timer = window.setInterval(() => setRotation(current => current + 1), 4500);
+    }
+    updateTimer();
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; updateTimer(); });
+    if (region.current) observer.observe(region.current);
+    preference.addEventListener("change", updateTimer);
+    document.addEventListener("visibilitychange", updateTimer);
+    return () => {
+      window.clearInterval(timer);
+      observer.disconnect();
+      preference.removeEventListener("change", updateTimer);
+      document.removeEventListener("visibilitychange", updateTimer);
+    };
   }, [paused]);
 
   function chooseSlide(index: number) {
+    setPaused(true);
     setRotation((current) => {
       const currentFace = ((current % slides.length) + slides.length) % slides.length;
       let distance = (index - currentFace + slides.length) % slides.length;
@@ -62,6 +76,7 @@ export function CinematicHeroMedia() {
 
   return (
     <div
+      ref={region}
       className="cinematic-hero-media"
       role="region"
       aria-roledescription="carousel"
@@ -88,7 +103,7 @@ export function CinematicHeroMedia() {
                 src={slide.src}
                 alt={index === active ? slide.alt : ""}
                 fill
-                sizes="100vw"
+                sizes={sizes}
                 quality={95}
                 priority={index === 0}
                 style={{ objectPosition: slide.position }}
@@ -99,8 +114,7 @@ export function CinematicHeroMedia() {
       </div>
 
       <div className="cinematic-hero-controls">
-        <div className="cinematic-hero-status" aria-live="polite">
-          <span>{String(active + 1).padStart(2, "0")}</span>
+        <div className="cinematic-hero-status" aria-live={paused ? "polite" : "off"}>
           <strong>{slides[active].label}</strong>
         </div>
         <div className="cinematic-hero-dots" aria-label="Choose an innovation scene">

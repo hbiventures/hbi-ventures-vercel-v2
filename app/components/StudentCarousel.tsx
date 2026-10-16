@@ -225,7 +225,7 @@ export function StudentCarousel() {
       </div>
 
       <span className="student-carousel-count" aria-live="polite">
-        {String(active + 1).padStart(2, "0")} / {String(carouselSlides.length).padStart(2, "0")}
+        {active + 1} of {carouselSlides.length}
       </span>
     </div>
   );

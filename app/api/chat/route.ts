@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-
-type ChatMessage = {
-  role: "assistant" | "user";
-  text: string;
-};
+import { navigatorInstructions, relatedReferences, validChatMessages } from "../../lib/navigator";
+import { platformProjects } from "../../lib/platform-projects";
+import { readSse } from "../../lib/assistant-stream";
+import { assistantRateLimit } from "../../lib/assistant-rate-limit";
 
 type OpenAIResponse = {
   error?: { message?: string };
@@ -15,90 +14,8 @@ type OpenAIResponse = {
 };
 
 const MODEL = process.env.OPENAI_CHAT_MODEL?.trim() || "gpt-4o-mini";
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_REQUESTS = 20;
-const requestBuckets = new Map<string, { count: number; resetAt: number }>();
 
-const HBI_ASSISTANT_INSTRUCTIONS = `
-You are the public-facing virtual assistant for HBIVentures. Help website visitors
-understand HBI and choose the right next step.
-
-Use only the verified HBI information below. Do not invent dates, prices, eligibility
-rules, commitments, partnerships, results, or contact details. If the answer is not
-covered, say you do not have that detail and invite the visitor to use the Connect
-With Us page or email info@hbiventures.com.
-
-Verified HBI information:
-- HBIVentures connects innovation, education, and community impact.
-- HBI STEAM Academy is the nonprofit arm of HBIVentures. It prepares students
-  through hands-on work in emerging technology, AI, data science, cybersecurity,
-  IoT, product development, digital media, business, and real-world problem solving.
-- HBI Innovation Foundry offers web application development, solutions architecture,
-  product development, and AI agent development.
-- Innovation Foundry MVP projects operate in focused three-month development sprints.
-- HBI works with schools, educators, businesses, sponsors, technology organizations,
-  healthcare, sports, media, and community partners.
-- The HBI Foundation supports access, scholarships, community programs, charitable
-  giving, corporate partnerships, and mission-aligned investment.
-- The portfolio includes technology and community projects. The website also
-  features Metric Mate and Soccer IQ Institute partner stories.
-- Relevant website paths are /steam-academy, /innovation-foundry, /foundation,
-  /portfolio, /partners, and /contact.
-- The contact email is info@hbiventures.com.
-
-Response rules:
-- Answer in a warm, professional, direct voice.
-- Keep most answers to 2-4 short sentences.
-- Ask at most one useful follow-up question.
-- Recommend the most relevant HBI page when helpful.
-- Never claim to be human.
-- Do not collect sensitive personal information. Direct detailed inquiries to the
-  secure contact form.
-`.trim();
-
-function clientIdentifier(request: NextRequest) {
-  return (
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    request.headers.get("x-real-ip") ||
-    "unknown"
-  );
-}
-
-function isRateLimited(identifier: string) {
-  const now = Date.now();
-  const current = requestBuckets.get(identifier);
-
-  if (!current || current.resetAt <= now) {
-    requestBuckets.set(identifier, { count: 1, resetAt: now + WINDOW_MS });
-    return false;
-  }
-
-  current.count += 1;
-  return current.count > MAX_REQUESTS;
-}
-
-function validMessages(value: unknown): ChatMessage[] | null {
-  if (!Array.isArray(value)) return null;
-
-  const messages = value
-    .slice(-10)
-    .filter(
-      (item): item is ChatMessage =>
-        typeof item === "object" &&
-        item !== null &&
-        (item as ChatMessage).role !== undefined &&
-        ["assistant", "user"].includes((item as ChatMessage).role) &&
-        typeof (item as ChatMessage).text === "string",
-    )
-    .map((item) => ({ role: item.role, text: item.text.trim().slice(0, 900) }))
-    .filter((item) => item.text.length > 0);
-
-  if (!messages.length || messages[messages.length - 1]?.role !== "user") {
-    return null;
-  }
-
-  return messages;
-}
+const HBI_ASSISTANT_INSTRUCTIONS = navigatorInstructions(platformProjects);
 
 function responseText(payload: OpenAIResponse) {
   if (payload.output_text?.trim()) return payload.output_text.trim();
@@ -115,30 +32,26 @@ function responseText(payload: OpenAIResponse) {
 }
 
 async function isFlagged(apiKey: string, text: string) {
-  try {
-    const response = await fetch("https://api.openai.com/v1/moderations", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        input: text,
-        model: "omni-moderation-latest",
-      }),
-    });
+  const response = await fetch("https://api.openai.com/v1/moderations", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ input: text, model: "omni-moderation-latest" }),
+    signal: AbortSignal.timeout(8000),
+  });
 
-    if (!response.ok) return false;
-    const payload = (await response.json()) as {
-      results?: Array<{ flagged?: boolean }>;
-    };
-    return payload.results?.[0]?.flagged === true;
-  } catch {
-    return false;
-  }
+  if (!response.ok) throw new Error("Moderation unavailable");
+  const payload = (await response.json()) as { results?: Array<{ flagged?: boolean }> };
+  if (typeof payload.results?.[0]?.flagged !== "boolean") throw new Error("Invalid moderation response");
+  return payload.results[0].flagged;
 }
 
 export async function POST(request: NextRequest) {
+  const origin = request.headers.get("origin");
+  if (origin && origin !== new URL(request.url).origin) return NextResponse.json({ error: "Request origin was not accepted." }, { status: 403 });
+  if (Number(request.headers.get("content-length")) > 50000) return NextResponse.json({ error: "Request too large." }, { status: 413 });
   const apiKey = process.env.OPENAI_API_KEY?.trim();
   if (!apiKey) {
     console.error("HBI assistant is missing OPENAI_API_KEY.");
@@ -148,7 +61,9 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (isRateLimited(clientIdentifier(request))) {
+  const sharedLimit = await assistantRateLimit(request, "chat");
+  if (sharedLimit === "unavailable") return NextResponse.json({ error: "The assistant is temporarily unavailable. Please contact HBI." }, { status: 503 });
+  if (sharedLimit === "limited") {
     return NextResponse.json(
       { error: "Please wait a few minutes before asking another question." },
       { status: 429 },
@@ -162,7 +77,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  const messages = validMessages(
+  const messages = validChatMessages(
     typeof body === "object" && body !== null
       ? (body as { messages?: unknown }).messages
       : null,
@@ -176,14 +91,16 @@ export async function POST(request: NextRequest) {
   }
 
   const latestQuestion = messages[messages.length - 1].text;
-  if (await isFlagged(apiKey, latestQuestion)) {
-    return NextResponse.json({
-      answer:
-        "I can help with HBIVentures programs, services, partnerships, and contact information. What would you like to explore?",
-    });
-  }
-
+  const streaming = (body as { stream?: unknown }).stream === true;
+  const controller = new AbortController();
+  const signal = AbortSignal.any([request.signal, controller.signal, AbortSignal.timeout(25000)]);
   try {
+    if (await isFlagged(apiKey, latestQuestion)) {
+      return NextResponse.json({
+        answer: "I can help with HBI’s services, projects, partnerships and contact information. Please describe your project without sensitive personal information.",
+      });
+    }
+
     const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
@@ -196,19 +113,48 @@ export async function POST(request: NextRequest) {
           role: message.role,
         })),
         instructions: HBI_ASSISTANT_INSTRUCTIONS,
-        max_output_tokens: 260,
+        max_output_tokens: 700,
         model: MODEL,
         store: false,
-        temperature: 0.3,
+        ...(streaming ? { stream: true } : {}),
+        ...(/^gpt-4/.test(MODEL) ? { temperature: 0.3 } : {}),
       }),
+      signal,
     });
 
+    if (streaming && response.ok && response.body) {
+      const upstream = response.body;
+      const encoder = new TextEncoder();
+      let cancelled = false;
+      const stream = new ReadableStream({
+        async start(output) {
+          const send = (data: unknown) => { if (!cancelled) output.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`)); };
+          let answer = "";
+          let complete = false;
+          try {
+            for await (const event of readSse(upstream)) {
+              if (event.type === "response.output_text.delta" && typeof event.delta === "string") {
+                answer += event.delta;
+                if (answer.length > 12000) throw new Error("Output limit");
+                send({ type: "delta", text: event.delta });
+              }
+              if (event.type === "response.completed") complete = true;
+              if (["error", "response.failed", "response.incomplete"].includes(event.type)) throw new Error("Incomplete response");
+            }
+            if (!complete || !answer.trim()) throw new Error("Incomplete response");
+            send({ type: "done", references: relatedReferences(`${latestQuestion} ${answer}`) });
+          } catch { send({ type: "error", message: "The answer was interrupted. Please retry or contact HBI." }); }
+          finally { if (!cancelled) output.close(); }
+        },
+        cancel() { cancelled = true; controller.abort(); },
+      });
+      return new Response(stream, { headers: { "Content-Type": "text/event-stream", "Cache-Control": "no-store", "X-Accel-Buffering": "no" } });
+    }
     const payload = (await response.json()) as OpenAIResponse;
     if (!response.ok) {
       console.error(
         "OpenAI rejected an HBI assistant request.",
         response.status,
-        payload.error?.message ?? "Unknown error",
       );
       return NextResponse.json(
         { error: "The HBI assistant could not answer right now. Please try again." },
@@ -224,9 +170,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ answer });
+    return NextResponse.json({ answer, references: relatedReferences(`${latestQuestion} ${answer}`) });
   } catch (error) {
-    console.error("HBI assistant request failed.", error);
+    // Do not log provider payloads or visitor conversation content.
+    console.error("HBI assistant request failed.", error instanceof Error ? error.name : "Unknown error");
     return NextResponse.json(
       { error: "The HBI assistant could not answer right now. Please try again." },
       { status: 502 },
