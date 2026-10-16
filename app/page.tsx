@@ -66,6 +66,10 @@ export default function Home() {
     <div id="main-content" tabIndex={-1}>
       <ExperienceIntro><ExperienceHero /></ExperienceIntro>
       <PillarsOverview />
+      <section className="wt-process wt-container" aria-labelledby="studio-feature-title">
+        <div className="wt-process-heading"><div><p className="wt-kicker">In development · Targeting Spring 2027</p><h2 id="studio-feature-title">Innovation Studio</h2></div><p>A planned learning workspace powered by HBI Digital Experience Platform. Students become product teams, connecting introductory lessons and maker labs with instructor and mentor guidance.</p></div>
+        <a className="eco-button" href="/innovation-studio">Explore Innovation Studio</a>
+      </section>
       <ProofShowcase />
       <ExperienceOffer />
       <WorkflowTheatre />
