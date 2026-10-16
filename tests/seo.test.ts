@@ -9,8 +9,8 @@ import { engagementLabel } from '../app/lib/engagement.ts';
 import { virtualFrontDeskScenarios, virtualFrontDeskCampaign } from '../app/lib/virtual-front-desk.ts';
 
 const origin = 'https://www.hbiventures.com';
-const paths = ['/', '/about', '/contact', '/foundation', '/innovation-foundry', '/innovation-foundry/virtual-front-desk', '/portfolio', '/privacy'];
-test('sitemap lists exactly the eight preferred public routes without tracking queries', () => {
+const paths = ['/', '/about', '/contact', '/foundation', '/innovation-foundry', '/innovation-foundry/virtual-front-desk', '/innovation-studio', '/portfolio', '/privacy'];
+test('sitemap lists preferred public routes without tracking queries', () => {
   assert.deepEqual(sitemap().map(item => new URL(item.url).pathname).sort(), [...paths].sort());
   for (const item of sitemap()) {
     const url = new URL(item.url);
