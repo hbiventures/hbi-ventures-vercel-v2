@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRightIcon, ChatCircleDotsIcon, PathIcon, CalendarCheckIcon } from "@phosphor-icons/react/ssr";
 import { platformFoundation, platformProjects } from "../lib/platform-projects";
 import { EngagementLink } from "./EngagementLink";
+import clientConnectStyles from "./ClientConnectFeature.module.css";
 
 const proof = {
   lia: "Video, custom forms, payments, site and campaign analytics, and analytics-informed strategy.",
@@ -31,7 +32,7 @@ export function ProofShowcase() {
         </ul>
         <p className="wt-platform-capability-audience"><strong>Examples:</strong> plumbers, electricians, HVAC and field-service teams; salons and wellness businesses; professional services; venues; and fitness organizations.</p>
       </article>
-      <article className="wt-platform-capability" aria-labelledby="client-connect-capability-title">
+      <article className={`wt-platform-capability ${clientConnectStyles.feature}`} aria-labelledby="client-connect-capability-title">
         <div className="wt-platform-capability-copy">
           <p className="wt-kicker">Managed Outreach &amp; Introductions</p>
           <h3 id="client-connect-capability-title">HBI DEP Client Connect</h3>

@@ -1,0 +1,7 @@
+/* Reserve room for the existing floating motion control without moving it
+   or changing any other offering's layout. Keep the native 48px CTA height. */
+@media (max-width: 700px) {
+  .feature :global(.wt-platform-capability-copy) > a {
+    width: calc(100% - 40px);
+  }
+}
