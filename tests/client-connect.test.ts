@@ -31,7 +31,7 @@ test('explicit Client Connect requests retain the app-owned reference before gen
 });
 
 test('shared Marin strategy states managed scope without business-action or readiness powers', () => {
-  assert.equal(assistantStrategyVersion, '2026-11-06-focus-client-connect-naming');
+  assert.equal(assistantStrategyVersion, '2026-11-06-focus-storefront-image');
   const instructions = navigatorInstructions([]);
   for (const text of ['Client Connect', 'client-approved outreach and follow-up', 'consented introduction', 'sales conversations and follow-up after handoff', 'not limited to healthcare', 'Do not guarantee meetings, leads, sales or client counts', 'Marin only explains and guides', 'Do not claim confirmed pilot availability', 'separate Send message action']) assert.ok(instructions.includes(text), text);
 });

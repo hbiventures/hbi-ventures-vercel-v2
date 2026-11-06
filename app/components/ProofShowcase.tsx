@@ -61,7 +61,7 @@ export function ProofShowcase() {
       <div className="wt-project-grid" id="work">
         {projectStories.map(project => <article className="wt-project" key={project.id}>
           <a className="wt-project-image" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.name} (opens in new tab)`}>
-            {project.image ? <Image src={project.image} alt={`${project.name} website`} width={project.width} height={project.height} sizes="(max-width: 700px) 90vw, 30vw" /> : <div className={focusStyles.preview} aria-hidden="true"><span>Shopify storefront UI/UX</span><strong>From brand story<br />to shopping</strong><span>Homepage → catalog → product discovery</span></div>}
+            <Image className={project.id === "focus" ? focusStyles.storefront : undefined} src={project.image} alt={project.id === "focus" ? project.imageAlt : `${project.name} website`} width={project.width} height={project.height} sizes="(max-width: 700px) 90vw, 30vw" />
           </a>
           <a className="wt-project-title" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`${project.label}: ${project.id === "focus" ? project.storyTitle : project.name} (opens in new tab)`}>
             <h3>{project.label}</h3><p className="wt-project-name">{project.id === "focus" ? project.storyTitle : project.name}</p>
