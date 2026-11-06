@@ -1,0 +1,8 @@
+.preview { display: flex; flex-direction: column; justify-content: space-between; aspect-ratio: 1.42; padding: 24px; background: #091b2c; color: #fff; }
+.preview span { color: #c6d4f2; font-size: 12px; line-height: 1.5; }
+.preview strong { font-size: clamp(28px, 2.6vw, 38px); line-height: 1.08; letter-spacing: -.04em; font-weight: 700; margin-block: 16px; }
+.foundationScope { margin: 0 0 12px; color: #53607a; font-size: 12px; line-height: 1.6; }
+@media (max-width: 700px) {
+  .preview { padding: 22px; }
+  .preview strong { font-size: 30px; }
+}

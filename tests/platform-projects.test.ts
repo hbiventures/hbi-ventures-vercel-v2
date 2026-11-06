@@ -53,6 +53,6 @@ test('homepage retains assessment and platform hierarchy without Academy partner
   assert.ok(homepage.indexOf('<ProofShowcase') < homepage.indexOf('<WorkflowTheatre'));
   assert.match(platform, /AI-powered platform developed within the HBI Innovation Foundry/);
   assert.match(platform, /Powered by HBI Digital Experience Platform/);
-  assert.match(platform, /platformProjects\.map/);
+  assert.match(platform, /projectStories\.map/);
   assert.doesNotMatch(platform, /live visitors|conversion lift|uptime/i);
 });

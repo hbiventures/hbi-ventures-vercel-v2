@@ -51,6 +51,8 @@ test('voice uses existing server credential and never returns it; gated and orig
     assert.match(config.instructions, /HBI DEP CLIENT CONNECT — MANAGED OUTREACH & INTRODUCTIONS/);
     assert.match(config.instructions, /Marin only explains and guides/);
     assert.match(config.instructions, /Do not guarantee meetings, leads, sales or client counts/);
+    assert.match(config.instructions, /FOCUS-I-APPAREL — SCOPED SHOPIFY UI\/UX PROJECT/);
+    assert.match(config.instructions, /Do not attribute HBI hosting, analytics or reporting/);
     assert.equal(config.audio.output.voice, 'marin');
     assert.equal(config.max_output_tokens, 2048);
     assert.equal(config.audio.input.turn_detection.threshold, 0.65);

@@ -59,6 +59,11 @@ test('Navigator API contracts with mocked provider only', async t => {
   assert.match(clientConnectInstructions, /HBI DEP CLIENT CONNECT — MANAGED OUTREACH & INTRODUCTIONS/);
   assert.match(clientConnectInstructions, /separate Send message action/);
   assert.match(clientConnectInstructions, /Do not guarantee meetings, leads, sales or client counts/);
+  const focusReply = await POST(request({messages:[{role:'user',text:'What did HBI do for FOCUS-I-APPAREL?'}]}));
+  const focusPayload = await focusReply.json();
+  assert.equal(focusPayload.references[0], 'focusApparel');
+  assert.match(String(calls.at(-1)!.body.instructions), /FOCUS-I-APPAREL — SCOPED SHOPIFY UI\/UX PROJECT/);
+  assert.match(String(calls.at(-1)!.body.instructions), /Do not attribute HBI hosting, analytics or reporting/);
   for (const failure of ['moderation-error','moderation-invalid','flagged','provider-error','empty']) {
     mode=failure; calls.length=0;
     const result=await POST(request({messages:[{role:'user',text:'Test request'}]}));

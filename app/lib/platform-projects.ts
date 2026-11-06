@@ -36,3 +36,18 @@ export const platformProjects = [
 ] as const;
 
 export const platformFoundation = ["Designed", "Built", "Hosted", "Analytics & reporting"] as const;
+
+/** Separate from platformProjects: scoped Shopify UI/UX work, not HBI hosting
+ * or analytics delivery. Text-only until reproduction rights are verified. */
+export const focusPortfolioProject = {
+  id: "focus", label: "FOCUS-I-APPAREL", name: "FOCUS-I-APPAREL",
+  storyTitle: "From brand story to shopping",
+  category: "UI/UX · Shopify storefront",
+  url: "https://www.focusiapparel.com/", domain: "www.focusiapparel.com",
+  image: null, width: 1280, height: 900,
+  summary: "A branded homepage refresh with a direct Shop all entry into the existing Shopify catalog.",
+  focus: "Present the apparel brand and connect its homepage story with existing product-discovery paths.",
+  capabilities: ["Homepage layout and visual hierarchy", "Preserved Shop all navigation into existing catalog and product pages", "Journal Coming Soon presentation", "Desktop and mobile layout iteration"],
+  experience: "Visitors move from the branded homepage through Shop all to the existing Shopify catalog and product pages. A separate journal announcement uses Coming Soon.",
+  detail: "HBI refined the presentation within the existing Shopify storefront. The store retains its Shopify hosting, catalog, cart and checkout infrastructure; the portfolio scope is the homepage presentation and entry into those shopping paths.",
+} as const;

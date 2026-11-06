@@ -1,15 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon, ChatCircleDotsIcon, PathIcon, CalendarCheckIcon } from "@phosphor-icons/react/ssr";
-import { platformFoundation, platformProjects } from "../lib/platform-projects";
+import { focusPortfolioProject, platformFoundation, platformProjects } from "../lib/platform-projects";
 import { EngagementLink } from "./EngagementLink";
 import clientConnectStyles from "./ClientConnectFeature.module.css";
+import focusStyles from "./FocusProject.module.css";
+
+const projectStories = [...platformProjects, focusPortfolioProject];
 
 const proof = {
   lia: "Video, custom forms, payments, site and campaign analytics, and analytics-informed strategy.",
   ejc: "Ask EJC visitor assistant, calendar-backed events, automated gathering updates, booking and giving pathways, analytics and reporting.",
   steam: "Immersive design, motion-led storytelling, responsive development, hosting, analytics and reporting.",
+  focus: focusPortfolioProject.summary,
 };
+
+function ProjectInquiry({ project }: { project: (typeof projectStories)[number] }) {
+  const text = <>Discuss a similar project<span className="sr-only"> to {project.label}</span></>;
+  return project.id === "focus"
+    ? <Link href="/contact?offer=digital-experience&from=direct" className="wt-project-inquiry">{text}</Link>
+    : <EngagementLink entry={project.id} className="wt-project-inquiry">{text}</EngagementLink>;
+}
 
 export function ProofShowcase() {
   return <section className="wt-platform" id="platform" aria-labelledby="platform-title">
@@ -17,7 +28,8 @@ export function ProofShowcase() {
       <Image className="wt-dep-logo" src="/refresh/hbi-dep-logo.png" alt="Powered by HBI Digital Experience Platform" width={1350} height={220} sizes="(max-width: 700px) 88vw, 650px" />
       <h2 id="platform-title">One platform. Distinct experiences.</h2>
       <p className="wt-platform-intro">An AI-powered platform developed within the HBI Innovation Foundry.</p>
-      <ul className="wt-foundation" aria-label="Delivered across every project">{platformFoundation.map(item => <li key={item}>{item}</li>)}</ul>
+      <p className={focusStyles.foundationScope}>Platform foundations delivered for LIA, EJC and HBI STEAM</p>
+      <ul className="wt-foundation" aria-label="Platform foundations delivered for LIA, EJC and HBI STEAM">{platformFoundation.map(item => <li key={item}>{item}</li>)}</ul>
       <article className="wt-platform-capability" aria-labelledby="virtual-front-desk-capability-title">
         <div className="wt-platform-capability-copy">
           <p className="wt-kicker">New platform product</p>
@@ -47,17 +59,17 @@ export function ProofShowcase() {
         </ul>
       </article>
       <div className="wt-project-grid" id="work">
-        {platformProjects.map(project => <article className="wt-project" key={project.id}>
+        {projectStories.map(project => <article className="wt-project" key={project.id}>
           <a className="wt-project-image" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.name} (opens in new tab)`}>
-            <Image src={project.image} alt={`${project.name} website`} width={project.width} height={project.height} sizes="(max-width: 700px) 90vw, 30vw" />
+            {project.image ? <Image src={project.image} alt={`${project.name} website`} width={project.width} height={project.height} sizes="(max-width: 700px) 90vw, 30vw" /> : <div className={focusStyles.preview} aria-hidden="true"><span>Shopify storefront UI/UX</span><strong>From brand story<br />to shopping</strong><span>Homepage → catalog → product discovery</span></div>}
           </a>
           <a className="wt-project-title" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`${project.label}: ${project.name} (opens in new tab)`}>
-            <h3>{project.label}</h3><p className="wt-project-name">{project.name}</p>
+            <h3>{project.label}</h3><p className="wt-project-name">{project.id === "focus" ? project.storyTitle : project.name}</p>
           </a>
           <p className="wt-project-proof">{proof[project.id]}</p>
           <div className="wt-project-actions">
-            <a className="wt-project-link" href={project.url} target="_blank" rel="noopener noreferrer">{project.id === "steam" ? "Visit hbisteam.org" : `Explore ${project.label}`}</a>
-            <EngagementLink entry={project.id} className="wt-project-inquiry">Discuss a similar project<span className="sr-only"> to {project.label}</span></EngagementLink>
+            <a className="wt-project-link" href={project.url} target="_blank" rel="noopener noreferrer">{project.id === "steam" ? "Visit hbisteam.org" : project.id === "focus" ? "Visit FOCUS-I-APPAREL" : `Explore ${project.label}`}</a>
+            <ProjectInquiry project={project} />
           </div>
           <details className="wt-project-details"><summary>Project story &amp; delivered capabilities</summary>
             <h4>The focus</h4><p>{project.focus}</p>

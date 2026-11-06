@@ -15,6 +15,7 @@ export const navigatorTopics = [
 export const navigatorReferences = {
   platform: { label: "HBI Digital Experience Platform", href: "/#platform", detail: "AI-powered; developed within HBI Innovation Foundry." },
   clientConnect: { label: "Explore Client Connect", href: "/innovation-foundry/client-connect", detail: "Managed prospect research, client-approved outreach and consented introductions." },
+  focusApparel: { label: "Visit FOCUS-I-APPAREL", href: "https://www.focusiapparel.com/", detail: "Homepage UI/UX and product-discovery entry within an existing Shopify storefront." },
   frontDesk: { label: "Explore Virtual Help Desk", href: "/innovation-foundry/virtual-front-desk", detail: "Approved answers, human handoff, and connected or newly designed customer workflows." },
   lia: { label: "Explore LIA", href: "https://learninginnovationalliance.org", detail: "Video, forms, payments, analytics and analytics-informed campaign strategy." },
   ejc: { label: "Explore EJC", href: "https://experiencejesuschrist.org", detail: "Ask EJC, calendar-backed events, scheduling and giving pathways." },
@@ -34,6 +35,7 @@ export function relatedReferences(question: string): ReferenceId[] {
   const add = (id: ReferenceId) => { if (!matches.includes(id)) matches.push(id); };
   // Keep an explicit product request visible even when project words fill the link limit.
   if (/\bclient[ -]?connect\b/i.test(question)) add("clientConnect");
+  if (/\bfocus(?:[ -]?i)?[ -]?apparel\b/i.test(question)) add("focusApparel");
   if (/\b(?:virtual help[ -]?desk|(?:digital|virtual) front[ -]?desk)\b/i.test(question)) add("frontDesk");
   if (/\b(lia|learning innovation|video|payment|campaign|forms?)\b/i.test(question)) add("lia");
   if (/\b(ejc|jesus|assistant|chatbot|calendar|booking|events?|giving)\b/i.test(question)) add("ejc");
