@@ -63,11 +63,11 @@ export function ProofShowcase() {
           <a className="wt-project-image" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.name} (opens in new tab)`}>
             {project.image ? <Image src={project.image} alt={`${project.name} website`} width={project.width} height={project.height} sizes="(max-width: 700px) 90vw, 30vw" /> : <div className={focusStyles.preview} aria-hidden="true"><span>Shopify storefront UI/UX</span><strong>From brand story<br />to shopping</strong><span>Homepage → catalog → product discovery</span></div>}
           </a>
-          <a className="wt-project-title" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`${project.label}: ${project.name} (opens in new tab)`}>
+          <a className="wt-project-title" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`${project.label}: ${project.id === "focus" ? project.storyTitle : project.name} (opens in new tab)`}>
             <h3>{project.label}</h3><p className="wt-project-name">{project.id === "focus" ? project.storyTitle : project.name}</p>
           </a>
           <p className="wt-project-proof">{proof[project.id]}</p>
-          <div className="wt-project-actions">
+          <div className={project.id === "focus" ? `wt-project-actions ${focusStyles.actions}` : "wt-project-actions"}>
             <a className="wt-project-link" href={project.url} target="_blank" rel="noopener noreferrer">{project.id === "steam" ? "Visit hbisteam.org" : project.id === "focus" ? "Visit FOCUS-I-APPAREL" : `Explore ${project.label}`}</a>
             <ProjectInquiry project={project} />
           </div>
