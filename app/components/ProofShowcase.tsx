@@ -47,7 +47,7 @@ export function ProofShowcase() {
       <article className={`wt-platform-capability ${clientConnectStyles.feature}`} aria-labelledby="client-connect-capability-title">
         <div className="wt-platform-capability-copy">
           <p className="wt-kicker">Managed Outreach &amp; Introductions</p>
-          <h3 id="client-connect-capability-title">HBI DEP Client Connect</h3>
+          <h3 id="client-connect-capability-title">Client Connect</h3>
           <p><strong>Focused outreach. Clear next steps.</strong></p>
           <p>We manage prospect research, client-approved outreach and follow-up, and arrange introductions when interested prospects agree to connect with your team.</p>
           <Link href="/innovation-foundry/client-connect">Explore Client Connect <ArrowRightIcon size={19} aria-hidden="true" /></Link>

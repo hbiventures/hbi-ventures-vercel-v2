@@ -10,7 +10,7 @@ test('Client Connect inquiry survives validated parsing without adding personal 
   assert.equal(url.pathname, '/contact');
   assert.equal(parseEngagementOffer(url.searchParams.get('offer')), 'client-connect');
   assert.equal(parseEngagementEntry(url.searchParams.get('from')), 'client-connect');
-  assert.equal(engagementLabel('client-connect'), 'HBI DEP Client Connect');
+  assert.equal(engagementLabel('client-connect'), 'Client Connect');
   assert.deepEqual([...url.searchParams.keys()], ['offer', 'from']);
   for (const value of ['__proto__', 'constructor', ['client-connect'], 'client-connect@example.com']) {
     assert.equal(parseEngagementOffer(value), '');
@@ -30,9 +30,9 @@ test('explicit Client Connect requests retain the app-owned reference before gen
 });
 
 test('shared Marin strategy states managed scope without business-action or readiness powers', () => {
-  assert.equal(assistantStrategyVersion, '2026-11-06-focus-portfolio');
+  assert.equal(assistantStrategyVersion, '2026-11-06-focus-client-connect-naming');
   const instructions = navigatorInstructions([]);
-  for (const text of ['HBI DEP Client Connect', 'client-approved outreach and follow-up', 'consented introduction', 'sales conversations and follow-up after handoff', 'not limited to healthcare', 'Do not guarantee meetings, leads, sales or client counts', 'Marin only explains and guides', 'Do not claim confirmed pilot availability', 'separate Send message action']) assert.ok(instructions.includes(text), text);
+  for (const text of ['Client Connect', 'client-approved outreach and follow-up', 'consented introduction', 'sales conversations and follow-up after handoff', 'not limited to healthcare', 'Do not guarantee meetings, leads, sales or client counts', 'Marin only explains and guides', 'Do not claim confirmed pilot availability', 'separate Send message action']) assert.ok(instructions.includes(text), text);
 });
 
 test('service page and homepage preserve the approved journey and do not introduce optional event tracking', () => {
@@ -46,6 +46,8 @@ test('service page and homepage preserve the approved journey and do not introdu
   assert.match(page, /not a purchase, a commitment to a project or authorization to start a campaign/);
   assert.match(home, /Explore Client Connect/);
   assert.doesNotMatch(page, /posthog|EngagementLink|<form|<iframe|autoplay/i);
+  assert.doesNotMatch(page + home, /HBI DEP Client Connect|HBIDEP Client Connect|HBI Client Connect/i);
+  assert.match(page, /title: "Client Connect \| Managed Outreach & Introductions"/);
 });
 
 test('contact keeps the honeypot private and associates Client Connect guidance without optional tracking', () => {

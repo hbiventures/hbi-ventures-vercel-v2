@@ -1,6 +1,6 @@
 /** Capability interests, not packages. Existing internal codes preserve link/analytics compatibility. */
 export const engagementOffers = [
-  { id: "client-connect", label: "HBI DEP Client Connect" },
+  { id: "client-connect", label: "Client Connect" },
   { id: "digital-experience", label: "Digital experience" },
   { id: "integrations", label: "API & business-tool integration" },
   { id: "automation", label: "Workflow automation" },

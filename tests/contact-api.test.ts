@@ -90,7 +90,7 @@ test('Contact API validates input and preserves email delivery with mocked provi
     assert.equal(response.status, 200);
     const sent = calls.at(-1)!;
     assert.deepEqual(sent.body.to, ['recipient@example.com']);
-    assert.match(String(sent.body.text), /Service to discuss: HBI DEP Client Connect/);
+    assert.match(String(sent.body.text), /Service to discuss: Client Connect/);
     assert.match(String(sent.body.text), /Website entry: client-connect/);
     assert.doesNotMatch(String(sent.body.text), /attacker@example.com/);
     const before = calls.length;

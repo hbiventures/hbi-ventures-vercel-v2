@@ -4,7 +4,7 @@ import { SiteFooter, SiteHeader } from "../../components/SiteHeader";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: "HBI DEP Client Connect | Managed Outreach & Introductions",
+  title: "Client Connect | Managed Outreach & Introductions",
   description: "Explore a focused managed-outreach pilot: prospect research, client-approved outreach and follow-up, consented introductions, and activity and response reporting.",
   alternates: { canonical: "/innovation-foundry/client-connect" },
 };
@@ -25,7 +25,7 @@ export default function ClientConnectPage() {
     <div id="main-content" tabIndex={-1}>
       <section className={styles.hero} aria-labelledby="client-connect-title">
         <div className={styles.inner}>
-          <p className={styles.eyebrow}>HBI DEP Client Connect | Managed Outreach &amp; Introductions</p>
+          <p className={styles.eyebrow}>Client Connect | Managed Outreach &amp; Introductions</p>
           <h1 id="client-connect-title">Focused outreach.<br />Clear next steps.</h1>
           <p className={styles.lead}>We manage prospect research, client-approved outreach and follow-up, and arrange introductions when interested prospects agree to connect with your team. Start with a focused pilot built around your offer, audience and goals, with activity and response reporting.</p>
           <p className={styles.responsibility}>You approve your offer and claims. Your team owns sales conversations and follow-up after handoff.</p>

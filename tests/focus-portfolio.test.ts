@@ -40,7 +40,7 @@ test('Marin keeps app-owned FOCUS links visible without replacing Client Connect
 });
 
 test('shared text and voice knowledge distinguish scoped FOCUS work from unsupported platform/outcome claims', () => {
-  assert.equal(assistantStrategyVersion, '2026-11-06-focus-portfolio');
+  assert.equal(assistantStrategyVersion, '2026-11-06-focus-client-connect-naming');
   const instructions = navigatorInstructions(platformProjects);
-  for (const fact of ['FOCUS-I-APPAREL — SCOPED SHOPIFY UI/UX PROJECT', 'direct Shop all entry', 'journal Coming Soon presentation', 'Do not attribute HBI hosting, analytics or reporting', 'Do not claim deferred size-chart or terminology fixes were completed', 'Do not invent client testimonials or endorsement', 'HBI DEP Client Connect', 'Marin only explains and guides']) assert.ok(instructions.includes(fact), fact);
+  for (const fact of ['FOCUS-I-APPAREL — SCOPED SHOPIFY UI/UX PROJECT', 'direct Shop all entry', 'journal Coming Soon presentation', 'Do not attribute HBI hosting, analytics or reporting', 'Do not claim deferred size-chart or terminology fixes were completed', 'Do not invent client testimonials or endorsement', 'Client Connect', 'Marin only explains and guides']) assert.ok(instructions.includes(fact), fact);
 });

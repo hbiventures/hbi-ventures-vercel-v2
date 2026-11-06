@@ -56,7 +56,7 @@ test('Navigator API contracts with mocked provider only', async t => {
   const clientConnectPayload = await clientConnect.json();
   assert.equal(clientConnectPayload.references[0], 'clientConnect');
   const clientConnectInstructions = String(calls.at(-1)!.body.instructions);
-  assert.match(clientConnectInstructions, /HBI DEP CLIENT CONNECT — MANAGED OUTREACH & INTRODUCTIONS/);
+  assert.match(clientConnectInstructions, /CLIENT CONNECT — MANAGED OUTREACH & INTRODUCTIONS/);
   assert.match(clientConnectInstructions, /separate Send message action/);
   assert.match(clientConnectInstructions, /Do not guarantee meetings, leads, sales or client counts/);
   const focusReply = await POST(request({messages:[{role:'user',text:'What did HBI do for FOCUS-I-APPAREL?'}]}));
