@@ -61,3 +61,16 @@ test('contact keeps the honeypot private and associates Client Connect guidance 
   assert.match(form, /if \(sending.current\) return/);
   assert.match(form, /signature !== signature|signature !==/);
 });
+
+test('small-organization examples remain illustrative and separate from client evidence or campaign authorization', () => {
+  const page = readFileSync('app/innovation-foundry/client-connect/page.tsx', 'utf8');
+  const section = page.slice(page.indexOf('<section className={styles.examples}'), page.indexOf('<section className={styles.scope}'));
+  assert.match(section, /aria-labelledby="examples-title"/);
+  assert.match(section, /Where Client Connect could fit/);
+  assert.match(section, /Illustrative examples of how small organizations could use the service\./);
+  assert.equal((section.match(/<li>/g) ?? []).length, 4);
+  for (const title of ['Local bookkeeping or IT firm', 'Workforce nonprofit', 'Youth education nonprofit', 'Local arts organization']) assert.ok(section.includes(`<h3>${title}</h3>`), title);
+  assert.match(section, /Connect with schools and community referral partners when the organization has capacity for more participants\./);
+  assert.match(section, /Your team leads the conversations\. Results are not guaranteed\./);
+  assert.doesNotMatch(section, /testimonial|case study|proven results|guaranteed leads|<form|<button|<script/i);
+});

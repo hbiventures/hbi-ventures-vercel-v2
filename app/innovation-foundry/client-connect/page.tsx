@@ -40,6 +40,17 @@ export default function ClientConnectPage() {
           })}</ol>
         </div>
       </section>
+      <section className={styles.examples} aria-labelledby="examples-title"><div className={styles.inner}>
+        <h2 id="examples-title">Where Client Connect could fit</h2>
+        <p className={styles.examplesIntro}>Illustrative examples of how small organizations could use the service.</p>
+        <ul className={styles.exampleList}>
+          <li><h3>Local bookkeeping or IT firm</h3><p>Reach nearby business customers through focused research, approved outreach and agreed introductions.</p></li>
+          <li><h3>Workforce nonprofit</h3><p>Explore partnerships with local employers interested in hiring or supporting job-readiness programs.</p></li>
+          <li><h3>Youth education nonprofit</h3><p>Connect with schools and community referral partners when the organization has capacity for more participants.</p></li>
+          <li><h3>Local arts organization</h3><p>Introduce paid workshops to nearby businesses looking for team activities.</p></li>
+        </ul>
+        <p className={styles.examplesClosing}>HBI helps research contacts, coordinate approved outreach and track responses. Your team leads the conversations. Results are not guaranteed.</p>
+      </div></section>
       <section className={styles.scope} aria-labelledby="scope-title"><div className={styles.inner}>
         <h2 id="scope-title">Managed outreach. Human decisions.</h2>
         <p>Client Connect is a managed service, not self-service software or an automatically running acquisition platform. Supported channels, approvals, follow-up scope and reporting are agreed with HBI before work begins. Meetings, leads and sales are not guaranteed.</p>
