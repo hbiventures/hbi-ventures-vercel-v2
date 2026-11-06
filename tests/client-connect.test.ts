@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { engagementHref, parseEngagementEntry, parseEngagementOffer, engagementLabel } from '../app/lib/engagement.ts';
 import { relatedReferences, navigatorReferences, navigatorInstructions, isReferenceId } from '../app/lib/navigator.ts';
+import { clientConnectProcess } from '../app/lib/client-connect-process.ts';
 import { assistantStrategyVersion } from '../app/lib/assistant-strategy.js';
 
 test('Client Connect inquiry survives validated parsing without adding personal query data', () => {
@@ -38,10 +39,10 @@ test('shared Marin strategy states managed scope without business-action or read
 test('service page and homepage preserve the approved journey and do not introduce optional event tracking', () => {
   const page = readFileSync('app/innovation-foundry/client-connect/page.tsx', 'utf8');
   const home = readFileSync('app/components/ProofShowcase.tsx', 'utf8');
-  for (const text of ['Audience discovery', 'Source-backed research', 'Client approval', 'Coordinated outreach and follow-up', 'Consented introduction', 'Reporting']) assert.ok(page.includes(text), text);
+  for (const text of ['Audience discovery', 'Source-backed research', 'Client approval', 'Coordinated outreach and follow-up', 'Consented introduction', 'Reporting']) assert.ok(clientConnectProcess.some(step => step.title === text), text);
   assert.match(page, /id="how-it-works"/);
   assert.match(page, /href="#how-it-works"/);
-  assert.match(page, /<ol className={styles.steps}>/);
+  assert.match(page, /<ol className={styles.steps} role="list"/);
   assert.match(page, /canonical: "\/innovation-foundry\/client-connect"/);
   assert.match(page, /not a purchase, a commitment to a project or authorization to start a campaign/);
   assert.match(home, /Explore Client Connect/);

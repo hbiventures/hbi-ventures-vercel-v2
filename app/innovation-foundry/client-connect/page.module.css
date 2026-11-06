@@ -14,7 +14,9 @@
 .process h2, .scope h2 { font-size: clamp(32px, 4vw, 48px); line-height: 1.12; letter-spacing: -.04em; margin: 0 0 28px; }
 .steps { list-style: none; margin: 36px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .steps li { min-width: 0; border-top: 2px solid #2457d4; padding: 24px 20px; background: #fff; }
-.number { display: block; color: #2457d4; font-size: 15px; font-weight: 700; margin-bottom: 20px; }
+.marker { display: block; color: #2457d4; line-height: 0; margin-bottom: 20px; }
+.marker svg { display: block; width: 28px; height: 28px; }
+.stepOrder { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 .steps h3 { font-size: 21px; line-height: 1.3; margin: 0 0 12px; }
 .steps p, .scope p { font-size: 17px; line-height: 1.7; margin: 0; }
 .scope { padding: 64px 0 76px; background: #e8edf5; }
@@ -29,7 +31,8 @@
   .process, .scope { padding: 48px 0; }
   .steps { grid-template-columns: 1fr; gap: 16px; }
   .steps li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 16px; padding: 22px 18px; }
-  .number { margin-top: 4px; }
+  .marker { margin-top: 4px; }
+  .marker svg { width: 24px; height: 24px; }
   .actions { align-items: stretch; gap: 14px; }
   .primary { width: 100%; }
 }
