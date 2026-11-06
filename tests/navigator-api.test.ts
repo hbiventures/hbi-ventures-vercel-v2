@@ -52,6 +52,13 @@ test('Navigator API contracts with mocked provider only', async t => {
   assert.match(String(calls[1].body.instructions),/Virtual Help Desk is a new HBI product/);
   assert.match(String(calls[1].body.instructions),/No existing website or established workflow is required/);
   assert.match(String(calls[1].body.instructions),/Internal skills and third-party tools support HBI's delivery process/);
+  const clientConnect = await POST(request({messages:[{role:'user',text:'What is Client Connect?'}]}));
+  const clientConnectPayload = await clientConnect.json();
+  assert.equal(clientConnectPayload.references[0], 'clientConnect');
+  const clientConnectInstructions = String(calls.at(-1)!.body.instructions);
+  assert.match(clientConnectInstructions, /HBI DEP CLIENT CONNECT — MANAGED OUTREACH & INTRODUCTIONS/);
+  assert.match(clientConnectInstructions, /separate Send message action/);
+  assert.match(clientConnectInstructions, /Do not guarantee meetings, leads, sales or client counts/);
   for (const failure of ['moderation-error','moderation-invalid','flagged','provider-error','empty']) {
     mode=failure; calls.length=0;
     const result=await POST(request({messages:[{role:'user',text:'Test request'}]}));

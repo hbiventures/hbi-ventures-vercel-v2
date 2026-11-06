@@ -1,5 +1,6 @@
 /** Capability interests, not packages. Existing internal codes preserve link/analytics compatibility. */
 export const engagementOffers = [
+  { id: "client-connect", label: "HBI DEP Client Connect" },
   { id: "digital-experience", label: "Digital experience" },
   { id: "integrations", label: "API & business-tool integration" },
   { id: "automation", label: "Workflow automation" },
@@ -8,7 +9,7 @@ export const engagementOffers = [
 ] as const;
 
 export type EngagementOffer = typeof engagementOffers[number]["id"];
-export const engagementEntries = ["hero", "offer", "lia", "ejc", "steam", "closing", "header", "foundry", "virtual-front-desk", "assessment", "direct"] as const;
+export const engagementEntries = ["hero", "offer", "lia", "ejc", "steam", "closing", "header", "foundry", "virtual-front-desk", "assessment", "client-connect", "direct"] as const;
 export type EngagementEntry = typeof engagementEntries[number];
 
 export const contactInterests = [

@@ -48,6 +48,9 @@ test('voice uses existing server credential and never returns it; gated and orig
     assert.match(config.instructions, /No existing website or established workflow is required/);
     assert.match(config.instructions, /Internal skills and third-party tools support HBI's delivery process/);
     assert.match(config.instructions, /No prices, packages, guaranteed savings/);
+    assert.match(config.instructions, /HBI DEP CLIENT CONNECT — MANAGED OUTREACH & INTRODUCTIONS/);
+    assert.match(config.instructions, /Marin only explains and guides/);
+    assert.match(config.instructions, /Do not guarantee meetings, leads, sales or client counts/);
     assert.equal(config.audio.output.voice, 'marin');
     assert.equal(config.max_output_tokens, 2048);
     assert.equal(config.audio.input.turn_detection.threshold, 0.65);

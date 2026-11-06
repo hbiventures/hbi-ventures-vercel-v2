@@ -85,6 +85,19 @@ test('Contact API validates input and preserves email delivery with mocked provi
     assert.doesNotMatch(bounded, /<private>|home-address|private-campaign|private-content/);
     assert.match(bounded, /Landing industry: All small businesses/);
   });
+  await t.test('Client Connect has a validated service label and cannot override the recipient', async () => {
+    const response = await POST(request({ ...valid, offer: 'client-connect', entry: 'client-connect', to: 'attacker@example.com', recipient: 'attacker@example.com' }));
+    assert.equal(response.status, 200);
+    const sent = calls.at(-1)!;
+    assert.deepEqual(sent.body.to, ['recipient@example.com']);
+    assert.match(String(sent.body.text), /Service to discuss: HBI DEP Client Connect/);
+    assert.match(String(sent.body.text), /Website entry: client-connect/);
+    assert.doesNotMatch(String(sent.body.text), /attacker@example.com/);
+    const before = calls.length;
+    const bot = await POST(request({ ...valid, offer: 'client-connect', entry: 'client-connect', website: 'bot' }));
+    assert.deepEqual(await bot.json(), { ok: true });
+    assert.equal(calls.length, before, 'honeypot success is deliberately not provider acceptance');
+  });
   await t.test('legacy forms work; unknown attribution is not echoed', async () => {
     const { offer, entry, submission_id, ...legacy } = valid;
     void offer; void entry; void submission_id;

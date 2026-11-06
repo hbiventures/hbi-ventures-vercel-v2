@@ -18,6 +18,8 @@ function trackContact(event: string, form: HTMLFormElement) {
   // Explicit allowlisted categories only; never names, email, message, URLs or lead references.
   try {
     const entry = parseEngagementEntry(data.get("entry"));
+    // No new optional Client Connect tracking in this release.
+    if (entry === "client-connect" || parseEngagementOffer(data.get("offer")) === "client-connect") return;
     const landingIndustry = parseVirtualFrontDeskIndustry(data.get("vfd_industry"));
     posthog.capture(event, {
       offer: parseEngagementOffer(data.get("offer")) || "not_selected",
@@ -34,6 +36,7 @@ function trackContact(event: string, form: HTMLFormElement) {
 }
 
 export function ContactForm({ initialOffer = "", entry = "direct", initialAttribution }: { initialOffer?: EngagementOffer | ""; entry?: EngagementEntry; initialAttribution?: VirtualFrontDeskAttribution }) {
+  const [selectedOffer, setSelectedOffer] = useState(initialOffer);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const submission = useRef<{ signature: string; id: string } | null>(null);
@@ -103,6 +106,7 @@ export function ContactForm({ initialOffer = "", entry = "direct", initialAttrib
       for (const category of assistantContext?.interests ?? []) trackAssistant("assistant_inquiry_submitted", { category, classification: "visitor_confirmed" });
       setReference(typeof result.reference === "string" ? result.reference : "");
       form.reset();
+      setSelectedOffer(initialOffer);
       setPrefilled(false);
       setAssistantContext(null); setSendTranscript(false);
       submission.current = null;
@@ -138,9 +142,11 @@ export function ContactForm({ initialOffer = "", entry = "direct", initialAttrib
       <label>Organization <span>Optional</span><input name="organization" maxLength={160} autoComplete="organization" /></label>
       <label>Area of interest *<select name="interest" required defaultValue={initialOffer ? "HBI Innovation Foundry" : ""}><option value="" disabled>Select one</option>{contactInterests.map(interest => <option key={interest}>{interest}</option>)}</select></label>
       <label>Service to discuss <span>Optional</span><select name="offer" defaultValue={initialOffer} onChange={event => {
+        setSelectedOffer(parseEngagementOffer(event.target.value));
         if (event.target.value && formRef.current) (formRef.current.elements.namedItem("interest") as HTMLSelectElement).value = "HBI Innovation Foundry";
       }}><option value="">Not sure yet / another HBI inquiry</option>{engagementOffers.map(offer => <option value={offer.id} key={offer.id}>{offer.label}</option>)}</select></label>
-      <label>Message *<textarea name="message" maxLength={5000} required placeholder="What should work better? Tell us about your audience, existing tools and desired timing. For other HBI inquiries, share how we can help." /></label>
+      {selectedOffer === "client-connect" && <p id="client-connect-guidance" className="contact-form-intro">Tell us what you offer, the audience and geography you want to reach, and the result you would like to work toward. Do not include private customer information.</p>}
+      <label>Message *<textarea aria-describedby={selectedOffer === "client-connect" ? "client-connect-guidance" : undefined} name="message" maxLength={5000} required placeholder="What should work better? Tell us about your audience, existing tools and desired timing. For other HBI inquiries, share how we can help." /></label>
       {assistantContext && <fieldset className="assistant-contact-context"><legend>Your assistant handoff</legend><p>Only the details you approve here are included in your inquiry.</p><div className="assistant-interests">{assistantInterests.map(item => <label key={item.id}><input type="checkbox" checked={assistantContext.interests.includes(item.id)} onChange={event => setAssistantContext({ ...assistantContext, interests: event.target.checked ? [...assistantContext.interests, item.id] : assistantContext.interests.filter(id => id !== item.id) })} />{item.label}</label>)}</div>{assistantContext.transcriptApproved && <><label className="navigator-approval"><input type="checkbox" checked={sendTranscript} onChange={event => setSendTranscript(event.target.checked)} />Include my reviewed transcript in this email to HBI.</label>{sendTranscript && <label>Transcript to share<textarea rows={8} maxLength={30000} value={assistantContext.transcript} onChange={event => setAssistantContext({ ...assistantContext, transcript: event.target.value })} /></label>}</>}<p>These are your confirmed interests—not an automated score. This information is not displayed publicly.</p></fieldset>}
       <button type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending message…" : "Send message"}</button>
       <div className="form-status" aria-live="polite">

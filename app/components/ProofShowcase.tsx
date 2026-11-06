@@ -31,6 +31,20 @@ export function ProofShowcase() {
         </ul>
         <p className="wt-platform-capability-audience"><strong>Examples:</strong> plumbers, electricians, HVAC and field-service teams; salons and wellness businesses; professional services; venues; and fitness organizations.</p>
       </article>
+      <article className="wt-platform-capability" aria-labelledby="client-connect-capability-title">
+        <div className="wt-platform-capability-copy">
+          <p className="wt-kicker">Managed Outreach &amp; Introductions</p>
+          <h3 id="client-connect-capability-title">HBI DEP Client Connect</h3>
+          <p><strong>Focused outreach. Clear next steps.</strong></p>
+          <p>We manage prospect research, client-approved outreach and follow-up, and arrange introductions when interested prospects agree to connect with your team.</p>
+          <Link href="/innovation-foundry/client-connect">Explore Client Connect <ArrowRightIcon size={19} aria-hidden="true" /></Link>
+        </div>
+        <ul aria-label="Client Connect managed service">
+          <li><PathIcon size={25} weight="light" aria-hidden="true" /><span><strong>Research</strong>A focused audience and source-backed prospect research</span></li>
+          <li><ChatCircleDotsIcon size={25} weight="light" aria-hidden="true" /><span><strong>Coordinate</strong>Client-approved outreach and follow-up</span></li>
+          <li><CalendarCheckIcon size={25} weight="light" aria-hidden="true" /><span><strong>Connect</strong>Introductions when interested prospects agree</span></li>
+        </ul>
+      </article>
       <div className="wt-project-grid" id="work">
         {platformProjects.map(project => <article className="wt-project" key={project.id}>
           <a className="wt-project-image" href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.name} (opens in new tab)`}>
