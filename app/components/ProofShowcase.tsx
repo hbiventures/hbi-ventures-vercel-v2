@@ -48,9 +48,9 @@ export function ProofShowcase() {
         <div className="wt-platform-capability-copy">
           <p className="wt-kicker">Managed Outreach &amp; Introductions</p>
           <h3 id="client-connect-capability-title">Client Connect</h3>
-          <p><strong>Focused outreach. Clear next steps.</strong></p>
-          <p>We manage prospect research, client-approved outreach and follow-up, and arrange introductions when interested prospects agree to connect with your team.</p>
-          <Link href="/innovation-foundry/client-connect">Explore Client Connect <ArrowRightIcon size={19} aria-hidden="true" /></Link>
+          <p><strong>More room for the work that matters.</strong></p>
+          <p>Pursue your next business relationship without managing every outreach step yourself. Explore Essential, Growth and Concierge support, with research-informed outreach, your approval and agreed follow-up.</p>
+          <Link href="/innovation-foundry/client-connect">Explore Client Connect</Link>
         </div>
         <ul aria-label="Client Connect managed service">
           <li><PathIcon size={25} weight="light" aria-hidden="true" /><span><strong>Research</strong>A focused audience and source-backed prospect research</span></li>

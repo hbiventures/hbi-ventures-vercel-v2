@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { engagementHref, parseEngagementEntry, parseEngagementOffer, engagementLabel } from '../app/lib/engagement.ts';
 import { relatedReferences, navigatorReferences, navigatorInstructions, isReferenceId } from '../app/lib/navigator.ts';
 import { clientConnectProcess } from '../app/lib/client-connect-process.ts';
@@ -41,7 +42,8 @@ test('service page and homepage preserve the approved journey and do not introdu
   const home = readFileSync('app/components/ProofShowcase.tsx', 'utf8');
   for (const text of ['Audience discovery', 'Source-backed research', 'Client approval', 'Coordinated outreach and follow-up', 'Consented introduction', 'Reporting']) assert.ok(clientConnectProcess.some(step => step.title === text), text);
   assert.match(page, /id="how-it-works"/);
-  assert.match(page, /href="#how-it-works"/);
+  assert.match(page, /href="#support-levels"/);
+  assert.match(page, /<details id="how-it-works"/);
   assert.match(page, /<ol className={styles.steps} role="list"/);
   assert.match(page, /canonical: "\/innovation-foundry\/client-connect"/);
   assert.match(page, /not a purchase, a commitment to a project or authorization to start a campaign/);
@@ -62,15 +64,46 @@ test('contact keeps the honeypot private and associates Client Connect guidance 
   assert.match(form, /signature !== signature|signature !==/);
 });
 
-test('small-organization examples remain illustrative and separate from client evidence or campaign authorization', () => {
+test('small-organization examples remain hypothetical and separate from client evidence or campaign authorization', () => {
   const page = readFileSync('app/innovation-foundry/client-connect/page.tsx', 'utf8');
-  const section = page.slice(page.indexOf('<section className={styles.examples}'), page.indexOf('<section className={styles.scope}'));
+  const section = page.slice(page.indexOf('<section className={styles.examples}'), page.indexOf('</div></section>', page.indexOf('<section className={styles.examples}')));
   assert.match(section, /aria-labelledby="examples-title"/);
   assert.match(section, /Where Client Connect could fit/);
-  assert.match(section, /Illustrative examples of how small organizations could use the service\./);
+  assert.match(section, /Example ways small organizations could use the service\. These are not actual client results\./);
   assert.equal((section.match(/<li>/g) ?? []).length, 4);
   for (const title of ['Local bookkeeping or IT firm', 'Workforce nonprofit', 'Youth education nonprofit', 'Local arts organization']) assert.ok(section.includes(`<h3>${title}</h3>`), title);
   assert.match(section, /Connect with schools and community referral partners when the organization has capacity for more participants\./);
   assert.match(section, /Your team leads the conversations\. Results are not guaranteed\./);
   assert.doesNotMatch(section, /testimonial|case study|proven results|guaranteed leads|<form|<button|<script/i);
+});
+
+test('outcome-led tiers keep exact inquiry routing and public scope boundaries', () => {
+  const page = readFileSync('app/innovation-foundry/client-connect/page.tsx', 'utf8');
+  for (const name of ['Essential', 'Growth', 'Concierge']) assert.ok(page.includes(`<h3>${name}</h3>`));
+  assert.match(page, /Pursue your next business relationship without managing every outreach step yourself/);
+  assert.match(page, /const inquiry = "\/contact\?offer=client-connect&from=client-connect"/);
+  assert.equal((page.match(/Discuss whether Client Connect is a fit\./g) ?? []).length, 2);
+  assert.match(page, /Meetings, patients, sales, revenue and time savings are not guaranteed/);
+  assert.match(page, /The practice retains clinical decisions, patient intake and care/);
+  assert.doesNotMatch(page, /Dr\.? Mines|\$[0-9]|People, organizations and next steps|→|↓|>0[123]</i);
+  assert.doesNotMatch(page, /<details[^>]*\bopen(?:[\s=>])/);
+});
+
+test('sample dashboard has durable assets and readable chart alternatives', () => {
+  const page = readFileSync('app/innovation-foundry/client-connect/page.tsx', 'utf8');
+  for (const extension of ['png', 'pdf']) {
+    const path = `/client-connect/concierge-dashboard-v3.${extension}`;
+    assert.ok(page.includes(`href="${path}"`));
+    assert.ok(readFileSync(`public${path}`).length > 1000);
+  }
+  for (const text of ['This is not actual campaign performance or a forecast.', '75 have no introduction or meeting discussion recorded', '15 discussed one without scheduling a meeting', '3 have an upcoming meeting and 7 have completed a meeting', 'Week 1, 1 meeting scheduled and 0 completed', 'Week 4, 10 scheduled and 7 completed', 'Completed meetings are included in scheduled totals.', 'Automatic replies and declines do not count.', 'No actual campaign, patient or clinical data.']) assert.ok(page.includes(text), text);
+});
+
+
+test('selected v3 dashboard assets remain byte-identical and focus rings match their surfaces', () => {
+  const expected = { png: '5b43c580c7ba8fd9e34cdbbe88f49ca6b402aa748bd67c65d2e5f4e095198cc2', pdf: 'a6caf0c94654cfc768d63dc466578211239c2edcd1c4521966ba96ad496c031c' };
+  for (const [extension, hash] of Object.entries(expected)) assert.equal(createHash('sha256').update(readFileSync(`public/client-connect/concierge-dashboard-v3.${extension}`)).digest('hex'), hash);
+  const css = readFileSync('app/innovation-foundry/client-connect/page.module.css', 'utf8');
+  assert.ok(css.includes('outline: 3px solid #14283c'));
+  assert.ok(css.includes('.hero a:focus-visible, .scope a:focus-visible, .scope summary:focus-visible { outline-color: #b8caff; }'));
 });
